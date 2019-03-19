@@ -1,18 +1,57 @@
-package com.github.fernandospr.movies
+package com.github.fernandospr.movies.network
 
+import com.github.fernandospr.movies.BuildConfig
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 interface MoviesApi {
 
-    // FIXME
+    // https://developers.themoviedb.org/3/configuration/get-api-configuration
+    @GET("configuration")
+    fun getConfiguration(): Call<ApiConfigurationContainer>
+
+    // https://developers.themoviedb.org/3/movies/get-popular-movies
+    @GET("movie/popular")
+    fun getPopularMovies(@Query("page") page: Int): Call<ApiMoviesContainer>
+
+    // https://developers.themoviedb.org/3/movies/get-top-rated-movies
+    @GET("movie/top_rated")
+    fun getTopRatedMovies(@Query("page") page: Int): Call<ApiMoviesContainer>
+
+    // https://developers.themoviedb.org/3/movies/get-upcoming
+    @GET("movie/upcoming")
+    fun getUpcomingMovies(@Query("page") page: Int): Call<ApiMoviesContainer>
+
+    // https://developers.themoviedb.org/3/movies/get-movie-videos
+    @GET("movie/{movie_id}/videos")
+    fun getMovieVideos(@Path("movie_id") id: String): Call<ApiVideoContainer>
+
+    // https://developers.themoviedb.org/3/tv/get-popular-tv-shows
+    @GET("tv/popular")
+    fun getPopularTvShows(@Query("page") page: Int): Call<ApiTvShowsContainer>
+
+    // https://developers.themoviedb.org/3/tv/get-top-rated-tv
+    @GET("tv/top_rated")
+    fun getTopRatedTvShows(@Query("page") page: Int): Call<ApiTvShowsContainer>
+
+    // https://developers.themoviedb.org/3/tv/get-tv-videos
+    @GET("tv/{tv_id}/videos")
+    fun getTvShowVideos(@Path("tv_id") id: String): Call<ApiVideoContainer>
+
+    // https://developers.themoviedb.org/3/search/multi-search
+    @GET("search/multi")
+    fun search(@Query("page") page: Int, @Query("query") query: String): Call<ApiSearchResultsContainer>
 
     companion object Factory {
 
@@ -61,7 +100,7 @@ interface MoviesApi {
             chain.proceed(request)
         }
 
-        private fun getGsonConverterFactory() : Converter.Factory {
+        private fun getGsonConverterFactory(): Converter.Factory {
             val gson = GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create()
