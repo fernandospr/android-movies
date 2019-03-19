@@ -13,11 +13,18 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "API_KEY", '"2773925266ded58ec058968584796181"'
+        buildConfigField "String", "API_BASE_URL", '"https://api.themoviedb.org/3/"'
     }
     buildTypes {
+        debug {
+            buildConfigField "okhttp3.logging.HttpLoggingInterceptor.Level", "RETROFIT_LOGGING", 'okhttp3.logging.HttpLoggingInterceptor.Level.BODY'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "okhttp3.logging.HttpLoggingInterceptor.Level", "RETROFIT_LOGGING", 'okhttp3.logging.HttpLoggingInterceptor.Level.NONE'
         }
     }
 }
@@ -28,6 +35,11 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.core:core-ktx:1.0.1'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.0'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
