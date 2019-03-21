@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Movies</string>
+    <string name="overview">Overview</string>
+
+    <string name="loading">Loading&#8230;</string>
+    <string name="error">An error occurred</string>
+    <string name="retry">Retry</string>
+
+    <string name="action_search">Search</string>
+
+    <string name="main_noresults">No movies/tv shows</string>
+    <string name="search_noresults">No movies/tv shows for \'%1$s\'</string>
 </resources>
