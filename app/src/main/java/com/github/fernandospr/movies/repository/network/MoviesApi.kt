@@ -1,4 +1,4 @@
-package com.github.fernandospr.movies.network
+package com.github.fernandospr.movies.repository.network
 
 import com.github.fernandospr.movies.BuildConfig
 import com.google.gson.FieldNamingPolicy
@@ -51,7 +51,8 @@ interface MoviesApi {
 
     // https://developers.themoviedb.org/3/search/multi-search
     @GET("search/multi")
-    fun search(@Query("page") page: Int, @Query("query") query: String): Call<ApiSearchResultsContainer>
+    fun search(@Query("query") query: String,
+               @Query("page") page: Int): Call<ApiSearchResultsContainer>
 
     companion object Factory {
 

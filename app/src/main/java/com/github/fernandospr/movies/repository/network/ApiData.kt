@@ -1,4 +1,4 @@
-package com.github.fernandospr.movies.network
+package com.github.fernandospr.movies.repository.network
 
 data class ApiConfigurationContainer(val images: ApiConfigurationImages)
 
@@ -59,9 +59,19 @@ data class ApiSearchResult(
 
     val releaseDate: String?,
     val firstAirDate: String?
-)
+) {
+    fun getTitleOrName(): String? {
+        if (title.isNullOrBlank()) {
+            return name
+        }
+        return title
+    }
+}
 
 data class ApiVideoContainer(
+    val page: Int,
+    val totalResults: Int,
+	val totalPages: Int,
 	val results: List<ApiVideoResult>
 )
 
