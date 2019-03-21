@@ -29,25 +29,28 @@
 	</com.google.android.material.appbar.AppBarLayout>
 
 	<include
+		android:id="@+id/loadingContainer"
 		layout="@layout/view_loading"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 	<include
+		android:id="@+id/errorContainer"
 		layout="@layout/view_error"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 	<include
+		android:id="@+id/noResultsContainer"
 		layout="@layout/view_noresults"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 	<androidx.recyclerview.widget.RecyclerView
-		android:id="@+id/list"
+		android:id="@+id/resultsContainer"
 		style="@style/AppTheme.RecyclerView"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
