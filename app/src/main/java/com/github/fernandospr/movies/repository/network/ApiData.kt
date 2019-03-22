@@ -66,6 +66,27 @@ data class ApiSearchResult(
         }
         return title
     }
+
+    fun getDate(): String? {
+        if (releaseDate.isNullOrBlank()) {
+            return firstAirDate
+        }
+        return releaseDate
+    }
+
+    fun getPosterFullPath() : String? {
+        if (posterPath.isNullOrBlank()) {
+            return null
+        }
+        return "https://image.tmdb.org/t/p/w342$posterPath"
+    }
+
+    fun getBackdropFullPath(): String? {
+        if (backdropPath.isNullOrBlank()) {
+            return null
+        }
+        return "https://image.tmdb.org/t/p/w780$backdropPath"
+    }
 }
 
 data class ApiVideoContainer(

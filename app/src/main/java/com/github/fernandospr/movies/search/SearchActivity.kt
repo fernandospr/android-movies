@@ -7,13 +7,14 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
+import com.github.fernandospr.movies.DetailActivity
 import com.github.fernandospr.movies.R
 import com.github.fernandospr.movies.repository.network.ApiSearchResult
 import com.github.fernandospr.movies.repository.network.ApiSearchResultsContainer
 import kotlinx.android.synthetic.main.activity_search.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity(), SearchAdapter.Listener {
+class SearchActivity : AppCompatActivity() {
 
     companion object {
         fun newIntent(context: Context) = Intent(context, SearchActivity::class.java)
@@ -32,7 +33,13 @@ class SearchActivity : AppCompatActivity(), SearchAdapter.Listener {
         setupSearchView()
 
         adapter = SearchAdapter()
-        adapter.setListener(this)
+        adapter.setListener(object : SearchAdapter.Listener {
+            override fun onItemClick(item: ApiSearchResult) {
+                // FIXME: Send item
+                val intent = DetailActivity.newIntent(this@SearchActivity)
+                startActivity(intent)
+            }
+        })
         resultsContainer.adapter = adapter
 
         searchViewModel.getLoading().observe(this, Observer { isLoading ->
@@ -102,9 +109,5 @@ class SearchActivity : AppCompatActivity(), SearchAdapter.Listener {
         } else {
             loadingContainer.visibility = View.INVISIBLE
         }
-    }
-
-    override fun onItemClick(item: ApiSearchResult) {
-        // FIXME
     }
 }
