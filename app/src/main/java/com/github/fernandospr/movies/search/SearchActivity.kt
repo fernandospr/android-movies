@@ -9,8 +9,8 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import com.github.fernandospr.movies.DetailActivity
 import com.github.fernandospr.movies.R
-import com.github.fernandospr.movies.repository.network.ApiSearchResult
-import com.github.fernandospr.movies.repository.network.ApiSearchResultsContainer
+import com.github.fernandospr.movies.repository.network.ApiItem
+import com.github.fernandospr.movies.repository.network.ApiItemsContainer
 import kotlinx.android.synthetic.main.activity_search.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -21,7 +21,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private lateinit var adapter: SearchAdapter
-    private val searchViewModel: SearchViewModel by viewModel()
+    private val viewModel: SearchViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +34,7 @@ class SearchActivity : AppCompatActivity() {
 
         adapter = SearchAdapter()
         adapter.setListener(object : SearchAdapter.Listener {
-            override fun onItemClick(item: ApiSearchResult) {
+            override fun onItemClick(item: ApiItem) {
                 // FIXME: Send item
                 val intent = DetailActivity.newIntent(this@SearchActivity)
                 startActivity(intent)
@@ -42,13 +42,13 @@ class SearchActivity : AppCompatActivity() {
         })
         resultsContainer.adapter = adapter
 
-        searchViewModel.getLoading().observe(this, Observer { isLoading ->
+        viewModel.getLoading().observe(this, Observer { isLoading ->
             isLoading?.let { showLoadingView(it) }
         })
-        searchViewModel.getError().observe(this, Observer { error ->
+        viewModel.getError().observe(this, Observer { error ->
             error?.let { showErrorView(it) }
         })
-        searchViewModel.getResults().observe(this, Observer { entities ->
+        viewModel.getResults().observe(this, Observer { entities ->
             showResult(entities)
         })
     }
@@ -69,7 +69,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrBlank()) {
-                    searchViewModel.search(query)
+                    viewModel.search(query)
                 }
                 searchView.clearFocus()
                 return true
@@ -77,7 +77,7 @@ class SearchActivity : AppCompatActivity() {
         })
     }
 
-    private fun showResult(container: ApiSearchResultsContainer?) {
+    private fun showResult(container: ApiItemsContainer?) {
         when {
             container == null -> {
                 resultsContainer.visibility = View.INVISIBLE

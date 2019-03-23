@@ -1,79 +1,35 @@
 package com.github.fernandospr.movies.repository.network
 
+import com.google.gson.annotations.SerializedName
+
 data class ApiConfigurationContainer(val images: ApiConfigurationImages)
 
 data class ApiConfigurationImages(val secureBaseUrl: String)
 
 // FIXME: Generify/Simplify classes
 
-data class ApiMoviesContainer(
+data class ApiItemsContainer(
     val page: Int,
     val totalResults: Int,
     val totalPages: Int,
-    val results: List<ApiMovie>
+    val results: List<ApiItem>
 )
 
-data class ApiMovie(
-    val id: String?,
-    val title: String?,
-    val posterPath: String?,
-    val backdropPath: String?,
-    val overview: String?,
-    val releaseDate: String?
-)
-
-data class ApiTvShowsContainer(
-    val page: Int,
-    val totalResults: Int,
-    val totalPages: Int,
-    val results: List<ApiTvShow>
-)
-
-data class ApiTvShow(
-    val id: String?,
-    val name: String?,
-    val posterPath: String?,
-    val backdropPath: String?,
-    val overview: String?,
-    val firstAirDate: String?
-)
-
-data class ApiSearchResultsContainer(
-    val page: Int,
-    val totalResults: Int,
-    val totalPages: Int,
-    val results: List<ApiSearchResult>
-)
-
-data class ApiSearchResult(
+data class ApiItem(
 	val type: String?,
 
     val id: String?,
 
+    @SerializedName("title", alternate= ["name"])
     val title: String?,
-    val name: String?,
 
     val posterPath: String?,
     val backdropPath: String?,
     val overview: String?,
 
-    val releaseDate: String?,
-    val firstAirDate: String?
+    @SerializedName("release_date", alternate= ["first_air_date"])
+    val releaseDate: String?
 ) {
-    fun getTitleOrName(): String? {
-        if (title.isNullOrBlank()) {
-            return name
-        }
-        return title
-    }
-
-    fun getDate(): String? {
-        if (releaseDate.isNullOrBlank()) {
-            return firstAirDate
-        }
-        return releaseDate
-    }
-
     fun getPosterFullPath() : String? {
         if (posterPath.isNullOrBlank()) {
             return null

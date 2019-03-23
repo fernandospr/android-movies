@@ -23,15 +23,15 @@ interface MoviesApi {
 
     // https://developers.themoviedb.org/3/movies/get-popular-movies
     @GET("movie/popular")
-    fun getPopularMovies(@Query("page") page: Int): Call<ApiMoviesContainer>
+    fun getPopularMovies(@Query("page") page: Int): Call<ApiItemsContainer>
 
     // https://developers.themoviedb.org/3/movies/get-top-rated-movies
     @GET("movie/top_rated")
-    fun getTopRatedMovies(@Query("page") page: Int): Call<ApiMoviesContainer>
+    fun getTopRatedMovies(@Query("page") page: Int): Call<ApiItemsContainer>
 
     // https://developers.themoviedb.org/3/movies/get-upcoming
     @GET("movie/upcoming")
-    fun getUpcomingMovies(@Query("page") page: Int): Call<ApiMoviesContainer>
+    fun getUpcomingMovies(@Query("page") page: Int): Call<ApiItemsContainer>
 
     // https://developers.themoviedb.org/3/movies/get-movie-videos
     @GET("movie/{movie_id}/videos")
@@ -39,11 +39,11 @@ interface MoviesApi {
 
     // https://developers.themoviedb.org/3/tv/get-popular-tv-shows
     @GET("tv/popular")
-    fun getPopularTvShows(@Query("page") page: Int): Call<ApiTvShowsContainer>
+    fun getPopularTvShows(@Query("page") page: Int): Call<ApiItemsContainer>
 
     // https://developers.themoviedb.org/3/tv/get-top-rated-tv
     @GET("tv/top_rated")
-    fun getTopRatedTvShows(@Query("page") page: Int): Call<ApiTvShowsContainer>
+    fun getTopRatedTvShows(@Query("page") page: Int): Call<ApiItemsContainer>
 
     // https://developers.themoviedb.org/3/tv/get-tv-videos
     @GET("tv/{tv_id}/videos")
@@ -52,7 +52,7 @@ interface MoviesApi {
     // https://developers.themoviedb.org/3/search/multi-search
     @GET("search/multi")
     fun search(@Query("query") query: String,
-               @Query("page") page: Int): Call<ApiSearchResultsContainer>
+               @Query("page") page: Int): Call<ApiItemsContainer>
 
     companion object Factory {
 
