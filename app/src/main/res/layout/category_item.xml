@@ -3,7 +3,8 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+	android:layout_height="wrap_content"
+	tools:background="#000">
 
 	<TextView
 		android:id="@+id/category"
@@ -11,15 +12,16 @@
 		android:layout_height="wrap_content"
 		android:paddingStart="8dp"
 		android:paddingEnd="8dp"
+		android:textColor="@color/colorAccent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
 		tools:text="@tools:sample/lorem" />
 
 	<androidx.recyclerview.widget.RecyclerView
-		android:id="@+id/categoryItems"
+		android:id="@+id/resultsContainer"
 		android:layout_width="0dp"
-		android:layout_height="wrap_content"
+		android:layout_height="200dp"
 		android:orientation="horizontal"
 		android:scrollbars="horizontal"
 		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -27,5 +29,75 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@+id/category"
 		tools:listitem="@layout/item" />
+
+	<LinearLayout
+		android:id="@+id/errorContainer"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:layout_marginStart="8dp"
+		android:layout_marginTop="8dp"
+		android:gravity="center"
+		android:orientation="horizontal"
+		app:layout_constraintBottom_toBottomOf="@+id/resultsContainer"
+		app:layout_constraintEnd_toEndOf="@+id/resultsContainer"
+		app:layout_constraintStart_toStartOf="@+id/resultsContainer"
+		app:layout_constraintTop_toTopOf="@+id/resultsContainer">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/error"
+			android:textColor="@color/colorAccent" />
+
+		<TextView
+			android:id="@+id/retryButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="?attr/selectableItemBackgroundBorderless"
+			android:gravity="center"
+			android:padding="48dp"
+			android:text="@string/retry"
+			android:textColor="@color/colorAccent"
+			android:textSize="20sp" />
+	</LinearLayout>
+
+	<LinearLayout
+		android:id="@+id/loadingContainer"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:gravity="center"
+		app:layout_constraintBottom_toBottomOf="@+id/resultsContainer"
+		app:layout_constraintEnd_toEndOf="@+id/resultsContainer"
+		app:layout_constraintStart_toStartOf="@+id/resultsContainer"
+		app:layout_constraintTop_toTopOf="@+id/resultsContainer">
+
+		<ProgressBar
+			android:id="@+id/progressBar"
+			style="?android:attr/progressBarStyleLarge"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:id="@+id/noresultsContainer"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:orientation="vertical"
+		app:layout_constraintBottom_toBottomOf="@+id/resultsContainer"
+		app:layout_constraintEnd_toEndOf="@+id/resultsContainer"
+		app:layout_constraintStart_toStartOf="@+id/resultsContainer"
+		app:layout_constraintTop_toTopOf="@+id/resultsContainer">
+
+		<TextView
+			android:id="@+id/noresultsTitle"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:text="@string/main_noresults"
+			android:textColor="@color/colorAccent" />
+
+	</LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

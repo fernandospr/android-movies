@@ -81,15 +81,15 @@ class SearchActivity : AppCompatActivity() {
         when {
             container == null -> {
                 resultsContainer.visibility = View.INVISIBLE
-                noResultsContainer.visibility = View.INVISIBLE
+                noresultsContainer.visibility = View.INVISIBLE
             }
             container.results.isEmpty() -> {
                 resultsContainer.visibility = View.INVISIBLE
-                noResultsContainer.visibility = View.VISIBLE
+                noresultsContainer.visibility = View.VISIBLE
             }
             else -> {
                 resultsContainer.visibility = View.VISIBLE
-                noResultsContainer.visibility = View.INVISIBLE
+                noresultsContainer.visibility = View.INVISIBLE
                 adapter.setEntities(container.results)
             }
         }

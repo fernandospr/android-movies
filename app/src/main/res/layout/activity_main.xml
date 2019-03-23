@@ -4,7 +4,8 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".MainActivity">
+	android:background="@color/colorPrimary"
+	tools:context=".main.MainActivity">
 
 	<ScrollView
 		android:layout_width="match_parent"
@@ -20,22 +21,39 @@
 			android:orientation="vertical">
 
 			<include
-				android:id="@+id/popularContainer"
+				android:id="@+id/popularMoviesContainer"
 				layout="@layout/category_item"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content" />
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="16dp" />
 
 			<include
-				android:id="@+id/topRatedContainer"
+				android:id="@+id/popularTvShowsContainer"
 				layout="@layout/category_item"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content" />
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="16dp" />
 
 			<include
-				android:id="@+id/upcomingContainer"
+				android:id="@+id/topRatedMoviesContainer"
 				layout="@layout/category_item"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content" />
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="16dp" />
+
+			<include
+				android:id="@+id/topRatedTvShowsContainer"
+				layout="@layout/category_item"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="16dp" />
+
+			<include
+				android:id="@+id/upcomingMoviesContainer"
+				layout="@layout/category_item"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="16dp" />
 
 		</LinearLayout>
 

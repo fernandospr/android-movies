@@ -1,13 +1,21 @@
 <resources>
-    <string name="app_name">Movies</string>
-    <string name="overview">Overview</string>
+	<string name="app_name">Movies</string>
+	<string name="overview">Overview</string>
+	<string name="category_popular">POPULAR</string>
+	<string name="category_toprated">TOP RATED</string>
+	<string name="category_upcoming">UPCOMING</string>
+	<string name="category_movies">MOVIES</string>
+	<string name="category_tvshows">SERIES</string>
 
-    <string name="loading">Loading&#8230;</string>
-    <string name="error">An error occurred</string>
-    <string name="retry">Retry</string>
+	<string name="loading">Loading&#8230;</string>
+	<string name="error">An error occurred</string>
+	<string name="retry">Retry</string>
 
-    <string name="action_search">Search</string>
+	<string name="action_search">Search</string>
 
-    <string name="main_noresults">No movies/tv shows</string>
-    <string name="search_noresults">No movies/tv shows for \'%1$s\'</string>
+	<string name="main_noresults">No movies/tv shows</string>
+	<string name="search_noresults">No movies/tv shows for \'%1$s\'</string>
+
+	<!-- TODO: Remove or change this placeholder text -->
+	<string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
