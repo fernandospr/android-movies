@@ -2,7 +2,9 @@ package com.github.fernandospr.movies.detail
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -11,7 +13,7 @@ import com.github.fernandospr.movies.repository.network.ApiItem
 import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
 import kotlinx.android.synthetic.main.activity_detail.*
-import kotlinx.android.synthetic.main.category_item.view.*
+
 
 class DetailActivity : AppCompatActivity() {
 
@@ -28,30 +30,41 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        val item = intent.getParcelableExtra(EXTRA_ITEM) as ApiItem
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val posterImagePath = item.getPosterFullPath()
-        val backdropImagePath = item.getBackdropFullPath()
-        if (!posterImagePath.isNullOrBlank()) {
-            Glide.with(this)
-                    .load(posterImagePath)
+        val item = intent.getParcelableExtra(EXTRA_ITEM) as ApiItem
+        showDetail(item)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
+    private fun showDetail(item: ApiItem) {
+        overviewText.text = item.overview
+        titleText.text = item.title
+        yearText.text = item.releaseDate
+
+        val posterPath = item.getPosterFullPath()
+        if (!posterPath.isNullOrBlank()) {
+            Glide.with(this).load(posterPath)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(imageView)
         }
-        if (!backdropImagePath.isNullOrBlank()) {
-            Glide.with(this)
-                    .load(backdropImagePath)
-                    .transition(DrawableTransitionOptions.withCrossFade())
+
+        val backdropPath = item.getBackdropFullPath()
+        if (!backdropPath.isNullOrBlank()) {
+            Glide.with(this).load(backdropPath)
                     .listener(
-                            GlidePalette.with(backdropImagePath)
+                            GlidePalette.with(backdropPath)
                                     .use(BitmapPalette.Profile.MUTED)
                                     .intoBackground(backdropOverlay)
                                     .crossfade(true)
                     )
+                    .transition(DrawableTransitionOptions.withCrossFade())
                     .into(backdropImageView)
         }
-        overviewDescription.text = item.overview
-        yearText.text = item.releaseDate
-        videosContainer.category.text = getString(R.string.detail_videos)
     }
 }

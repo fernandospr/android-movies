@@ -1,113 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:card_view="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="@android:color/black">
+	android:background="@android:color/black"
+	android:fitsSystemWindows="true">
 
-	<androidx.constraintlayout.widget.ConstraintLayout
+	<ImageView
+		android:id="@+id/backdropImageView"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="match_parent"
+		android:scaleType="centerCrop" />
 
+	<View
+		android:id="@+id/backdropOverlay"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:alpha="0.9" />
 
-		<ImageView
-			android:id="@+id/backdropImageView"
-			android:layout_width="0dp"
-			android:layout_height="0dp"
-			android:scaleType="centerCrop"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent" />
+	<com.google.android.material.appbar.AppBarLayout
+		android:id="@+id/app_bar"
+		android:layout_width="match_parent"
+		android:layout_height="225dp"
+		android:background="@android:color/transparent"
+		android:fitsSystemWindows="true">
 
-		<View
-			android:id="@+id/backdropOverlay"
-			android:layout_width="0dp"
-			android:layout_height="0dp"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			android:alpha="0.9" />
+		<com.google.android.material.appbar.CollapsingToolbarLayout
+			android:id="@+id/toolbar_layout"
+			app:title=" "
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:fitsSystemWindows="true"
+			app:contentScrim="@color/colorPrimary"
+			app:layout_scrollFlags="scroll|exitUntilCollapsed"
+			app:toolbarId="@+id/toolbar">
+
+			<androidx.appcompat.widget.Toolbar
+				android:id="@+id/toolbar"
+				android:layout_width="match_parent"
+				android:layout_height="?attr/actionBarSize"
+				app:layout_collapseMode="pin"
+				app:popupTheme="@style/AppTheme.PopupOverlay"
+				app:theme="@style/AppTheme.AppBarOverlay" />
+
+		</com.google.android.material.appbar.CollapsingToolbarLayout>
+	</com.google.android.material.appbar.AppBarLayout>
+
+	<androidx.core.widget.NestedScrollView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:paddingLeft="37dp"
+			android:paddingRight="37dp">
+
+			<TextView
+				android:id="@+id/titleText"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal"
+				android:layout_marginTop="20dp"
+				android:textColor="@android:color/white"
+				android:textSize="24sp"
+				android:textStyle="bold"
+				tools:text="Breaking Bad" />
+
+			<TextView
+				android:id="@+id/yearText"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal"
+				android:layout_marginTop="2dp"
+				android:text="Hello World!"
+				android:textColor="@android:color/white"
+				android:textSize="16sp"
+				tools:text="2011" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="43dp"
+				android:text="@string/overview"
+				android:textColor="#383838"
+				android:textSize="14sp"
+				android:textStyle="bold" />
+
+			<TextView
+				android:id="@+id/overviewText"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="22dp"
+				android:layout_marginBottom="72dp"
+				android:lineSpacingExtra="8sp"
+				android:textColor="@android:color/white"
+				android:textSize="14sp"
+				tools:text="Breaking Bad is an American crime drama television series created and produced by Vince Gilligan. Set and produced in Albuquerque, New Mexico, Breaking Bad is the story of Walter White, a struggling high school chemistry teacher who is diagnosed with inoperable lung cancer at the beginning of the series. He turns to a life of crime, producing and selling methamphetamine, in order to secure his family&apos;s financial future before he dies, teaming with his former student, Jesse Pinkman. Heavily serialized, the series is known for positioning its characters in seemingly inextricable corners and has been labeled a contemporary western by its creator." />
+		</LinearLayout>
+
+	</androidx.core.widget.NestedScrollView>
+
+	<androidx.cardview.widget.CardView
+		android:id="@+id/cardView"
+		android:layout_width="@dimen/imageWidth"
+		android:layout_height="@dimen/imageHeight"
+		app:cardBackgroundColor="@android:color/transparent"
+		app:layout_anchor="@id/app_bar"
+		app:layout_anchorGravity="center_horizontal"
+		app:layout_behavior="com.github.fernandospr.movies.detail.ScaleBehavior"
+		card_view:cardCornerRadius="6dp"
+		card_view:cardElevation="4dp">
 
 		<ImageView
 			android:id="@+id/imageView"
 			android:layout_width="@dimen/imageWidth"
 			android:layout_height="@dimen/imageHeight"
-			android:layout_marginStart="8dp"
-			android:layout_marginTop="8dp"
-			android:layout_marginEnd="8dp"
 			android:scaleType="centerCrop"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			tools:srcCompat="@tools:sample/avatars" />
+			tools:background="#f00" />
+	</androidx.cardview.widget.CardView>
 
-		<TextView
-			android:id="@+id/titleText"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			android:layout_marginTop="8dp"
-			android:textSize="24sp"
-			android:textStyle="bold"
-			app:layout_constraintEnd_toEndOf="@+id/imageView"
-			app:layout_constraintStart_toStartOf="@+id/imageView"
-			app:layout_constraintTop_toBottomOf="@+id/imageView"
-			tools:text="Breaking Bad" />
-
-		<TextView
-			android:id="@+id/yearText"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			android:layout_marginTop="8dp"
-			android:text="Hello World!"
-			android:textSize="16sp"
-			app:layout_constraintEnd_toEndOf="@+id/titleText"
-			app:layout_constraintStart_toStartOf="@+id/titleText"
-			app:layout_constraintTop_toBottomOf="@+id/titleText"
-			tools:text="2011" />
-
-		<TextView
-			android:id="@+id/overviewTitle"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="8dp"
-			android:layout_marginTop="16dp"
-			android:text="@string/overview"
-			android:textColor="#383838"
-			android:textSize="14sp"
-			android:textStyle="bold"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/yearText" />
-
-		<TextView
-			android:id="@+id/overviewDescription"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="8dp"
-			android:layout_marginTop="8dp"
-			android:layout_marginEnd="8dp"
-			android:lineSpacingExtra="8sp"
-			android:textSize="14sp"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/overviewTitle"
-			tools:text="Breaking Bad is an American crime drama television series created and produced by Vince Gilligan. Set and produced in Albuquerque, New Mexico, Breaking Bad is the story of Walter White, a struggling high school chemistry teacher who is diagnosed with inoperable lung cancer at the beginning of the series. He turns to a life of crime, producing and selling methamphetamine, in order to secure his family&apos;s financial future before he dies, teaming with his former student, Jesse Pinkman. Heavily serialized, the series is known for positioning its characters in seemingly inextricable corners and has been labeled a contemporary western by its creator." />
-
-		<include
-			android:id="@+id/videosContainer"
-			layout="@layout/category_item"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="8dp"
-			android:layout_marginTop="16dp"
-			android:layout_marginEnd="8dp"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toBottomOf="@+id/overviewDescription" />
-
-	</androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
