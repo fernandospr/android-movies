@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.github.fernandospr.movies.DetailActivity
+import com.github.fernandospr.movies.common.ItemAdapter
 import com.github.fernandospr.movies.R
 import com.github.fernandospr.movies.repository.network.ApiItem
 import com.github.fernandospr.movies.repository.network.ApiItemsContainer
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         container.category.text = title
 
         val adapter = CategoryAdapter()
-        adapter.setListener(object : CategoryAdapter.Listener {
+        adapter.setListener(object : ItemAdapter.Listener {
             override fun onItemClick(item: ApiItem) {
                 // FIXME: Send item
                 val intent = DetailActivity.newIntent(this@MainActivity)

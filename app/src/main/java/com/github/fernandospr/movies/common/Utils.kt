@@ -1,4 +1,4 @@
-package com.github.fernandospr.movies
+package com.github.fernandospr.movies.common
 
 import android.view.LayoutInflater
 import android.view.View
