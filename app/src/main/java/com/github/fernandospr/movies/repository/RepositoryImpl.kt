@@ -11,6 +11,41 @@ class RepositoryImpl(private val service: MoviesApi) : Repository {
                         page: Int,
                         callback: RepositoryCallback<ApiItemsContainer>) {
         val call = service.search(query, page)
+        enqueueCall(call, callback)
+    }
+
+    override fun loadPopularMovies(page: Int,
+                                   callback: RepositoryCallback<ApiItemsContainer>) {
+        val call = service.getPopularMovies(page)
+        enqueueCall(call, callback)
+    }
+
+    override fun loadPopularTvShows(page: Int,
+                                    callback: RepositoryCallback<ApiItemsContainer>) {
+        val call = service.getPopularTvShows(page)
+        enqueueCall(call, callback)
+    }
+
+    override fun loadTopRatedMovies(page: Int,
+                                    callback: RepositoryCallback<ApiItemsContainer>) {
+        val call = service.getTopRatedMovies(page)
+        enqueueCall(call, callback)
+    }
+
+    override fun loadTopRatedTvShows(page: Int,
+                                     callback: RepositoryCallback<ApiItemsContainer>) {
+        val call = service.getTopRatedTvShows(page)
+        enqueueCall(call, callback)
+    }
+
+    override fun loadUpcomingMovies(page: Int,
+                                    callback: RepositoryCallback<ApiItemsContainer>) {
+        val call = service.getUpcomingMovies(page)
+        enqueueCall(call, callback)
+    }
+
+    private fun enqueueCall(call: Call<ApiItemsContainer>,
+                            callback: RepositoryCallback<ApiItemsContainer>) {
         call.enqueue(object : Callback<ApiItemsContainer> {
             override fun onResponse(call: Call<ApiItemsContainer>,
                                     response: Response<ApiItemsContainer>) {
@@ -25,7 +60,7 @@ class RepositoryImpl(private val service: MoviesApi) : Repository {
                 callback.onError()
             }
 
-            override fun onFailure(call: Call<ApiSearchResultsContainer>, t: Throwable) {
+            override fun onFailure(call: Call<ApiItemsContainer>, t: Throwable) {
                 if (!call.isCanceled) {
                     callback.onError()
                 }

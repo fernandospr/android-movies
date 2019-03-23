@@ -6,13 +6,11 @@ data class ApiConfigurationContainer(val images: ApiConfigurationImages)
 
 data class ApiConfigurationImages(val secureBaseUrl: String)
 
-// FIXME: Generify/Simplify classes
-
 data class ApiItemsContainer(
     val page: Int,
     val totalResults: Int,
     val totalPages: Int,
-    val results: List<ApiItem>
+    var results: List<ApiItem>
 )
 
 data class ApiItem(
