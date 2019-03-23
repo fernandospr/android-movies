@@ -21,7 +21,7 @@
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/resultsContainer"
 		android:layout_width="0dp"
-		android:layout_height="200dp"
+		android:layout_height="@dimen/imageHeight"
 		android:orientation="horizontal"
 		android:scrollbars="horizontal"
 		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

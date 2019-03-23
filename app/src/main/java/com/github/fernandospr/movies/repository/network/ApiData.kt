@@ -1,6 +1,8 @@
 package com.github.fernandospr.movies.repository.network
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class ApiConfigurationContainer(val images: ApiConfigurationImages)
 
@@ -13,6 +15,7 @@ data class ApiItemsContainer(
     var results: List<ApiItem>
 )
 
+@Parcelize
 data class ApiItem(
 	val type: String?,
 
@@ -27,7 +30,7 @@ data class ApiItem(
 
     @SerializedName("release_date", alternate= ["first_air_date"])
     val releaseDate: String?
-) {
+) : Parcelable {
     fun getPosterFullPath() : String? {
         if (posterPath.isNullOrBlank()) {
             return null

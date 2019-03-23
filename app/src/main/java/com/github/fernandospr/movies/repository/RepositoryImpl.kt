@@ -6,6 +6,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+// FIXME: If offline fetch from cache
+// FIXME: Fetch configuration
 class RepositoryImpl(private val service: MoviesApi) : Repository {
     override fun search(query: String,
                         page: Int,

@@ -7,7 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
-import com.github.fernandospr.movies.DetailActivity
+import com.github.fernandospr.movies.detail.DetailActivity
 import com.github.fernandospr.movies.common.ItemAdapter
 import com.github.fernandospr.movies.R
 import com.github.fernandospr.movies.repository.network.ApiItem
@@ -36,8 +36,7 @@ class SearchActivity : AppCompatActivity() {
         adapter = SearchAdapter()
         adapter.setListener(object : ItemAdapter.Listener {
             override fun onItemClick(item: ApiItem) {
-                // FIXME: Send item
-                val intent = DetailActivity.newIntent(this@SearchActivity)
+                val intent = DetailActivity.newIntent(this@SearchActivity, item)
                 startActivity(intent)
             }
         })

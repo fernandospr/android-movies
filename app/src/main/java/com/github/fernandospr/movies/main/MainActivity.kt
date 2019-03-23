@@ -6,7 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.github.fernandospr.movies.DetailActivity
+import com.github.fernandospr.movies.detail.DetailActivity
 import com.github.fernandospr.movies.common.ItemAdapter
 import com.github.fernandospr.movies.R
 import com.github.fernandospr.movies.repository.network.ApiItem
@@ -55,8 +55,7 @@ class MainActivity : AppCompatActivity() {
         val adapter = CategoryAdapter()
         adapter.setListener(object : ItemAdapter.Listener {
             override fun onItemClick(item: ApiItem) {
-                // FIXME: Send item
-                val intent = DetailActivity.newIntent(this@MainActivity)
+                val intent = DetailActivity.newIntent(this@MainActivity, item)
                 startActivity(intent)
             }
         })
