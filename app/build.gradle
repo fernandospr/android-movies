@@ -35,6 +35,9 @@ android {
             buildConfigField "okhttp3.logging.HttpLoggingInterceptor.Level", "RETROFIT_LOGGING", 'okhttp3.logging.HttpLoggingInterceptor.Level.NONE'
         }
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
