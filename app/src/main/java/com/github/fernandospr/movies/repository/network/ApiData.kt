@@ -1,6 +1,8 @@
 package com.github.fernandospr.movies.repository.network
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -15,11 +17,14 @@ data class ApiItemsContainer(
     var results: List<ApiItem>
 )
 
+@Entity(tableName = "items")
 @Parcelize
 data class ApiItem(
 	var mediaType: String?,
+    var categoryType: String?,
 
-    val id: String?,
+    @PrimaryKey
+    val id: String,
 
     @SerializedName("title", alternate= ["name"])
     val title: String?,

@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 androidExtensions {
     experimental = true
 }
@@ -45,7 +47,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
 
     implementation 'com.github.bumptech.glide:glide:4.9.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    kapt 'com.github.bumptech.glide:compiler:4.9.0'
     implementation ('com.github.florent37:glidepalette:2.1.1') {
         exclude group: 'com.android.support', 'module': 'palette-v7'
     }
@@ -53,6 +55,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.0'
+
+    implementation "androidx.room:room-runtime:2.1.0-alpha06"
+    kapt "androidx.room:room-compiler:2.1.0-alpha06"
+    implementation "androidx.room:room-rxjava2:2.1.0-alpha06"
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
     implementation "org.koin:koin-androidx-viewmodel:2.0.0-rc-1"
 
