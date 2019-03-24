@@ -125,7 +125,7 @@ class RepositoryImpl(
             }
 
             override fun onNext(value: List<ApiItem>) {
-                callback.onSuccess(ApiItemsContainer(1, 1, 1, value))
+                callback.onSuccess(ApiItemsContainer(1, 1, value))
             }
         }
     }

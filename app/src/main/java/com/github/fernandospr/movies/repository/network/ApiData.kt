@@ -12,7 +12,6 @@ data class ApiConfigurationImages(val secureBaseUrl: String)
 
 data class ApiItemsContainer(
     val page: Int,
-    val totalResults: Int,
     val totalPages: Int,
     var results: List<ApiItem>
 )
