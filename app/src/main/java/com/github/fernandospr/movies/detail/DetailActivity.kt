@@ -50,6 +50,13 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun showDetail(item: ApiItem) {
+        if (item.overview.isNullOrBlank()) {
+            overviewTitle.visibility = View.GONE
+            overviewText.visibility = View.GONE
+        } else {
+            overviewTitle.visibility = View.VISIBLE
+            overviewText.visibility = View.VISIBLE
+        }
         overviewText.text = item.overview
         titleText.text = item.title
         yearText.text = item.releaseDate
@@ -88,6 +95,8 @@ class DetailActivity : AppCompatActivity() {
             Glide.with(this).load(posterPath)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(previewImageView)
+        } else {
+            previewImageView.setImageResource(R.drawable.ic_local_movies_24dp)
         }
 
         val backdropPath = item.getBackdropFullPath()
