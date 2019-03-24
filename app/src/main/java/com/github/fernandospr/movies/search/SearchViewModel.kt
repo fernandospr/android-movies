@@ -11,6 +11,7 @@ class SearchViewModel(private val repo: Repository) : ViewModel() {
     private val loading: MutableLiveData<Boolean> = MutableLiveData()
     private val error: MutableLiveData<Boolean> = MutableLiveData()
     private val results: MutableLiveData<ApiItemsContainer> = MutableLiveData()
+    private var lastQuery: String = ""
 
     init {
         loading.value = false
@@ -26,11 +27,21 @@ class SearchViewModel(private val repo: Repository) : ViewModel() {
         loading.value = true
         error.value = false
         results.value = null
-        // FIXME: Pages
-        repo.search(query, 1, object : RepositoryCallback<ApiItemsContainer> {
-            override fun onSuccess(entities: ApiItemsContainer) {
+
+        doSearch(query, 1)
+    }
+
+    private fun doSearch(query: String, page: Int) {
+        repo.search(query, page, object : RepositoryCallback<ApiItemsContainer> {
+            override fun onSuccess(t: ApiItemsContainer) {
                 loading.value = false
-                results.value = entities
+                if (lastQuery == query) {
+                    results.value?.let {
+                        t.results = it.results + t.results
+                    }
+                }
+                results.value = t
+                lastQuery = query
             }
 
             override fun onError() {
@@ -39,5 +50,13 @@ class SearchViewModel(private val repo: Repository) : ViewModel() {
             }
 
         })
+    }
+
+    fun getNextPageItems() {
+        results.value?.let {
+            if (it.page < it.totalPages) {
+                doSearch(lastQuery, it.page + 1)
+            }
+        }
     }
 }

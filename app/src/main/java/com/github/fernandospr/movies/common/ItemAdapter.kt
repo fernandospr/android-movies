@@ -18,8 +18,13 @@ abstract class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
     }
 
     fun setEntities(entities: List<ApiItem>) {
+        val oldCount = itemCount
         this.entities = entities
-        this.notifyDataSetChanged()
+        this.notifyItemInserted(oldCount)
+    }
+
+    fun clearEntities() {
+        this.entities = emptyList()
     }
 
     override fun getItemCount(): Int = entities.size

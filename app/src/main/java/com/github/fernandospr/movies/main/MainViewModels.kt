@@ -15,6 +15,9 @@ abstract class MainViewModel : ViewModel() {
     val repoCallback = object : RepositoryCallback<ApiItemsContainer> {
         override fun onSuccess(t: ApiItemsContainer) {
             loading.value = false
+            results.value?.let {
+                t.results = it.results + t.results
+            }
             results.value = t
         }
 
@@ -48,40 +51,43 @@ abstract class MainViewModel : ViewModel() {
         doLoadItems()
     }
 
-    abstract fun doLoadItems()
+    abstract fun doLoadItems(page: Int = 1)
+
+    fun getNextPageItems() {
+        results.value?.let {
+            if (it.page < it.totalPages) {
+                doLoadItems(it.page + 1)
+            }
+        }
+    }
 }
 
 class PopularMoviesViewModel(private val repo: Repository) : MainViewModel() {
-    override fun doLoadItems() {
-        // FIXME: Pages
-        repo.loadPopularMovies(1, repoCallback)
+    override fun doLoadItems(page: Int) {
+        repo.loadPopularMovies(page, repoCallback)
     }
 }
 
 class PopularTvShowsViewModel(private val repo: Repository) : MainViewModel() {
-    override fun doLoadItems() {
-        // FIXME: Pages
-        repo.loadPopularTvShows(1, repoCallback)
+    override fun doLoadItems(page: Int) {
+        repo.loadPopularTvShows(page, repoCallback)
     }
 }
 
 class TopRatedMoviesViewModel(private val repo: Repository) : MainViewModel() {
-    override fun doLoadItems() {
-        // FIXME: Pages
-        repo.loadTopRatedMovies(1, repoCallback)
+    override fun doLoadItems(page: Int) {
+        repo.loadTopRatedMovies(page, repoCallback)
     }
 }
 
 class TopRatedTvShowsViewModel(private val repo: Repository) : MainViewModel() {
-    override fun doLoadItems() {
-        // FIXME: Pages
-        repo.loadTopRatedTvShows(1, repoCallback)
+    override fun doLoadItems(page: Int) {
+        repo.loadTopRatedTvShows(page, repoCallback)
     }
 }
 
 class UpcomingMoviesViewModel(private val repo: Repository) : MainViewModel() {
-    override fun doLoadItems() {
-        // FIXME: Pages
-        repo.loadUpcomingMovies(1, repoCallback)
+    override fun doLoadItems(page: Int) {
+        repo.loadUpcomingMovies(page, repoCallback)
     }
 }

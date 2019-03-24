@@ -7,12 +7,16 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
-import com.github.fernandospr.movies.detail.DetailActivity
-import com.github.fernandospr.movies.common.ItemAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.fernandospr.movies.R
+import com.github.fernandospr.movies.common.EndlessRecyclerViewScrollListener
+import com.github.fernandospr.movies.common.ItemAdapter
+import com.github.fernandospr.movies.detail.DetailActivity
 import com.github.fernandospr.movies.repository.network.ApiItem
 import com.github.fernandospr.movies.repository.network.ApiItemsContainer
 import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.android.synthetic.main.category_item.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
@@ -51,6 +55,19 @@ class SearchActivity : AppCompatActivity() {
         viewModel.getResults().observe(this, Observer { entities ->
             showResult(entities)
         })
+        errorContainer.retryButton.setOnClickListener {
+            viewModel.getResults()
+        }
+        val scrollListener = object : EndlessRecyclerViewScrollListener(
+                resultsContainer.layoutManager as LinearLayoutManager
+        ) {
+            override fun onLoadMore(page: Int,
+                                    totalItemsCount: Int,
+                                    view: RecyclerView?) {
+                viewModel.getNextPageItems()
+            }
+        }
+        resultsContainer.addOnScrollListener(scrollListener)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -69,6 +86,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrBlank()) {
+                    adapter.clearEntities()
                     viewModel.search(query)
                 }
                 searchView.clearFocus()

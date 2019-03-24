@@ -6,9 +6,12 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.github.fernandospr.movies.detail.DetailActivity
-import com.github.fernandospr.movies.common.ItemAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.fernandospr.movies.R
+import com.github.fernandospr.movies.common.EndlessRecyclerViewScrollListener
+import com.github.fernandospr.movies.common.ItemAdapter
+import com.github.fernandospr.movies.detail.DetailActivity
 import com.github.fernandospr.movies.repository.network.ApiItem
 import com.github.fernandospr.movies.repository.network.ApiItemsContainer
 import com.github.fernandospr.movies.search.SearchActivity
@@ -72,6 +75,16 @@ class MainActivity : AppCompatActivity() {
         container.errorContainer.retryButton.setOnClickListener {
             viewModel.getItems()
         }
+        val scrollListener = object : EndlessRecyclerViewScrollListener(
+                container.resultsContainer.layoutManager as LinearLayoutManager
+        ) {
+            override fun onLoadMore(page: Int,
+                                    totalItemsCount: Int,
+                                    view: RecyclerView?) {
+                viewModel.getNextPageItems()
+            }
+        }
+        container.resultsContainer.addOnScrollListener(scrollListener)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
