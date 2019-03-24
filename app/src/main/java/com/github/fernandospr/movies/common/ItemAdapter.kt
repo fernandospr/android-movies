@@ -25,6 +25,7 @@ abstract class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
 
     fun clearEntities() {
         this.entities = emptyList()
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = entities.size
@@ -43,6 +44,8 @@ abstract class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
                 Glide.with(image.context)
                     .load(imagePath)
                     .into(image)
+            } else {
+                image.setImageResource(R.drawable.ic_local_movies_24dp)
             }
             itemView.setOnClickListener {
                 listener?.onItemClick(item)

@@ -42,6 +42,8 @@ class VideosAdapter : RecyclerView.Adapter<VideosAdapter.ViewHolder>() {
                 Glide.with(image.context)
                     .load(imagePath)
                     .into(image)
+            } else {
+                image.setImageResource(R.drawable.ic_local_movies_24dp)
             }
             itemView.setOnClickListener {
                 listener?.onItemClick(item)
