@@ -2,17 +2,22 @@ package com.github.fernandospr.movies.detail
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
+import android.net.Uri
 import android.os.Bundle
-import android.view.WindowManager
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.fernandospr.movies.R
 import com.github.fernandospr.movies.repository.network.ApiItem
+import com.github.fernandospr.movies.repository.network.ApiVideoResult
+import com.github.fernandospr.movies.repository.network.ApiVideosContainer
 import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
 import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.android.synthetic.main.videos_container.view.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class DetailActivity : AppCompatActivity() {
@@ -25,6 +30,8 @@ class DetailActivity : AppCompatActivity() {
                     putExtra(EXTRA_ITEM, item)
                 }
     }
+
+    private val detailViewModel: DetailViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,11 +54,40 @@ class DetailActivity : AppCompatActivity() {
         titleText.text = item.title
         yearText.text = item.releaseDate
 
+        setupImages(item)
+        setupVideos(item)
+    }
+
+    private fun setupVideos(item: ApiItem) {
+        videosContainer.title.text = getString(R.string.detail_videos)
+        val adapter = VideosAdapter()
+        adapter.setListener(object : VideosAdapter.Listener {
+            override fun onItemClick(item: ApiVideoResult) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.youtubeVideoPath))
+                startActivity(intent)
+            }
+        })
+        videosContainer.resultsContainer.adapter = adapter
+        detailViewModel.getVideosLoading().observe(this, Observer { isLoading ->
+            isLoading?.let { showLoadingVideosView(it) }
+        })
+        detailViewModel.getVideosError().observe(this, Observer { error ->
+            error?.let { showErrorVideosView(it) }
+        })
+        detailViewModel.getVideos(item).observe(this, Observer { entities ->
+            showVideos(adapter, entities)
+        })
+        videosContainer.errorContainer.retryButton.setOnClickListener {
+            detailViewModel.getVideos(item)
+        }
+    }
+
+    private fun setupImages(item: ApiItem) {
         val posterPath = item.getPosterFullPath()
         if (!posterPath.isNullOrBlank()) {
             Glide.with(this).load(posterPath)
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(imageView)
+                    .into(previewImageView)
         }
 
         val backdropPath = item.getBackdropFullPath()
@@ -65,6 +101,40 @@ class DetailActivity : AppCompatActivity() {
                     )
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(backdropImageView)
+        }
+    }
+
+    private fun showVideos(adapter: VideosAdapter, container: ApiVideosContainer?) {
+        when {
+            container == null -> {
+                videosContainer.resultsContainer.visibility = View.INVISIBLE
+                videosContainer.noresultsContainer.visibility = View.INVISIBLE
+            }
+            container.results.isEmpty() -> {
+                videosContainer.resultsContainer.visibility = View.INVISIBLE
+                videosContainer.noresultsContainer.visibility = View.VISIBLE
+            }
+            else -> {
+                videosContainer.resultsContainer.visibility = View.VISIBLE
+                videosContainer.noresultsContainer.visibility = View.INVISIBLE
+                adapter.setEntities(container.results)
+            }
+        }
+    }
+
+    private fun showErrorVideosView(show: Boolean) {
+        if (show) {
+            videosContainer.errorContainer.visibility = View.VISIBLE
+        } else {
+            videosContainer.errorContainer.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun showLoadingVideosView(show: Boolean) {
+        if (show) {
+            videosContainer.loadingContainer.visibility = View.VISIBLE
+        } else {
+            videosContainer.loadingContainer.visibility = View.INVISIBLE
         }
     }
 }

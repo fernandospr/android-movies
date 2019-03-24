@@ -1,5 +1,6 @@
 package com.github.fernandospr.movies
 
+import com.github.fernandospr.movies.detail.DetailViewModel
 import com.github.fernandospr.movies.main.*
 import com.github.fernandospr.movies.repository.Repository
 import com.github.fernandospr.movies.repository.RepositoryImpl
@@ -17,5 +18,8 @@ val appModule = module {
     viewModel { TopRatedMoviesViewModel(get()) }
     viewModel { TopRatedTvShowsViewModel(get()) }
     viewModel { UpcomingMoviesViewModel(get()) }
+
+    viewModel { DetailViewModel(get()) }
+
     viewModel { SearchViewModel(get()) }
 }

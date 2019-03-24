@@ -29,12 +29,12 @@
 
 		<com.google.android.material.appbar.CollapsingToolbarLayout
 			android:id="@+id/toolbar_layout"
-			app:title=" "
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:fitsSystemWindows="true"
 			app:contentScrim="@color/colorPrimary"
 			app:layout_scrollFlags="scroll|exitUntilCollapsed"
+			app:title=" "
 			app:toolbarId="@+id/toolbar">
 
 			<androidx.appcompat.widget.Toolbar
@@ -87,7 +87,7 @@
 				android:layout_height="wrap_content"
 				android:layout_marginTop="43dp"
 				android:text="@string/overview"
-				android:textColor="#383838"
+				android:textColor="@color/colorItemTextColor"
 				android:textSize="14sp"
 				android:textStyle="bold" />
 
@@ -96,11 +96,19 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginTop="22dp"
-				android:layout_marginBottom="72dp"
 				android:lineSpacingExtra="8sp"
 				android:textColor="@android:color/white"
 				android:textSize="14sp"
 				tools:text="Breaking Bad is an American crime drama television series created and produced by Vince Gilligan. Set and produced in Albuquerque, New Mexico, Breaking Bad is the story of Walter White, a struggling high school chemistry teacher who is diagnosed with inoperable lung cancer at the beginning of the series. He turns to a life of crime, producing and selling methamphetamine, in order to secure his family&apos;s financial future before he dies, teaming with his former student, Jesse Pinkman. Heavily serialized, the series is known for positioning its characters in seemingly inextricable corners and has been labeled a contemporary western by its creator." />
+
+			<include
+				android:id="@+id/videosContainer"
+				layout="@layout/videos_container"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="22dp"
+				android:layout_marginBottom="72dp" />
+
 		</LinearLayout>
 
 	</androidx.core.widget.NestedScrollView>
@@ -117,7 +125,7 @@
 		card_view:cardElevation="4dp">
 
 		<ImageView
-			android:id="@+id/imageView"
+			android:id="@+id/previewImageView"
 			android:layout_width="@dimen/imageWidth"
 			android:layout_height="@dimen/imageHeight"
 			android:scaleType="centerCrop"

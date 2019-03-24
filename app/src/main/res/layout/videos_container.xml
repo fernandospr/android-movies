@@ -7,7 +7,7 @@
 	tools:background="#000">
 
 	<TextView
-		android:id="@+id/category"
+		android:id="@+id/title"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:textColor="@color/colorItemTextColor"
@@ -20,14 +20,14 @@
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/resultsContainer"
 		android:layout_width="0dp"
-		android:layout_height="@dimen/imageHeight"
+		android:layout_height="133dp"
 		android:orientation="horizontal"
 		android:scrollbars="horizontal"
 		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/category"
-		tools:listitem="@layout/item" />
+		app:layout_constraintTop_toBottomOf="@+id/title"
+		tools:listitem="@layout/video_item" />
 
 	<LinearLayout
 		android:id="@+id/errorContainer"

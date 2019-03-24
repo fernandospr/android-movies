@@ -35,7 +35,7 @@ interface MoviesApi {
 
     // https://developers.themoviedb.org/3/movies/get-movie-videos
     @GET("movie/{movie_id}/videos")
-    fun getMovieVideos(@Path("movie_id") id: String): Call<ApiVideoContainer>
+    fun getMovieVideos(@Path("movie_id") id: String): Call<ApiVideosContainer>
 
     // https://developers.themoviedb.org/3/tv/get-popular-tv-shows
     @GET("tv/popular")
@@ -47,7 +47,7 @@ interface MoviesApi {
 
     // https://developers.themoviedb.org/3/tv/get-tv-videos
     @GET("tv/{tv_id}/videos")
-    fun getTvShowVideos(@Path("tv_id") id: String): Call<ApiVideoContainer>
+    fun getTvShowVideos(@Path("tv_id") id: String): Call<ApiVideosContainer>
 
     // https://developers.themoviedb.org/3/search/multi-search
     @GET("search/multi")

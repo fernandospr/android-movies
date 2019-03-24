@@ -1,6 +1,8 @@
 package com.github.fernandospr.movies.repository
 
+import com.github.fernandospr.movies.repository.network.ApiItem
 import com.github.fernandospr.movies.repository.network.ApiItemsContainer
+import com.github.fernandospr.movies.repository.network.ApiVideosContainer
 
 interface Repository {
     fun search(query: String,
@@ -21,6 +23,10 @@ interface Repository {
 
     fun loadUpcomingMovies(page: Int,
                            callback: RepositoryCallback<ApiItemsContainer>)
+
+    fun loadVideos(item: ApiItem,
+                   page: Int = 1,
+                   callback: RepositoryCallback<ApiVideosContainer>)
 }
 
 interface RepositoryCallback<in T> {
