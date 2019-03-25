@@ -5,6 +5,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -57,9 +60,12 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = CategoryAdapter()
         adapter.setListener(object : ItemAdapter.Listener {
-            override fun onItemClick(item: ApiItem) {
+            override fun onItemClick(view: View, item: ApiItem) {
                 val intent = DetailActivity.newIntent(this@MainActivity, item)
-                startActivity(intent)
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity,
+                    view,
+                    ViewCompat.getTransitionName(view)!!)
+                ActivityCompat.startActivity(this@MainActivity, intent, options.toBundle())
             }
         })
         container.resultsContainer.adapter = adapter

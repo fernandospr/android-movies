@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,9 +42,12 @@ class SearchActivity : AppCompatActivity() {
 
         adapter = SearchAdapter()
         adapter.setListener(object : ItemAdapter.Listener {
-            override fun onItemClick(item: ApiItem) {
+            override fun onItemClick(view: View, item: ApiItem) {
                 val intent = DetailActivity.newIntent(this@SearchActivity, item)
-                startActivity(intent)
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this@SearchActivity,
+                        view,
+                        ViewCompat.getTransitionName(view)!!)
+                ActivityCompat.startActivity(this@SearchActivity, intent, options.toBundle())
             }
         })
         resultsContainer.adapter = adapter

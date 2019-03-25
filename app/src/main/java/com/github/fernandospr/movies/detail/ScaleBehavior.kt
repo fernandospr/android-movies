@@ -2,7 +2,6 @@ package com.github.fernandospr.movies.detail
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.github.fernandospr.movies.R
@@ -29,7 +28,6 @@ class ScaleBehavior<V : View>(context: Context, attrs: AttributeSet)
 
         child.scaleX = scale
         child.scaleY = scale
-        child.x = (parent.width - child.width * scale) * 0.5f
 
         child.pivotY = appBarLayout.context.resources.getDimensionPixelSize(R.dimen.detail_pivot_y).toFloat()
 

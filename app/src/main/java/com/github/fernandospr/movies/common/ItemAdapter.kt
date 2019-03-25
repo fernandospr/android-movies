@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.github.fernandospr.movies.R
 import com.github.fernandospr.movies.repository.ApiItem
 
-abstract class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
+abstract class ItemAdapter : AnimatedRecyclerViewAdapter<RecyclerView.ViewHolder>() {
 
     private var entities = listOf<ApiItem>()
     private var listener: Listener? = null
@@ -30,8 +30,9 @@ abstract class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = entities.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(entities[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
+        (holder as ViewHolder).bind(entities[position])
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -48,12 +49,12 @@ abstract class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
                 image.setImageResource(R.drawable.ic_local_movies_24dp)
             }
             itemView.setOnClickListener {
-                listener?.onItemClick(item)
+                listener?.onItemClick(image, item)
             }
         }
     }
 
     interface Listener {
-        fun onItemClick(item: ApiItem)
+        fun onItemClick(view: View, item: ApiItem)
     }
 }

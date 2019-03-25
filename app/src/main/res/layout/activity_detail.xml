@@ -130,6 +130,7 @@
             android:layout_width="@dimen/imageWidth"
             android:layout_height="@dimen/imageHeight"
             android:scaleType="centerCrop"
+            android:transitionName="@string/image_transition_name"
             tools:background="#f00" />
     </androidx.cardview.widget.CardView>
 
