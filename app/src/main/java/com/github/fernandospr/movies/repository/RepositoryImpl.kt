@@ -17,7 +17,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.Executor
 
-// FIXME: Fetch configuration
+// TODO: Fetch configuration first
 class RepositoryImpl(
     private val service: MoviesApi,
     private val dao: MoviesDao,

@@ -27,35 +27,35 @@
 				layout="@layout/category_item"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginBottom="16dp" />
+				android:layout_marginBottom="32dp" />
 
 			<include
 				android:id="@+id/popularTvShowsContainer"
 				layout="@layout/category_item"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginBottom="16dp" />
+				android:layout_marginBottom="32dp" />
 
 			<include
 				android:id="@+id/topRatedMoviesContainer"
 				layout="@layout/category_item"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginBottom="16dp" />
+				android:layout_marginBottom="32dp" />
 
 			<include
 				android:id="@+id/topRatedTvShowsContainer"
 				layout="@layout/category_item"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginBottom="16dp" />
+				android:layout_marginBottom="32dp" />
 
 			<include
 				android:id="@+id/upcomingMoviesContainer"
 				layout="@layout/category_item"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginBottom="16dp" />
+				android:layout_marginBottom="32dp" />
 
 		</LinearLayout>
 

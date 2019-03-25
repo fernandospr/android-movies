@@ -15,12 +15,13 @@ import com.github.fernandospr.movies.R
 import com.github.fernandospr.movies.common.EndlessRecyclerViewScrollListener
 import com.github.fernandospr.movies.common.ItemAdapter
 import com.github.fernandospr.movies.detail.DetailActivity
-import com.github.fernandospr.movies.repository.Show
 import com.github.fernandospr.movies.repository.Container
+import com.github.fernandospr.movies.repository.Show
 import com.github.fernandospr.movies.search.SearchActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.category_item.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -122,6 +123,9 @@ class MainActivity : AppCompatActivity() {
             else -> {
                 container.resultsContainer.visibility = View.VISIBLE
                 container.noresultsContainer.visibility = View.INVISIBLE
+                if (itemsContainer.page == 1) {
+                    adapter.clearEntities()
+                }
                 adapter.setEntities(itemsContainer.results)
             }
         }

@@ -3,10 +3,10 @@ package com.github.fernandospr.movies.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.fernandospr.movies.repository.Show
 import com.github.fernandospr.movies.repository.Container
 import com.github.fernandospr.movies.repository.Repository
 import com.github.fernandospr.movies.repository.RepositoryCallback
+import com.github.fernandospr.movies.repository.Show
 
 class SearchViewModel(private val repo: Repository) : ViewModel() {
     private val loading: MutableLiveData<Boolean> = MutableLiveData()
@@ -46,8 +46,12 @@ class SearchViewModel(private val repo: Repository) : ViewModel() {
             }
 
             override fun onError() {
-                loading.value = false
-                error.value = true
+                if (page > 1) {
+                    // TODO
+                } else {
+                    loading.value = false
+                    error.value = true
+                }
             }
 
         })

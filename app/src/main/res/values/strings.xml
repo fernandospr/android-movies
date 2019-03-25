@@ -15,7 +15,6 @@
 	<string name="action_search">Search</string>
 
 	<string name="main_noresults">No movies/tv shows</string>
-	<string name="search_noresults">No movies/tv shows for \'%1$s\'</string>
 
 	<string name="image_transition_name">image</string>
 </resources>

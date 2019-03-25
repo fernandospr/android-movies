@@ -41,13 +41,11 @@ abstract class ItemAdapter : AnimatedRecyclerViewAdapter<RecyclerView.ViewHolder
         fun bind(item: Show) {
             title.text = item.title
             val imagePath = item.getPosterFullPath()
-            if (!imagePath.isNullOrBlank()) {
-                Glide.with(image.context)
-                    .load(imagePath)
-                    .into(image)
-            } else {
-                image.setImageResource(R.drawable.ic_local_movies_24dp)
-            }
+            Glide.with(image.context)
+                .load(imagePath)
+                .error(R.drawable.ic_local_movies_24dp)
+                .into(image)
+
             itemView.setOnClickListener {
                 listener?.onItemClick(image, item)
             }

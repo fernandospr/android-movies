@@ -16,8 +16,8 @@ import com.github.fernandospr.movies.R
 import com.github.fernandospr.movies.common.EndlessRecyclerViewScrollListener
 import com.github.fernandospr.movies.common.ItemAdapter
 import com.github.fernandospr.movies.detail.DetailActivity
-import com.github.fernandospr.movies.repository.Show
 import com.github.fernandospr.movies.repository.Container
+import com.github.fernandospr.movies.repository.Show
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.category_item.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -77,7 +77,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        finish()
+        ActivityCompat.finishAfterTransition(this)
         return true
     }
 
@@ -114,6 +114,9 @@ class SearchActivity : AppCompatActivity() {
             else -> {
                 resultsContainer.visibility = View.VISIBLE
                 noresultsContainer.visibility = View.INVISIBLE
+                if (container.page == 1) {
+                    adapter.clearEntities()
+                }
                 adapter.setEntities(container.results)
             }
         }

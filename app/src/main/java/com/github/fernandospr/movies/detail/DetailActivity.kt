@@ -6,13 +6,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.fernandospr.movies.R
+import com.github.fernandospr.movies.repository.Container
 import com.github.fernandospr.movies.repository.Show
 import com.github.fernandospr.movies.repository.VideoAsset
-import com.github.fernandospr.movies.repository.Container
 import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -45,7 +46,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        finish()
+        ActivityCompat.finishAfterTransition(this)
         return true
     }
 
@@ -91,13 +92,10 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setupImages(item: Show) {
         val posterPath = item.getPosterFullPath()
-        if (!posterPath.isNullOrBlank()) {
             Glide.with(this).load(posterPath)
                     .transition(DrawableTransitionOptions.withCrossFade())
+                    .error(R.drawable.ic_local_movies_24dp)
                     .into(previewImageView)
-        } else {
-            previewImageView.setImageResource(R.drawable.ic_local_movies_24dp)
-        }
 
         val backdropPath = item.getBackdropFullPath()
         if (!backdropPath.isNullOrBlank()) {
