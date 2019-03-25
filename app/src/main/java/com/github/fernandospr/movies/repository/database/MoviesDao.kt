@@ -1,13 +1,8 @@
 package com.github.fernandospr.movies.repository.database
 
 import androidx.room.*
-import com.github.fernandospr.movies.repository.network.ApiItem
+import com.github.fernandospr.movies.repository.ApiItem
 import io.reactivex.Observable
-
-@Database(entities = [(ApiItem::class)], version = 1)
-abstract class MoviesDatabase : RoomDatabase() {
-    abstract fun getMoviesDao(): MoviesDao
-}
 
 @Dao
 interface MoviesDao {

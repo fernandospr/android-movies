@@ -4,8 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.github.fernandospr.movies.repository.Repository
 import com.github.fernandospr.movies.repository.RepositoryCallback
-import com.github.fernandospr.movies.repository.network.ApiItem
-import com.github.fernandospr.movies.repository.network.ApiItemsContainer
+import com.github.fernandospr.movies.repository.ApiItem
+import com.github.fernandospr.movies.repository.ApiItemsContainer
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Before
 import org.junit.Rule
@@ -34,7 +34,8 @@ class SearchViewModelUnitTests {
             null,
             null,
             "Overview text",
-            "2019-01-01")
+            "2019-01-01"
+        )
         itemsContainer = ApiItemsContainer(1, 2, listOf(item))
         repo = mock()
         viewModel = SearchViewModel(repo)

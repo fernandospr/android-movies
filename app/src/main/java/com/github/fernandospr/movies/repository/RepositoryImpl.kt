@@ -2,7 +2,8 @@ package com.github.fernandospr.movies.repository
 
 import android.os.AsyncTask
 import com.github.fernandospr.movies.repository.database.MoviesDao
-import com.github.fernandospr.movies.repository.network.*
+import com.github.fernandospr.movies.repository.network.MoviesApi
+import com.github.fernandospr.movies.repository.network.NetworkUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
@@ -131,15 +132,15 @@ class RepositoryImpl(
     }
 
     private fun enqueueItemsContainerCall(
-            call: Call<ApiItemsContainer>,
-            mediaType: String?,
-            categoryType: String?,
-            callback: RepositoryCallback<ApiItemsContainer>
+        call: Call<ApiItemsContainer>,
+        mediaType: String?,
+        categoryType: String?,
+        callback: RepositoryCallback<ApiItemsContainer>
     ) {
         call.enqueue(object : Callback<ApiItemsContainer> {
             override fun onResponse(
-                    call: Call<ApiItemsContainer>,
-                    response: Response<ApiItemsContainer>
+                call: Call<ApiItemsContainer>,
+                response: Response<ApiItemsContainer>
             ) {
                 if (response.isSuccessful) {
                     val body = response.body()
@@ -168,9 +169,9 @@ class RepositoryImpl(
     }
 
     override fun loadVideos(
-            item: ApiItem,
-            page: Int,
-            callback: RepositoryCallback<ApiVideosContainer>
+        item: ApiItem,
+        page: Int,
+        callback: RepositoryCallback<ApiVideosContainer>
     ) {
         val call =
                 if (MOVIE_TYPE.equals(item.mediaType, true))
@@ -180,8 +181,8 @@ class RepositoryImpl(
 
         call.enqueue(object : Callback<ApiVideosContainer> {
             override fun onResponse(
-                    call: Call<ApiVideosContainer>,
-                    response: Response<ApiVideosContainer>
+                call: Call<ApiVideosContainer>,
+                response: Response<ApiVideosContainer>
             ) {
                 if (response.isSuccessful) {
                     val body = response.body()

@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.fernandospr.movies.repository.Repository
 import com.github.fernandospr.movies.repository.RepositoryCallback
-import com.github.fernandospr.movies.repository.network.ApiItem
-import com.github.fernandospr.movies.repository.network.ApiVideosContainer
+import com.github.fernandospr.movies.repository.ApiItem
+import com.github.fernandospr.movies.repository.ApiVideosContainer
 
 class DetailViewModel(private val repo: Repository) : ViewModel() {
     private val loading: MutableLiveData<Boolean> = MutableLiveData()

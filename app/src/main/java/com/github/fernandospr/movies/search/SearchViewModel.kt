@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.fernandospr.movies.repository.Repository
 import com.github.fernandospr.movies.repository.RepositoryCallback
-import com.github.fernandospr.movies.repository.network.ApiItemsContainer
+import com.github.fernandospr.movies.repository.ApiItemsContainer
 
 class SearchViewModel(private val repo: Repository) : ViewModel() {
     private val loading: MutableLiveData<Boolean> = MutableLiveData()

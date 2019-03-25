@@ -1,8 +1,6 @@
 package com.github.fernandospr.movies.repository
 
 import com.github.fernandospr.movies.repository.database.MoviesDao
-import com.github.fernandospr.movies.repository.network.ApiItem
-import com.github.fernandospr.movies.repository.network.ApiItemsContainer
 import com.github.fernandospr.movies.repository.network.MoviesApi
 import com.github.fernandospr.movies.repository.network.NetworkUtils
 import com.nhaarman.mockitokotlin2.*
@@ -35,7 +33,8 @@ class RepositoryImplUnitTests {
             null,
             null,
             "Overview text",
-            "2019-01-01")
+            "2019-01-01"
+        )
         itemsContainer = ApiItemsContainer(1, 2, listOf(item))
 
         service = mock()

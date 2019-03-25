@@ -10,9 +10,9 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.fernandospr.movies.R
-import com.github.fernandospr.movies.repository.network.ApiItem
-import com.github.fernandospr.movies.repository.network.ApiVideoResult
-import com.github.fernandospr.movies.repository.network.ApiVideosContainer
+import com.github.fernandospr.movies.repository.ApiItem
+import com.github.fernandospr.movies.repository.ApiVideoResult
+import com.github.fernandospr.movies.repository.ApiVideosContainer
 import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
 import kotlinx.android.synthetic.main.activity_detail.*

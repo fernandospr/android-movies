@@ -1,6 +1,9 @@
 package com.github.fernandospr.movies.repository.network
 
 import com.github.fernandospr.movies.BuildConfig
+import com.github.fernandospr.movies.repository.ApiConfigurationContainer
+import com.github.fernandospr.movies.repository.ApiItemsContainer
+import com.github.fernandospr.movies.repository.ApiVideosContainer
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor

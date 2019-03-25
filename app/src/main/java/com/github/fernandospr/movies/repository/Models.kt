@@ -1,4 +1,4 @@
-package com.github.fernandospr.movies.repository.network
+package com.github.fernandospr.movies.repository
 
 import android.os.Parcelable
 import androidx.room.Entity
