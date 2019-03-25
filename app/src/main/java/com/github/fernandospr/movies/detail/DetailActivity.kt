@@ -10,9 +10,9 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.fernandospr.movies.R
-import com.github.fernandospr.movies.repository.ApiItem
-import com.github.fernandospr.movies.repository.ApiVideoResult
-import com.github.fernandospr.movies.repository.ApiVideosContainer
+import com.github.fernandospr.movies.repository.Show
+import com.github.fernandospr.movies.repository.VideoAsset
+import com.github.fernandospr.movies.repository.Container
 import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -25,7 +25,7 @@ class DetailActivity : AppCompatActivity() {
     companion object {
         private const val EXTRA_ITEM = "EXTRA_ITEM"
 
-        fun newIntent(context: Context, item: ApiItem) =
+        fun newIntent(context: Context, item: Show) =
                 Intent(context, DetailActivity::class.java).apply {
                     putExtra(EXTRA_ITEM, item)
                 }
@@ -40,7 +40,7 @@ class DetailActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val item = intent.getParcelableExtra(EXTRA_ITEM) as ApiItem
+        val item = intent.getParcelableExtra(EXTRA_ITEM) as Show
         showDetail(item)
     }
 
@@ -49,7 +49,7 @@ class DetailActivity : AppCompatActivity() {
         return true
     }
 
-    private fun showDetail(item: ApiItem) {
+    private fun showDetail(item: Show) {
         if (item.overview.isNullOrBlank()) {
             overviewTitle.visibility = View.GONE
             overviewText.visibility = View.GONE
@@ -65,11 +65,11 @@ class DetailActivity : AppCompatActivity() {
         setupVideos(item)
     }
 
-    private fun setupVideos(item: ApiItem) {
+    private fun setupVideos(item: Show) {
         videosContainer.title.text = getString(R.string.detail_videos)
         val adapter = VideosAdapter()
         adapter.setListener(object : VideosAdapter.Listener {
-            override fun onItemClick(item: ApiVideoResult) {
+            override fun onItemClick(item: VideoAsset) {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.youtubeVideoPath))
                 startActivity(intent)
             }
@@ -89,7 +89,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupImages(item: ApiItem) {
+    private fun setupImages(item: Show) {
         val posterPath = item.getPosterFullPath()
         if (!posterPath.isNullOrBlank()) {
             Glide.with(this).load(posterPath)
@@ -113,7 +113,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun showVideos(adapter: VideosAdapter, container: ApiVideosContainer?) {
+    private fun showVideos(adapter: VideosAdapter, container: Container<VideoAsset>?) {
         when {
             container == null -> {
                 videosContainer.resultsContainer.visibility = View.INVISIBLE

@@ -15,8 +15,8 @@ import com.github.fernandospr.movies.R
 import com.github.fernandospr.movies.common.EndlessRecyclerViewScrollListener
 import com.github.fernandospr.movies.common.ItemAdapter
 import com.github.fernandospr.movies.detail.DetailActivity
-import com.github.fernandospr.movies.repository.ApiItem
-import com.github.fernandospr.movies.repository.ApiItemsContainer
+import com.github.fernandospr.movies.repository.Show
+import com.github.fernandospr.movies.repository.Container
 import com.github.fernandospr.movies.search.SearchActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.category_item.view.*
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = CategoryAdapter()
         adapter.setListener(object : ItemAdapter.Listener {
-            override fun onItemClick(view: View, item: ApiItem) {
+            override fun onItemClick(view: View, item: Show) {
                 val intent = DetailActivity.newIntent(this@MainActivity, item)
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity,
                     view,
@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showResult(container: View,
                            adapter: CategoryAdapter,
-                           itemsContainer: ApiItemsContainer?) {
+                           itemsContainer: Container<Show>?) {
         when {
             itemsContainer == null -> {
                 container.resultsContainer.visibility = View.INVISIBLE

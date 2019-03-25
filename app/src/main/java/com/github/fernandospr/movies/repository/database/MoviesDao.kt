@@ -1,18 +1,21 @@
 package com.github.fernandospr.movies.repository.database
 
-import androidx.room.*
-import com.github.fernandospr.movies.repository.ApiItem
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.github.fernandospr.movies.repository.Show
 import io.reactivex.Observable
 
 @Dao
 interface MoviesDao {
 
-    @Query("SELECT * FROM items WHERE mediaType = :media AND categoryType = :category")
-    fun getItemsByMediaAndCategory(media: String, category: String): Observable<List<ApiItem>>
+    @Query("SELECT * FROM shows WHERE mediaType = :media AND categoryType = :category")
+    fun getItemsByMediaAndCategory(media: String, category: String): Observable<List<Show>>
 
-    @Query("SELECT * FROM items WHERE UPPER(title) LIKE '%' || UPPER(:arg) || '%'")
-    fun getItemsLike(arg: String): Observable<List<ApiItem>>
+    @Query("SELECT * FROM shows WHERE UPPER(title) LIKE '%' || UPPER(:arg) || '%'")
+    fun getItemsLike(arg: String): Observable<List<Show>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(items: List<ApiItem>)
+    fun insertAll(items: List<Show>)
 }

@@ -6,19 +6,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.fernandospr.movies.R
 import com.github.fernandospr.movies.common.inflate
-import com.github.fernandospr.movies.repository.ApiVideoResult
+import com.github.fernandospr.movies.repository.VideoAsset
 import kotlinx.android.synthetic.main.video_item.view.*
 
 class VideosAdapter : RecyclerView.Adapter<VideosAdapter.ViewHolder>() {
 
-    private var entities = listOf<ApiVideoResult>()
+    private var entities = listOf<VideoAsset>()
     private var listener: Listener? = null
 
     fun setListener(listener: Listener?) {
         this.listener = listener
     }
 
-    fun setEntities(entities: List<ApiVideoResult>) {
+    fun setEntities(entities: List<VideoAsset>) {
         this.entities = entities
         this.notifyDataSetChanged()
     }
@@ -35,7 +35,7 @@ class VideosAdapter : RecyclerView.Adapter<VideosAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title = itemView.title
         val image = itemView.previewImageView
-        fun bind(item: ApiVideoResult) {
+        fun bind(item: VideoAsset) {
             title.text = item.name
             val imagePath = item.youtubeThumbnailPath
             if (!imagePath.isNullOrBlank()) {
@@ -52,6 +52,6 @@ class VideosAdapter : RecyclerView.Adapter<VideosAdapter.ViewHolder>() {
     }
 
     interface Listener {
-        fun onItemClick(item: ApiVideoResult)
+        fun onItemClick(item: VideoAsset)
     }
 }

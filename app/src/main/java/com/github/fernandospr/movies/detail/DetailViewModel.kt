@@ -3,15 +3,12 @@ package com.github.fernandospr.movies.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.fernandospr.movies.repository.Repository
-import com.github.fernandospr.movies.repository.RepositoryCallback
-import com.github.fernandospr.movies.repository.ApiItem
-import com.github.fernandospr.movies.repository.ApiVideosContainer
+import com.github.fernandospr.movies.repository.*
 
 class DetailViewModel(private val repo: Repository) : ViewModel() {
     private val loading: MutableLiveData<Boolean> = MutableLiveData()
     private val error: MutableLiveData<Boolean> = MutableLiveData()
-    private val videos: MutableLiveData<ApiVideosContainer> = MutableLiveData()
+    private val videos: MutableLiveData<Container<VideoAsset>> = MutableLiveData()
 
     init {
         loading.value = false
@@ -22,16 +19,16 @@ class DetailViewModel(private val repo: Repository) : ViewModel() {
     fun getVideosLoading(): LiveData<Boolean> = this.loading
     fun getVideosError(): LiveData<Boolean> = this.error
 
-    fun getVideos(item: ApiItem): LiveData<ApiVideosContainer> {
+    fun getVideos(item: Show): LiveData<Container<VideoAsset>> {
         if (videos.value == null && loading.value == false) {
             loadVideos(item)
         }
         return videos
     }
 
-    private fun loadVideos(item: ApiItem) {
-        repo.loadVideos(item, 1, object : RepositoryCallback<ApiVideosContainer> {
-            override fun onSuccess(t: ApiVideosContainer) {
+    private fun loadVideos(item: Show) {
+        repo.loadVideos(item, 1, object : RepositoryCallback<Container<VideoAsset>> {
+            override fun onSuccess(t: Container<VideoAsset>) {
                 loading.value = false
                 videos.value = t
             }

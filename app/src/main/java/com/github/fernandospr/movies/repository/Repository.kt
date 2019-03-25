@@ -3,26 +3,26 @@ package com.github.fernandospr.movies.repository
 interface Repository {
     fun search(query: String,
                page: Int = 1,
-               callback: RepositoryCallback<ApiItemsContainer>)
+               callback: RepositoryCallback<Container<Show>>)
 
     fun loadPopularMovies(page: Int = 1,
-                          callback: RepositoryCallback<ApiItemsContainer>)
+                          callback: RepositoryCallback<Container<Show>>)
 
     fun loadPopularTvShows(page: Int = 1,
-                           callback: RepositoryCallback<ApiItemsContainer>)
+                           callback: RepositoryCallback<Container<Show>>)
 
     fun loadTopRatedMovies(page: Int = 1,
-                           callback: RepositoryCallback<ApiItemsContainer>)
+                           callback: RepositoryCallback<Container<Show>>)
 
     fun loadTopRatedTvShows(page: Int = 1,
-                            callback: RepositoryCallback<ApiItemsContainer>)
+                            callback: RepositoryCallback<Container<Show>>)
 
     fun loadUpcomingMovies(page: Int,
-                           callback: RepositoryCallback<ApiItemsContainer>)
+                           callback: RepositoryCallback<Container<Show>>)
 
-    fun loadVideos(item: ApiItem,
+    fun loadVideos(item: Show,
                    page: Int = 1,
-                   callback: RepositoryCallback<ApiVideosContainer>)
+                   callback: RepositoryCallback<Container<VideoAsset>>)
 }
 
 interface RepositoryCallback<in T> {

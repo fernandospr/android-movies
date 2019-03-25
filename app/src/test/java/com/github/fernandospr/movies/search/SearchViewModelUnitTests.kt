@@ -2,10 +2,10 @@ package com.github.fernandospr.movies.search
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.github.fernandospr.movies.repository.Show
+import com.github.fernandospr.movies.repository.Container
 import com.github.fernandospr.movies.repository.Repository
 import com.github.fernandospr.movies.repository.RepositoryCallback
-import com.github.fernandospr.movies.repository.ApiItem
-import com.github.fernandospr.movies.repository.ApiItemsContainer
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Before
 import org.junit.Rule
@@ -17,16 +17,16 @@ class SearchViewModelUnitTests {
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var itemsContainer: ApiItemsContainer
+    private lateinit var itemsContainer: Container<Show>
     private lateinit var repo: Repository
     private lateinit var viewModel: SearchViewModel
     private lateinit var loadingObserver: Observer<Boolean>
     private lateinit var errorObserver: Observer<Boolean>
-    private lateinit var resultsObserver: Observer<ApiItemsContainer>
+    private lateinit var resultsObserver: Observer<Container<Show>>
 
     @Before
     fun setup() {
-        val item = ApiItem(
+        val item = Show(
             "movie",
             "popular",
             "1",
@@ -36,7 +36,7 @@ class SearchViewModelUnitTests {
             "Overview text",
             "2019-01-01"
         )
-        itemsContainer = ApiItemsContainer(1, 2, listOf(item))
+        itemsContainer = Container(1, 2, listOf(item))
         repo = mock()
         viewModel = SearchViewModel(repo)
 
@@ -119,14 +119,14 @@ class SearchViewModelUnitTests {
 
     private fun setupRepositoryWithSuccess() {
         doAnswer {
-            val callback: RepositoryCallback<ApiItemsContainer> = it.getArgument(2)
+            val callback: RepositoryCallback<Container<Show>> = it.getArgument(2)
             callback.onSuccess(itemsContainer)
         }.whenever(repo).search(anyString(), anyInt(), any())
     }
 
     private fun setupRepositoryWithError() {
         doAnswer {
-            val callback: RepositoryCallback<ApiItemsContainer> = it.getArgument(2)
+            val callback: RepositoryCallback<Container<Show>> = it.getArgument(2)
             callback.onError()
         }.whenever(repo).search(anyString(), anyInt(), any())
     }

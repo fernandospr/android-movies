@@ -3,14 +3,15 @@ package com.github.fernandospr.movies.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.github.fernandospr.movies.repository.Show
+import com.github.fernandospr.movies.repository.Container
 import com.github.fernandospr.movies.repository.Repository
 import com.github.fernandospr.movies.repository.RepositoryCallback
-import com.github.fernandospr.movies.repository.ApiItemsContainer
 
 class SearchViewModel(private val repo: Repository) : ViewModel() {
     private val loading: MutableLiveData<Boolean> = MutableLiveData()
     private val error: MutableLiveData<Boolean> = MutableLiveData()
-    private val results: MutableLiveData<ApiItemsContainer> = MutableLiveData()
+    private val results: MutableLiveData<Container<Show>> = MutableLiveData()
     private var lastQuery: String = ""
 
     init {
@@ -21,7 +22,7 @@ class SearchViewModel(private val repo: Repository) : ViewModel() {
 
     fun getLoading(): LiveData<Boolean> = this.loading
     fun getError(): LiveData<Boolean> = this.error
-    fun getResults(): LiveData<ApiItemsContainer> = this.results
+    fun getResults(): LiveData<Container<Show>> = this.results
 
     fun search(query: String) {
         loading.value = true
@@ -32,8 +33,8 @@ class SearchViewModel(private val repo: Repository) : ViewModel() {
     }
 
     private fun doSearch(query: String, page: Int) {
-        repo.search(query, page, object : RepositoryCallback<ApiItemsContainer> {
-            override fun onSuccess(t: ApiItemsContainer) {
+        repo.search(query, page, object : RepositoryCallback<Container<Show>> {
+            override fun onSuccess(t: Container<Show>) {
                 loading.value = false
                 if (lastQuery == query) {
                     results.value?.let {

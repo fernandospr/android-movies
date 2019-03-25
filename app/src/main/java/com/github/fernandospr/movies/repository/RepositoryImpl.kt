@@ -1,5 +1,11 @@
 package com.github.fernandospr.movies.repository
 
+import com.github.fernandospr.movies.repository.Show.Companion.MOVIE_TYPE
+import com.github.fernandospr.movies.repository.Show.Companion.POPULAR_TYPE
+import com.github.fernandospr.movies.repository.Show.Companion.TOPRATED_TYPE
+import com.github.fernandospr.movies.repository.Show.Companion.TVSHOW_TYPE
+import com.github.fernandospr.movies.repository.Show.Companion.UPCOMING_TYPE
+import com.github.fernandospr.movies.repository.Show.Companion.YOUTUBE_TYPE
 import com.github.fernandospr.movies.repository.database.MoviesDao
 import com.github.fernandospr.movies.repository.network.MoviesApi
 import com.github.fernandospr.movies.repository.network.NetworkUtils
@@ -11,13 +17,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.Executor
 
-private const val MOVIE_TYPE = "movie"
-private const val TVSHOW_TYPE = "tv"
-private const val POPULAR_TYPE = "popular"
-private const val TOPRATED_TYPE = "toprated"
-private const val UPCOMING_TYPE = "upcoming"
-private const val YOUTUBE_TYPE = "YouTube"
-
 // FIXME: Fetch configuration
 class RepositoryImpl(
     private val service: MoviesApi,
@@ -28,7 +27,7 @@ class RepositoryImpl(
     override fun search(
             query: String,
             page: Int,
-            callback: RepositoryCallback<ApiItemsContainer>
+            callback: RepositoryCallback<Container<Show>>
     ) {
         if (networkUtils.isConnectedToInternet()) {
             val call = service.search(query, page)
@@ -43,7 +42,7 @@ class RepositoryImpl(
 
     override fun loadPopularMovies(
             page: Int,
-            callback: RepositoryCallback<ApiItemsContainer>
+            callback: RepositoryCallback<Container<Show>>
     ) {
         if (networkUtils.isConnectedToInternet()) {
             val call = service.getPopularMovies(page)
@@ -58,7 +57,7 @@ class RepositoryImpl(
 
     override fun loadPopularTvShows(
             page: Int,
-            callback: RepositoryCallback<ApiItemsContainer>
+            callback: RepositoryCallback<Container<Show>>
     ) {
         if (networkUtils.isConnectedToInternet()) {
             val call = service.getPopularTvShows(page)
@@ -73,7 +72,7 @@ class RepositoryImpl(
 
     override fun loadTopRatedMovies(
             page: Int,
-            callback: RepositoryCallback<ApiItemsContainer>
+            callback: RepositoryCallback<Container<Show>>
     ) {
         if (networkUtils.isConnectedToInternet()) {
             val call = service.getTopRatedMovies(page)
@@ -88,7 +87,7 @@ class RepositoryImpl(
 
     override fun loadTopRatedTvShows(
             page: Int,
-            callback: RepositoryCallback<ApiItemsContainer>
+            callback: RepositoryCallback<Container<Show>>
     ) {
         if (networkUtils.isConnectedToInternet()) {
             val call = service.getTopRatedTvShows(page)
@@ -103,7 +102,7 @@ class RepositoryImpl(
 
     override fun loadUpcomingMovies(
             page: Int,
-            callback: RepositoryCallback<ApiItemsContainer>
+            callback: RepositoryCallback<Container<Show>>
     ) {
         if (networkUtils.isConnectedToInternet()) {
             val call = service.getUpcomingMovies(page)
@@ -116,8 +115,8 @@ class RepositoryImpl(
         }
     }
 
-    private fun buildObserver(callback: RepositoryCallback<ApiItemsContainer>): DisposableObserver<List<ApiItem>> {
-        return object : DisposableObserver<List<ApiItem>>() {
+    private fun buildObserver(callback: RepositoryCallback<Container<Show>>): DisposableObserver<List<Show>> {
+        return object : DisposableObserver<List<Show>>() {
             override fun onComplete() {
                 // no-op
             }
@@ -126,22 +125,22 @@ class RepositoryImpl(
                 callback.onError()
             }
 
-            override fun onNext(value: List<ApiItem>) {
-                callback.onSuccess(ApiItemsContainer(1, 1, value))
+            override fun onNext(value: List<Show>) {
+                callback.onSuccess(Container<Show>(1, 1, value))
             }
         }
     }
 
     private fun enqueueItemsContainerCall(
-        call: Call<ApiItemsContainer>,
-        mediaType: String?,
-        categoryType: String?,
-        callback: RepositoryCallback<ApiItemsContainer>
+            call: Call<Container<Show>>,
+            mediaType: String?,
+            categoryType: String?,
+            callback: RepositoryCallback<Container<Show>>
     ) {
-        call.enqueue(object : Callback<ApiItemsContainer> {
+        call.enqueue(object : Callback<Container<Show>> {
             override fun onResponse(
-                call: Call<ApiItemsContainer>,
-                response: Response<ApiItemsContainer>
+                    call: Call<Container<Show>>,
+                    response: Response<Container<Show>>
             ) {
                 if (response.isSuccessful) {
                     val body = response.body()
@@ -162,7 +161,7 @@ class RepositoryImpl(
                 callback.onError()
             }
 
-            override fun onFailure(call: Call<ApiItemsContainer>, t: Throwable) {
+            override fun onFailure(call: Call<Container<Show>>, t: Throwable) {
                 if (!call.isCanceled) {
                     callback.onError()
                 }
@@ -171,9 +170,9 @@ class RepositoryImpl(
     }
 
     override fun loadVideos(
-        item: ApiItem,
-        page: Int,
-        callback: RepositoryCallback<ApiVideosContainer>
+            item: Show,
+            page: Int,
+            callback: RepositoryCallback<Container<VideoAsset>>
     ) {
         val call =
                 if (MOVIE_TYPE.equals(item.mediaType, true))
@@ -181,10 +180,10 @@ class RepositoryImpl(
                 else
                     service.getTvShowVideos(item.id)
 
-        call.enqueue(object : Callback<ApiVideosContainer> {
+        call.enqueue(object : Callback<Container<VideoAsset>> {
             override fun onResponse(
-                call: Call<ApiVideosContainer>,
-                response: Response<ApiVideosContainer>
+                    call: Call<Container<VideoAsset>>,
+                    response: Response<Container<VideoAsset>>
             ) {
                 if (response.isSuccessful) {
                     val body = response.body()
@@ -198,7 +197,7 @@ class RepositoryImpl(
                 callback.onError()
             }
 
-            override fun onFailure(call: Call<ApiVideosContainer>, t: Throwable) {
+            override fun onFailure(call: Call<Container<VideoAsset>>, t: Throwable) {
                 if (!call.isCanceled) {
                     callback.onError()
                 }

@@ -3,17 +3,18 @@ package com.github.fernandospr.movies.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.github.fernandospr.movies.repository.Show
+import com.github.fernandospr.movies.repository.Container
 import com.github.fernandospr.movies.repository.Repository
 import com.github.fernandospr.movies.repository.RepositoryCallback
-import com.github.fernandospr.movies.repository.ApiItemsContainer
 
 abstract class MainViewModel : ViewModel() {
     protected val loading: MutableLiveData<Boolean> = MutableLiveData()
     protected val error: MutableLiveData<Boolean> = MutableLiveData()
-    protected val results: MutableLiveData<ApiItemsContainer> = MutableLiveData()
+    protected val results: MutableLiveData<Container<Show>> = MutableLiveData()
 
-    val repoCallback = object : RepositoryCallback<ApiItemsContainer> {
-        override fun onSuccess(t: ApiItemsContainer) {
+    val repoCallback = object : RepositoryCallback<Container<Show>> {
+        override fun onSuccess(t: Container<Show>) {
             loading.value = false
             results.value?.let {
                 t.results = it.results + t.results
@@ -37,7 +38,7 @@ abstract class MainViewModel : ViewModel() {
 
     fun getError(): LiveData<Boolean> = this.error
 
-    fun getItems(): LiveData<ApiItemsContainer> {
+    fun getItems(): LiveData<Container<Show>> {
         if (results.value == null && loading.value == false) {
             loadItems()
         }

@@ -16,17 +16,17 @@ import java.util.concurrent.Executor
 
 class RepositoryImplUnitTests {
 
-    private lateinit var itemsContainer: ApiItemsContainer
+    private lateinit var itemsContainer: Container<Show>
     private lateinit var repo: Repository
     private lateinit var service: MoviesApi
-    private lateinit var serviceCall: Call<ApiItemsContainer>
+    private lateinit var serviceCall: Call<Container<Show>>
     private lateinit var dao: MoviesDao
     private lateinit var networkUtils: NetworkUtils
-    private lateinit var repoCallback: RepositoryCallback<ApiItemsContainer>
+    private lateinit var repoCallback: RepositoryCallback<Container<Show>>
 
     @Before
     fun setup() {
-        val item = ApiItem(
+        val item = Show(
             null,
             null,
             "1",
@@ -36,7 +36,7 @@ class RepositoryImplUnitTests {
             "Overview text",
             "2019-01-01"
         )
-        itemsContainer = ApiItemsContainer(1, 2, listOf(item))
+        itemsContainer = Container(1, 2, listOf(item))
 
         service = mock()
 
@@ -120,8 +120,8 @@ class RepositoryImplUnitTests {
         repo.loadPopularMovies(1, repoCallback)
 
         itemsContainer.results.forEach {
-            Assert.assertEquals("popular", it.categoryType)
-            Assert.assertEquals("movie", it.mediaType)
+            Assert.assertEquals(Show.POPULAR_TYPE, it.categoryType)
+            Assert.assertEquals(Show.MOVIE_TYPE, it.mediaType)
         }
     }
 
@@ -140,14 +140,14 @@ class RepositoryImplUnitTests {
 
     private fun setupServiceCallWithItems() {
         doAnswer {
-            val callback: Callback<ApiItemsContainer> = it.getArgument(0)
+            val callback: Callback<Container<Show>> = it.getArgument(0)
             callback.onResponse(serviceCall, Response.success(itemsContainer))
         }.whenever(serviceCall).enqueue(any())
     }
 
     private fun setupServiceCallWithError() {
         doAnswer {
-            val callback: Callback<ApiItemsContainer> = it.getArgument(0)
+            val callback: Callback<Container<Show>> = it.getArgument(0)
             callback.onFailure(serviceCall, Throwable())
         }.whenever(serviceCall).enqueue(any())
     }

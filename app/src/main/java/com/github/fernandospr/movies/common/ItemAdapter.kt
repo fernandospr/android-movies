@@ -6,18 +6,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.fernandospr.movies.R
-import com.github.fernandospr.movies.repository.ApiItem
+import com.github.fernandospr.movies.repository.Show
 
 abstract class ItemAdapter : AnimatedRecyclerViewAdapter<RecyclerView.ViewHolder>() {
 
-    private var entities = listOf<ApiItem>()
+    private var entities = listOf<Show>()
     private var listener: Listener? = null
 
     fun setListener(listener: Listener?) {
         this.listener = listener
     }
 
-    fun setEntities(entities: List<ApiItem>) {
+    fun setEntities(entities: List<Show>) {
         val oldCount = itemCount
         this.entities = entities
         this.notifyItemInserted(oldCount)
@@ -38,7 +38,7 @@ abstract class ItemAdapter : AnimatedRecyclerViewAdapter<RecyclerView.ViewHolder
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title = itemView.findViewById<TextView>(R.id.title)
         val image = itemView.findViewById<ImageView>(R.id.imageView)
-        fun bind(item: ApiItem) {
+        fun bind(item: Show) {
             title.text = item.title
             val imagePath = item.getPosterFullPath()
             if (!imagePath.isNullOrBlank()) {
@@ -55,6 +55,6 @@ abstract class ItemAdapter : AnimatedRecyclerViewAdapter<RecyclerView.ViewHolder
     }
 
     interface Listener {
-        fun onItemClick(view: View, item: ApiItem)
+        fun onItemClick(view: View, item: Show)
     }
 }
