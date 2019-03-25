@@ -27,6 +27,9 @@ class DetailViewModel(private val repo: Repository) : ViewModel() {
     }
 
     private fun loadVideos(item: Show) {
+        loading.value = true
+        error.value = false
+        videos.value = null
         repo.loadVideos(item, 1, object : RepositoryCallback<Container<VideoAsset>> {
             override fun onSuccess(t: Container<VideoAsset>) {
                 loading.value = false
