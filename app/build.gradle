@@ -27,12 +27,12 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField "okhttp3.logging.HttpLoggingInterceptor.Level", "RETROFIT_LOGGING", 'okhttp3.logging.HttpLoggingInterceptor.Level.BODY'
+            buildConfigField "okhttp3.logging.HttpLoggingInterceptor.Level", "HTTP_LOGGING", 'okhttp3.logging.HttpLoggingInterceptor.Level.BODY'
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "okhttp3.logging.HttpLoggingInterceptor.Level", "RETROFIT_LOGGING", 'okhttp3.logging.HttpLoggingInterceptor.Level.NONE'
+            buildConfigField "okhttp3.logging.HttpLoggingInterceptor.Level", "HTTP_LOGGING", 'okhttp3.logging.HttpLoggingInterceptor.Level.NONE'
         }
     }
     testOptions {
