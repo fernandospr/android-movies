@@ -12,6 +12,7 @@ import org.mockito.ArgumentMatchers.anyString
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.concurrent.Executor
 
 class RepositoryImplUnitTests {
 
@@ -48,8 +49,12 @@ class RepositoryImplUnitTests {
 
         networkUtils = mock()
 
-        repo = RepositoryImpl(service, dao, networkUtils)
+        repo = RepositoryImpl(service, dao, networkUtils, CurrentThreadExecutor())
         repoCallback = mock()
+    }
+
+    inner class CurrentThreadExecutor : Executor {
+        override fun execute(r: Runnable) = r.run()
     }
 
     @Test
@@ -95,6 +100,16 @@ class RepositoryImplUnitTests {
         repo.search("jurassic", 1, repoCallback)
 
         verify(dao).getItemsLike(eq("jurassic"))
+    }
+
+    @Test
+    fun loadPopularMovies_shouldSaveInDB() {
+        setupServiceCallWithItems()
+        whenever(networkUtils.isConnectedToInternet()).thenReturn(true)
+
+        repo.loadPopularMovies(1, repoCallback)
+
+        verify(dao).insertAll(itemsContainer.results)
     }
 
     @Test

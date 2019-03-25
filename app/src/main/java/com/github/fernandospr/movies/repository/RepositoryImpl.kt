@@ -1,6 +1,5 @@
 package com.github.fernandospr.movies.repository
 
-import android.os.AsyncTask
 import com.github.fernandospr.movies.repository.database.MoviesDao
 import com.github.fernandospr.movies.repository.network.MoviesApi
 import com.github.fernandospr.movies.repository.network.NetworkUtils
@@ -10,6 +9,7 @@ import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.concurrent.Executor
 
 private const val MOVIE_TYPE = "movie"
 private const val TVSHOW_TYPE = "tv"
@@ -22,7 +22,8 @@ private const val YOUTUBE_TYPE = "YouTube"
 class RepositoryImpl(
     private val service: MoviesApi,
     private val dao: MoviesDao,
-    private val networkUtils: NetworkUtils) : Repository {
+    private val networkUtils: NetworkUtils,
+    private val diskIOExecutor: Executor) : Repository {
 
     override fun search(
             query: String,
@@ -149,7 +150,8 @@ class RepositoryImpl(
                             if (mediaType != null) it.mediaType = mediaType
                             if (categoryType != null) it.categoryType = categoryType
                         }
-                        AsyncTask.execute {
+
+                        diskIOExecutor.execute {
                             dao.insertAll(body.results)
                         }
                         callback.onSuccess(body)
