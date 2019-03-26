@@ -49,8 +49,8 @@ Si todo esto estuviese implementado dentro de la misma clase, no se estaría cum
 * Agregar más tests unitarios. Solo se crearon los principales, para demostrar el uso de JUnit y Mockito. Los tests que faltan de ViewModels serían muy similares a los existentes.
 
 * Obtener configuración primero antes de ejecutar el resto de los servicios. Esto serviría para agregar el base path a las imagenes. Ahora están hardcodeadas en la clase `Show`. Por ejemplo, se podría implementar usando RxJava y el operador [zip](http://reactivex.io/documentation/operators/zip.html), combinando el resultado de los observables de:
-       * [Servicio de configuración](https://developers.themoviedb.org/3/configuration/get-api-configuration)
-       * Servicio que devuelve películas/series.
+	* [Servicio de configuración](https://developers.themoviedb.org/3/configuration/get-api-configuration)
+	* Servicio que devuelve películas/series.
        
 * Manejar los casos de error cuando no carga la siguiente página.
 
