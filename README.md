@@ -58,3 +58,4 @@ Si todo esto estuviese implementado dentro de la misma clase, no se estaría cum
 	* Se podría separar en dos secciones: Películas y Series. Por ejemplo, usando [BottomNavigationView](https://developer.android.com/reference/android/support/design/widget/BottomNavigationView), aunque según las guías de [Material Design](https://material.io/design/components/bottom-navigation.html) recomiendan que sean 3 o más destinos. Sino usar [tabs](https://material.io/design/components/tabs.html).
 	* Agregar más datos en el detalle. Por ejemplo, cantidad de estrellas.
 	* Usar CardView para mostrar cada película/serie.
+	* Modificar adaptive launcher icon.
