@@ -24,6 +24,7 @@ abstract class ItemAdapter : AnimatedRecyclerViewAdapter<RecyclerView.ViewHolder
     }
 
     fun clearEntities() {
+        resetAnimation()
         this.entities = emptyList()
         notifyDataSetChanged()
     }
@@ -40,9 +41,8 @@ abstract class ItemAdapter : AnimatedRecyclerViewAdapter<RecyclerView.ViewHolder
         val image = itemView.findViewById<ImageView>(R.id.imageView)
         fun bind(item: Show) {
             title.text = item.title
-            val imagePath = item.getPosterFullPath()
             Glide.with(image.context)
-                .load(imagePath)
+                .load(item.posterFullPath)
                 .error(R.drawable.ic_local_movies_24dp)
                 .into(image)
 

@@ -91,17 +91,15 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setupImages(item: Show) {
-        val posterPath = item.getPosterFullPath()
-            Glide.with(this).load(posterPath)
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .error(R.drawable.ic_local_movies_24dp)
-                    .into(previewImageView)
-
-        val backdropPath = item.getBackdropFullPath()
-        if (!backdropPath.isNullOrBlank()) {
-            Glide.with(this).load(backdropPath)
+        Glide.with(this).load(item.posterFullPath)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .error(R.drawable.ic_local_movies_24dp)
+                .into(previewImageView)
+        
+        if (!item.backdropFullPath.isNullOrBlank()) {
+            Glide.with(this).load(item.backdropFullPath)
                     .listener(
-                            GlidePalette.with(backdropPath)
+                            GlidePalette.with(item.backdropFullPath)
                                     .use(BitmapPalette.Profile.MUTED)
                                     .intoBackground(backdropOverlay)
                                     .crossfade(true)

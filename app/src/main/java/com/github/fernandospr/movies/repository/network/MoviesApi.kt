@@ -1,6 +1,5 @@
 package com.github.fernandospr.movies.repository.network
 
-import com.github.fernandospr.movies.repository.ApiConfigurationContainer
 import com.github.fernandospr.movies.repository.Container
 import com.github.fernandospr.movies.repository.Show
 import com.github.fernandospr.movies.repository.VideoAsset
@@ -10,10 +9,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MoviesApi {
-
-    // https://developers.themoviedb.org/3/configuration/get-api-configuration
-    @GET("configuration")
-    fun getConfiguration(): Call<ApiConfigurationContainer>
 
     // https://developers.themoviedb.org/3/movies/get-popular-movies
     @GET("movie/popular")

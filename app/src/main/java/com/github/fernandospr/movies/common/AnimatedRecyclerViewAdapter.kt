@@ -9,6 +9,10 @@ abstract class AnimatedRecyclerViewAdapter<VH : RecyclerView.ViewHolder> : Recyc
 
     private var lastPosition = 0
 
+    fun resetAnimation() {
+        lastPosition = 0
+    }
+
     private fun setAnimation(view: View) {
         val animation = ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
 

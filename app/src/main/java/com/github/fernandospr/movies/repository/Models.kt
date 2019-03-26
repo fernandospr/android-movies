@@ -6,10 +6,6 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
-data class ApiConfigurationContainer(val images: ApiConfigurationImages)
-
-data class ApiConfigurationImages(val secureBaseUrl: String)
-
 data class Container<T>(
     val page: Int,
     val totalPages: Int,
@@ -35,19 +31,21 @@ data class Show(
     @SerializedName("release_date", alternate = ["first_air_date"])
     val releaseDate: String?
 ) : Parcelable {
-    fun getPosterFullPath() : String? {
-        if (posterPath.isNullOrBlank()) {
-            return null
+    val posterFullPath : String?
+        get() {
+            if (posterPath.isNullOrBlank()) {
+                return null
+            }
+            return "https://image.tmdb.org/t/p/w342$posterPath"
         }
-        return "https://image.tmdb.org/t/p/w342$posterPath"
-    }
 
-    fun getBackdropFullPath(): String? {
-        if (backdropPath.isNullOrBlank()) {
-            return null
+    val backdropFullPath: String?
+        get() {
+            if (backdropPath.isNullOrBlank()) {
+                return null
+            }
+            return "https://image.tmdb.org/t/p/w780$backdropPath"
         }
-        return "https://image.tmdb.org/t/p/w780$backdropPath"
-    }
 
     companion object {
         const val MOVIE_TYPE = "movie"
