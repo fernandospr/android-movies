@@ -3,7 +3,7 @@
 
 `MoviesApi` y `NetworkUtilsImpl` pertenecen a la capa de **Red**. Estos se utilizan para el funcionamiento de la app online. Consumen datos de la API.
 
-`RepositoryImpl` pertenecen a la capa de **Repositorio**, internamente consumen de la capa de Persistencia y Red.
+`RepositoryImpl` pertenece a la capa de **Repositorio**, internamente consume de la capa de Persistencia y Red.
 
 Las clases dentro del paquete `models` podrían pertenecer a la capa de **Negocio**. Tienen los datos que se muestran en la app. Dado que no tienen mucha lógica de negocio podría decirse que en realidad pertenecen a la capa de Red y/o de Persistencia.
 
@@ -57,4 +57,4 @@ Si todo esto estuviese implementado dentro de la misma clase, no se estaría cum
 * UI/UX
 	* Se podría separar en dos secciones: Películas y Series. Por ejemplo, usando [BottomNavigationView](https://developer.android.com/reference/android/support/design/widget/BottomNavigationView), aunque según las guías de [Material Design](https://material.io/design/components/bottom-navigation.html) recomiendan que sean 3 o más destinos. Sino usar [tabs](https://material.io/design/components/tabs.html).
 	* Agregar más datos en el detalle. Por ejemplo, cantidad de estrellas.
-	* Usar CardView para cada mostrar película/serie.
+	* Usar CardView para mostrar cada película/serie.
