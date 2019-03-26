@@ -27,6 +27,20 @@ interface Repository {
     fun loadVideos(item: Show,
                    page: Int = 1,
                    callback: RepositoryCallback<Container<VideoAsset>>)
+
+    fun stopSearch()
+
+    fun stopPopularMovies()
+
+    fun stopPopularTvShows()
+
+    fun stopTopRatedMovies()
+
+    fun stopTopRatedTvShows()
+
+    fun stopUpcomingMovies()
+
+    fun stopVideos()
 }
 
 interface RepositoryCallback<in T> {

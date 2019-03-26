@@ -3,7 +3,8 @@ package com.github.fernandospr.movies.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.fernandospr.movies.repository.*
+import com.github.fernandospr.movies.repository.Repository
+import com.github.fernandospr.movies.repository.RepositoryCallback
 import com.github.fernandospr.movies.repository.models.Container
 import com.github.fernandospr.movies.repository.models.Show
 import com.github.fernandospr.movies.repository.models.VideoAsset
@@ -44,5 +45,9 @@ class DetailViewModel(private val repo: Repository) : ViewModel() {
                 error.value = true
             }
         })
+    }
+
+    override fun onCleared() {
+        repo.stopVideos()
     }
 }

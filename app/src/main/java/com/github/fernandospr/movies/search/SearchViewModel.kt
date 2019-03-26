@@ -3,9 +3,9 @@ package com.github.fernandospr.movies.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.fernandospr.movies.repository.models.Container
 import com.github.fernandospr.movies.repository.Repository
 import com.github.fernandospr.movies.repository.RepositoryCallback
+import com.github.fernandospr.movies.repository.models.Container
 import com.github.fernandospr.movies.repository.models.Show
 
 class SearchViewModel(private val repo: Repository) : ViewModel() {
@@ -63,5 +63,9 @@ class SearchViewModel(private val repo: Repository) : ViewModel() {
                 doSearch(lastQuery, it.page + 1)
             }
         }
+    }
+
+    override fun onCleared() {
+        repo.stopSearch()
     }
 }

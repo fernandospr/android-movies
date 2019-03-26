@@ -3,9 +3,9 @@ package com.github.fernandospr.movies.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.fernandospr.movies.repository.models.Container
 import com.github.fernandospr.movies.repository.Repository
 import com.github.fernandospr.movies.repository.RepositoryCallback
+import com.github.fernandospr.movies.repository.models.Container
 import com.github.fernandospr.movies.repository.models.Show
 
 abstract class MainViewModel : ViewModel() {
@@ -73,11 +73,19 @@ class PopularMoviesViewModel(private val repo: Repository) : MainViewModel() {
     override fun doLoadItems(page: Int) {
         repo.loadPopularMovies(page, buildRepositoryCallback(page))
     }
+
+    override fun onCleared() {
+        repo.stopPopularMovies()
+    }
 }
 
 class PopularTvShowsViewModel(private val repo: Repository) : MainViewModel() {
     override fun doLoadItems(page: Int) {
         repo.loadPopularTvShows(page, buildRepositoryCallback(page))
+    }
+
+    override fun onCleared() {
+        repo.stopPopularTvShows()
     }
 }
 
@@ -85,16 +93,28 @@ class TopRatedMoviesViewModel(private val repo: Repository) : MainViewModel() {
     override fun doLoadItems(page: Int) {
         repo.loadTopRatedMovies(page, buildRepositoryCallback(page))
     }
+
+    override fun onCleared() {
+        repo.stopTopRatedMovies()
+    }
 }
 
 class TopRatedTvShowsViewModel(private val repo: Repository) : MainViewModel() {
     override fun doLoadItems(page: Int) {
         repo.loadTopRatedTvShows(page, buildRepositoryCallback(page))
     }
+
+    override fun onCleared() {
+        repo.stopTopRatedTvShows()
+    }
 }
 
 class UpcomingMoviesViewModel(private val repo: Repository) : MainViewModel() {
     override fun doLoadItems(page: Int) {
         repo.loadUpcomingMovies(page, buildRepositoryCallback(page))
+    }
+
+    override fun onCleared() {
+        repo.stopUpcomingMovies()
     }
 }

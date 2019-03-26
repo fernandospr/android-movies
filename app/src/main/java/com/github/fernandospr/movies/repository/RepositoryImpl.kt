@@ -1,14 +1,14 @@
 package com.github.fernandospr.movies.repository
 
+import com.github.fernandospr.movies.repository.database.MoviesDao
+import com.github.fernandospr.movies.repository.models.Container
+import com.github.fernandospr.movies.repository.models.Show
 import com.github.fernandospr.movies.repository.models.Show.Companion.MOVIE_TYPE
 import com.github.fernandospr.movies.repository.models.Show.Companion.POPULAR_TYPE
 import com.github.fernandospr.movies.repository.models.Show.Companion.TOPRATED_TYPE
 import com.github.fernandospr.movies.repository.models.Show.Companion.TVSHOW_TYPE
 import com.github.fernandospr.movies.repository.models.Show.Companion.UPCOMING_TYPE
 import com.github.fernandospr.movies.repository.models.Show.Companion.YOUTUBE_TYPE
-import com.github.fernandospr.movies.repository.database.MoviesDao
-import com.github.fernandospr.movies.repository.models.Container
-import com.github.fernandospr.movies.repository.models.Show
 import com.github.fernandospr.movies.repository.models.VideoAsset
 import com.github.fernandospr.movies.repository.network.MoviesApi
 import com.github.fernandospr.movies.repository.network.NetworkUtils
@@ -27,19 +27,33 @@ class RepositoryImpl(
     private val networkUtils: NetworkUtils,
     private val diskIOExecutor: Executor) : Repository {
 
+    private var popularMoviesObservable: DisposableObserver<List<Show>>? = null
+    private var popularMoviesCall: Call<Container<Show>>? = null
+    private var popularTvShowsObservable: DisposableObserver<List<Show>>? = null
+    private var popularTvShowsCall: Call<Container<Show>>? = null
+    private var topRatedMoviesObservable: DisposableObserver<List<Show>>? = null
+    private var topRatedMoviesCall: Call<Container<Show>>? = null
+    private var topRatedTvShowsObservable: DisposableObserver<List<Show>>? = null
+    private var topRatedTvShowsCall: Call<Container<Show>>? = null
+    private var upcomingMoviesObservable: DisposableObserver<List<Show>>? = null
+    private var upcomingMoviesCall: Call<Container<Show>>? = null
+    private var searchObservable: DisposableObserver<List<Show>>? = null
+    private var searchCall: Call<Container<Show>>? = null
+    private var videosCall: Call<Container<VideoAsset>>? = null
+
     override fun search(
             query: String,
             page: Int,
             callback: RepositoryCallback<Container<Show>>
     ) {
         if (networkUtils.isConnectedToInternet()) {
-            val call = service.search(query, page)
-            enqueueItemsContainerCall(call, null, null, callback)
+            searchCall = service.search(query, page)
+            enqueueItemsContainerCall(searchCall!!, null, null, callback)
         } else {
-            dao.getItemsLike(query)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(buildObserver(callback))
+            searchObservable = dao.getItemsLike(query)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(buildObserver(callback))
         }
     }
 
@@ -48,10 +62,10 @@ class RepositoryImpl(
             callback: RepositoryCallback<Container<Show>>
     ) {
         if (networkUtils.isConnectedToInternet()) {
-            val call = service.getPopularMovies(page)
-            enqueueItemsContainerCall(call, MOVIE_TYPE, POPULAR_TYPE, callback)
+            popularMoviesCall = service.getPopularMovies(page)
+            enqueueItemsContainerCall(popularMoviesCall!!, MOVIE_TYPE, POPULAR_TYPE, callback)
         } else {
-            dao.getItemsByMediaAndCategory(MOVIE_TYPE, POPULAR_TYPE)
+            popularMoviesObservable = dao.getItemsByMediaAndCategory(MOVIE_TYPE, POPULAR_TYPE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(buildObserver(callback))
@@ -63,10 +77,10 @@ class RepositoryImpl(
             callback: RepositoryCallback<Container<Show>>
     ) {
         if (networkUtils.isConnectedToInternet()) {
-            val call = service.getPopularTvShows(page)
-            enqueueItemsContainerCall(call, TVSHOW_TYPE, POPULAR_TYPE, callback)
+            popularTvShowsCall = service.getPopularTvShows(page)
+            enqueueItemsContainerCall(popularTvShowsCall!!, TVSHOW_TYPE, POPULAR_TYPE, callback)
         } else {
-            dao.getItemsByMediaAndCategory(TVSHOW_TYPE, POPULAR_TYPE)
+            popularTvShowsObservable = dao.getItemsByMediaAndCategory(TVSHOW_TYPE, POPULAR_TYPE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(buildObserver(callback))
@@ -78,10 +92,10 @@ class RepositoryImpl(
             callback: RepositoryCallback<Container<Show>>
     ) {
         if (networkUtils.isConnectedToInternet()) {
-            val call = service.getTopRatedMovies(page)
-            enqueueItemsContainerCall(call, MOVIE_TYPE, TOPRATED_TYPE, callback)
+            topRatedMoviesCall = service.getTopRatedMovies(page)
+            enqueueItemsContainerCall(topRatedMoviesCall!!, MOVIE_TYPE, TOPRATED_TYPE, callback)
         } else {
-            dao.getItemsByMediaAndCategory(MOVIE_TYPE, TOPRATED_TYPE)
+            topRatedMoviesObservable = dao.getItemsByMediaAndCategory(MOVIE_TYPE, TOPRATED_TYPE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(buildObserver(callback))
@@ -93,10 +107,10 @@ class RepositoryImpl(
             callback: RepositoryCallback<Container<Show>>
     ) {
         if (networkUtils.isConnectedToInternet()) {
-            val call = service.getTopRatedTvShows(page)
-            enqueueItemsContainerCall(call, TVSHOW_TYPE, TOPRATED_TYPE, callback)
+            topRatedTvShowsCall = service.getTopRatedTvShows(page)
+            enqueueItemsContainerCall(topRatedTvShowsCall!!, TVSHOW_TYPE, TOPRATED_TYPE, callback)
         } else {
-            dao.getItemsByMediaAndCategory(TVSHOW_TYPE, TOPRATED_TYPE)
+            topRatedTvShowsObservable = dao.getItemsByMediaAndCategory(TVSHOW_TYPE, TOPRATED_TYPE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(buildObserver(callback))
@@ -108,10 +122,10 @@ class RepositoryImpl(
             callback: RepositoryCallback<Container<Show>>
     ) {
         if (networkUtils.isConnectedToInternet()) {
-            val call = service.getUpcomingMovies(page)
-            enqueueItemsContainerCall(call, MOVIE_TYPE, UPCOMING_TYPE, callback)
+            upcomingMoviesCall = service.getUpcomingMovies(page)
+            enqueueItemsContainerCall(upcomingMoviesCall!!, MOVIE_TYPE, UPCOMING_TYPE, callback)
         } else {
-            dao.getItemsByMediaAndCategory(MOVIE_TYPE, UPCOMING_TYPE)
+            upcomingMoviesObservable = dao.getItemsByMediaAndCategory(MOVIE_TYPE, UPCOMING_TYPE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(buildObserver(callback))
@@ -129,7 +143,7 @@ class RepositoryImpl(
             }
 
             override fun onNext(value: List<Show>) {
-                callback.onSuccess(Container<Show>(1, 1, value))
+                callback.onSuccess(Container(1, 1, value))
             }
         }
     }
@@ -177,13 +191,13 @@ class RepositoryImpl(
             page: Int,
             callback: RepositoryCallback<Container<VideoAsset>>
     ) {
-        val call =
+        videosCall =
                 if (MOVIE_TYPE.equals(item.mediaType, true))
                     service.getMovieVideos(item.id)
                 else
                     service.getTvShowVideos(item.id)
 
-        call.enqueue(object : Callback<Container<VideoAsset>> {
+        videosCall?.enqueue(object : Callback<Container<VideoAsset>> {
             override fun onResponse(
                     call: Call<Container<VideoAsset>>,
                     response: Response<Container<VideoAsset>>
@@ -206,5 +220,39 @@ class RepositoryImpl(
                 }
             }
         })
+    }
+
+    override fun stopSearch() {
+        searchCall?.cancel()
+        searchObservable?.dispose()
+    }
+
+    override fun stopPopularMovies() {
+        popularMoviesCall?.cancel()
+        popularMoviesObservable?.dispose()
+    }
+
+    override fun stopPopularTvShows() {
+        popularTvShowsCall?.cancel()
+        popularTvShowsObservable?.dispose()
+    }
+
+    override fun stopTopRatedMovies() {
+        topRatedMoviesCall?.cancel()
+        topRatedMoviesObservable?.dispose()
+    }
+
+    override fun stopTopRatedTvShows() {
+        topRatedTvShowsCall?.cancel()
+        topRatedTvShowsObservable?.dispose()
+    }
+
+    override fun stopUpcomingMovies() {
+        upcomingMoviesCall?.cancel()
+        upcomingMoviesObservable?.dispose()
+    }
+
+    override fun stopVideos() {
+        videosCall?.cancel()
     }
 }
