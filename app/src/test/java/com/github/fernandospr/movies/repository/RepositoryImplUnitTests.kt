@@ -1,6 +1,8 @@
 package com.github.fernandospr.movies.repository
 
 import com.github.fernandospr.movies.repository.database.MoviesDao
+import com.github.fernandospr.movies.repository.models.Container
+import com.github.fernandospr.movies.repository.models.Show
 import com.github.fernandospr.movies.repository.network.MoviesApi
 import com.github.fernandospr.movies.repository.network.NetworkUtils
 import com.nhaarman.mockitokotlin2.*
@@ -27,14 +29,14 @@ class RepositoryImplUnitTests {
     @Before
     fun setup() {
         val item = Show(
-            null,
-            null,
-            "1",
-            "Test1",
-            null,
-            null,
-            "Overview text",
-            "2019-01-01"
+                null,
+                null,
+                "1",
+                "Test1",
+                null,
+                null,
+                "Overview text",
+                "2019-01-01"
         )
         itemsContainer = Container(1, 2, listOf(item))
 

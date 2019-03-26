@@ -11,9 +11,9 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.fernandospr.movies.R
-import com.github.fernandospr.movies.repository.Container
-import com.github.fernandospr.movies.repository.Show
-import com.github.fernandospr.movies.repository.VideoAsset
+import com.github.fernandospr.movies.repository.models.Container
+import com.github.fernandospr.movies.repository.models.Show
+import com.github.fernandospr.movies.repository.models.VideoAsset
 import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -95,7 +95,7 @@ class DetailActivity : AppCompatActivity() {
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .error(R.drawable.ic_local_movies_24dp)
                 .into(previewImageView)
-        
+
         if (!item.backdropFullPath.isNullOrBlank()) {
             Glide.with(this).load(item.backdropFullPath)
                     .listener(

@@ -1,8 +1,8 @@
 package com.github.fernandospr.movies.repository.network
 
-import com.github.fernandospr.movies.repository.Container
-import com.github.fernandospr.movies.repository.Show
-import com.github.fernandospr.movies.repository.VideoAsset
+import com.github.fernandospr.movies.repository.models.Container
+import com.github.fernandospr.movies.repository.models.Show
+import com.github.fernandospr.movies.repository.models.VideoAsset
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

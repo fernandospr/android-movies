@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.fernandospr.movies.R
 import com.github.fernandospr.movies.common.inflate
-import com.github.fernandospr.movies.repository.VideoAsset
+import com.github.fernandospr.movies.repository.models.VideoAsset
 import kotlinx.android.synthetic.main.video_item.view.*
 
 class VideosAdapter : RecyclerView.Adapter<VideosAdapter.ViewHolder>() {

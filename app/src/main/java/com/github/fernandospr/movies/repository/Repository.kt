@@ -1,5 +1,9 @@
 package com.github.fernandospr.movies.repository
 
+import com.github.fernandospr.movies.repository.models.Container
+import com.github.fernandospr.movies.repository.models.Show
+import com.github.fernandospr.movies.repository.models.VideoAsset
+
 interface Repository {
     fun search(query: String,
                page: Int = 1,

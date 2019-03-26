@@ -1,16 +1,10 @@
-package com.github.fernandospr.movies.repository
+package com.github.fernandospr.movies.repository.models
 
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
-
-data class Container<T>(
-    val page: Int,
-    val totalPages: Int,
-    var results: List<T>
-)
 
 @Entity(tableName = "shows")
 @Parcelize
@@ -55,25 +49,4 @@ data class Show(
         const val UPCOMING_TYPE = "upcoming"
         const val YOUTUBE_TYPE = "YouTube"
     }
-}
-
-data class VideoAsset(
-    val site: String?,
-	val key: String?,
-	val name: String?
-) {
-    val youtubeVideoPath: String?
-        get() {
-            if (key.isNullOrBlank()) {
-                return null
-            }
-            return "https://www.youtube.com/watch?v=$key"
-        }
-    val youtubeThumbnailPath: String?
-        get() {
-            if (key.isNullOrBlank()) {
-                return null
-            }
-            return "https://img.youtube.com/vi/$key/sddefault.jpg"
-        }
 }

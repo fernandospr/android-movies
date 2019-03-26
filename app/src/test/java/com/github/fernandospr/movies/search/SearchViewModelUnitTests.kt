@@ -2,8 +2,8 @@ package com.github.fernandospr.movies.search
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.github.fernandospr.movies.repository.Show
-import com.github.fernandospr.movies.repository.Container
+import com.github.fernandospr.movies.repository.models.Show
+import com.github.fernandospr.movies.repository.models.Container
 import com.github.fernandospr.movies.repository.Repository
 import com.github.fernandospr.movies.repository.RepositoryCallback
 import com.nhaarman.mockitokotlin2.*
@@ -27,14 +27,14 @@ class SearchViewModelUnitTests {
     @Before
     fun setup() {
         val item = Show(
-            "movie",
-            "popular",
-            "1",
-            "Test1",
-            null,
-            null,
-            "Overview text",
-            "2019-01-01"
+                "movie",
+                "popular",
+                "1",
+                "Test1",
+                null,
+                null,
+                "Overview text",
+                "2019-01-01"
         )
         itemsContainer = Container(1, 2, listOf(item))
         repo = mock()

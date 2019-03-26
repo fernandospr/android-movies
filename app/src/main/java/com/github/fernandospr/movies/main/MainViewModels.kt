@@ -3,10 +3,10 @@ package com.github.fernandospr.movies.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.fernandospr.movies.repository.Container
+import com.github.fernandospr.movies.repository.models.Container
 import com.github.fernandospr.movies.repository.Repository
 import com.github.fernandospr.movies.repository.RepositoryCallback
-import com.github.fernandospr.movies.repository.Show
+import com.github.fernandospr.movies.repository.models.Show
 
 abstract class MainViewModel : ViewModel() {
     protected val loading: MutableLiveData<Boolean> = MutableLiveData()

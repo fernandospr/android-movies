@@ -1,12 +1,15 @@
 package com.github.fernandospr.movies.repository
 
-import com.github.fernandospr.movies.repository.Show.Companion.MOVIE_TYPE
-import com.github.fernandospr.movies.repository.Show.Companion.POPULAR_TYPE
-import com.github.fernandospr.movies.repository.Show.Companion.TOPRATED_TYPE
-import com.github.fernandospr.movies.repository.Show.Companion.TVSHOW_TYPE
-import com.github.fernandospr.movies.repository.Show.Companion.UPCOMING_TYPE
-import com.github.fernandospr.movies.repository.Show.Companion.YOUTUBE_TYPE
+import com.github.fernandospr.movies.repository.models.Show.Companion.MOVIE_TYPE
+import com.github.fernandospr.movies.repository.models.Show.Companion.POPULAR_TYPE
+import com.github.fernandospr.movies.repository.models.Show.Companion.TOPRATED_TYPE
+import com.github.fernandospr.movies.repository.models.Show.Companion.TVSHOW_TYPE
+import com.github.fernandospr.movies.repository.models.Show.Companion.UPCOMING_TYPE
+import com.github.fernandospr.movies.repository.models.Show.Companion.YOUTUBE_TYPE
 import com.github.fernandospr.movies.repository.database.MoviesDao
+import com.github.fernandospr.movies.repository.models.Container
+import com.github.fernandospr.movies.repository.models.Show
+import com.github.fernandospr.movies.repository.models.VideoAsset
 import com.github.fernandospr.movies.repository.network.MoviesApi
 import com.github.fernandospr.movies.repository.network.NetworkUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
