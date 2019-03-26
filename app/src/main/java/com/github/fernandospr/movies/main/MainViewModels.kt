@@ -23,8 +23,8 @@ abstract class MainViewModel : ViewModel() {
 
     fun getError(): LiveData<Boolean> = this.error
 
-    fun getItems(): LiveData<Container<Show>> {
-        if (results.value == null && loading.value == false) {
+    fun getItems(forceRefresh : Boolean = false): LiveData<Container<Show>> {
+        if (forceRefresh || (results.value == null && loading.value == false)) {
             loadItems()
         }
         return results

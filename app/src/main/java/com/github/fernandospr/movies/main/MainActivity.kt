@@ -54,6 +54,15 @@ class MainActivity : AppCompatActivity() {
         setupCategory(upcomingMoviesContainer,
                 getString(R.string.category_upcoming) + " " + getString(R.string.category_movies),
                 upcomingMoviesViewModel)
+
+        swipeRefreshLayout.setOnRefreshListener {
+            popularMoviesViewModel.getItems(true)
+            popularTvShowsViewModel.getItems(true)
+            topRatedMoviesViewModel.getItems(true)
+            topRatedTvShowsViewModel.getItems(true)
+            upcomingMoviesViewModel.getItems(true)
+            swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     private fun setupCategory(container: View, title: String, viewModel: MainViewModel) {
