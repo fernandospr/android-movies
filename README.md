@@ -48,7 +48,13 @@ Si todo esto estuviese implementado dentro de la misma clase, no se estaría cum
 ## TODOs en el proyecto
 * Agregar más tests unitarios. Solo se crearon los principales, para demostrar el uso de JUnit y Mockito. Los tests que faltan de ViewModels serían muy similares a los existentes.
 
-* Obtener configuración primero antes de ejecutar el resto de los servicios. Por ejemplo, se podría implementar usando RxJava y el operador zip, juntando el resultado del [servicio de configuración](https://developers.themoviedb.org/3/configuration/get-api-configuration) y el resultado del otro servicio, de esta forma se podría agregar el base path a las imagenes. Ahora están hardcodeadas en la clase `Show`.
-
+* Obtener configuración primero antes de ejecutar el resto de los servicios. Esto serviría para agregar el base path a las imagenes. Ahora están hardcodeadas en la clase `Show`. Por ejemplo, se podría implementar usando RxJava y el operador [zip](http://reactivex.io/documentation/operators/zip.html), combinando el resultado de los observables de:
+       * [Servicio de configuración](https://developers.themoviedb.org/3/configuration/get-api-configuration)
+       * Servicio que devuelve películas/series.
+       
 * Manejar los casos de error cuando no carga la siguiente página.
 
+* UI/UX
+	* Se podría separar en dos secciones: Películas y Series. Por ejemplo, usando [BottomNavigationView](https://developer.android.com/reference/android/support/design/widget/BottomNavigationView), aunque según las guías de [Material Design](https://material.io/design/components/bottom-navigation.html) recomiendan que sean 3 o más destinos. Sino usar [tabs](https://material.io/design/components/tabs.html).
+	* Agregar más datos en el detalle. Por ejemplo, cantidad de estrellas.
+	* Usar CardView para cada mostrar película/serie.
