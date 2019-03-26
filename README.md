@@ -1,17 +1,17 @@
 ## Capas de Aplicación
-`MoviesDatabase` y `MovieDao` pertenecen a la capa de **Persistencia**. Estos se utilizan para el funcionamiento de la app offline. Tienen métodos para guardar/obtener datos de una base de datos.
+`MoviesDatabase` y `MoviesDao` pertenecen a la capa de **Persistencia**. Estos se utilizan para el funcionamiento de la app offline. Tienen métodos para guardar/obtener datos de una base de datos.
 
 `MoviesApi` y `NetworkUtilsImpl` pertenecen a la capa de **Red**. Estos se utilizan para el funcionamiento de la app online. Consumen datos de la API.
 
-`RepositoryImpl` pertenecen a la capa de **Repositorio**, internamente consumen de la capa de Persistencia y Red.
+`RepositoryImpl` pertenece a la capa de **Repositorio**, internamente consume de la capa de Persistencia y Red.
 
-Las clases dentro del paquete `models` podrían pertenecer a la capa de **Negocio**. Aunque no tienen mucha lógica de negocio, así que podría decirse que en realidad pertenecen a la capa de Red y/o de Persistencia. Las clases de este paquete tienen los datos que se muestran en la app.
+Las clases dentro del paquete `models` podrían pertenecer a la capa de **Negocio**. Tienen los datos que se muestran en la app. Dado que no tienen mucha lógica de negocio podría decirse que en realidad pertenecen a la capa de Red y/o de Persistencia.
 
-`XXXXXActivity` pertenecen a la capa de **Vista**. Estas clases tienen solo lógica de setear texto, animaciones, imagenes y componentes de vista en general. Reciben la interacción del usuario.
+Las clases `XXXXXActivity` pertenecen a la capa de **Vista**. Estas clases tienen solo lógica de setear texto, animaciones, imagenes y componentes de vista en general. Reciben la interacción del usuario.
 
-`XXXXXAdapter` pertenecen a la capa de **Vista**. Se utilizan para mostrar items en un listado.
+Las clases `XXXXXAdapter` pertenecen a la capa de **Vista**. Se utilizan para mostrar items en un listado.
 
-Se usó la arquitectura MVVM con `ViewModels` y `LiveData` de [Android Architecture Components (MVVM)](https://developer.android.com/topic/libraries/architecture), estos son el nexo entre Vista y Repositorio. Cuando el usuario interactúa con la vista, esta llama a método del `ViewModel`, el cual consumen del repositorio y setea los valores de los `LiveData`, estos últimos son observados por la Vista que actualiza de forma acorde.
+Se usó la arquitectura MVVM con `ViewModels` y `LiveData` de [Android Architecture Components](https://developer.android.com/topic/libraries/architecture), estos son el nexo entre Vista y Repositorio. Cuando el usuario interactúa con la vista, esta llama a método del `ViewModel`, el cual consumen del repositorio y setea los valores de los `LiveData`, estos últimos son observados por la Vista que actualiza de forma acorde.
 
 Para inyectar dependencias se utilizó [Koin](https://insert-koin.io/), entonces en el paquete `di` se pueden encontrar módulos que configuran las dependencias.
 
@@ -24,9 +24,9 @@ Por ejemplo, el `RepositoryImpl` tiene el objetivo de traer los datos, intername
 
 * `NetworkUtilsImpl` para el chequeo de la conexión.
 
-La implementación de `MoviesApi` tiene el objetivo de traer los datos de la API.
+* La implementación de `MoviesApi` tiene el objetivo de traer los datos de la API.
 
-La implementación de `MoviesDao` tiene el objetivo de guardar/traer los datos de la base de datos.
+* La implementación de `MoviesDao` tiene el objetivo de guardar/traer los datos de la base de datos.
 
 Si todo esto estuviese implementado dentro de la misma clase, no se estaría cumpliendo el principio de responsabilidad única.
 
@@ -43,12 +43,19 @@ Si todo esto estuviese implementado dentro de la misma clase, no se estaría cum
 * Debe tener tests unitarios que den confianza para que cualquier desarrollador pueda modificar clases sin temor a romper funcionalidad existente crítica.
 * Inyectar dependencias: favoreciendo la responsabilidad única, alternativas de implementación y la facilidad de test.
 
-Robert C. Martin (Uncle Bob) escribió el libro [Clean Code](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship-ebook/dp/B001GSTOAM) sobre este tema.
+[Robert C. Martin (Uncle Bob)](https://en.wikipedia.org/wiki/Robert_C._Martin) escribió el libro [***Clean Code: A Handbook of Agile Software Craftsmanship***](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship-ebook/dp/B001GSTOAM) sobre este tema.
 
 ## TODOs en el proyecto
 * Agregar más tests unitarios. Solo se crearon los principales, para demostrar el uso de JUnit y Mockito. Los tests que faltan de ViewModels serían muy similares a los existentes.
 
-* Obtener configuración primero antes de ejecutar el resto de los servicios. Por ejemplo, se podría implementar usando RxJava y el operador zip, juntando el resultado del [servicio de configuración](https://developers.themoviedb.org/3/configuration/get-api-configuration) y el resultado del otro servicio, de esta forma se podría agregar el base path a las imagenes. Ahora están hardcodeadas en la clase `Show`.
-
+* Obtener configuración primero antes de ejecutar el resto de los servicios. Esto serviría para agregar el base path a las imagenes. Ahora están hardcodeadas en la clase `Show`. Por ejemplo, se podría implementar usando RxJava y el operador [zip](http://reactivex.io/documentation/operators/zip.html), combinando el resultado de los observables de:
+	* [Servicio de configuración](https://developers.themoviedb.org/3/configuration/get-api-configuration)
+	* Servicio que devuelve películas/series.
+       
 * Manejar los casos de error cuando no carga la siguiente página.
 
+* UI/UX
+	* Se podría separar en dos secciones: Películas y Series. Por ejemplo, usando [BottomNavigationView](https://developer.android.com/reference/android/support/design/widget/BottomNavigationView), aunque según las guías de [Material Design](https://material.io/design/components/bottom-navigation.html) recomiendan que sean 3 o más destinos. Sino usar [tabs](https://material.io/design/components/tabs.html).
+	* Agregar más datos en el detalle. Por ejemplo, cantidad de estrellas.
+	* Usar CardView para mostrar cada película/serie.
+	* Modificar [adaptive launcher icon](https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive?hl=en).
