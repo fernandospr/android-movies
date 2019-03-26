@@ -1,19 +1,21 @@
 ## Capas de Aplicación
-`MoviesDatabase` y `MovieDao` pertenecen a la capa de **Persistencia**. Estos se utilizan para el funcionamiento de la app offline.
+`MoviesDatabase` y `MovieDao` pertenecen a la capa de **Persistencia**. Estos se utilizan para el funcionamiento de la app offline. Tienen métodos para guardar/obtener datos de una base de datos.
 
-`MoviesApi` y `NetworkUtilsImpl` pertenecen a la capa de **Red**. Estos se utilizan para el funcionamiento de la app online.
+`MoviesApi` y `NetworkUtilsImpl` pertenecen a la capa de **Red**. Estos se utilizan para el funcionamiento de la app online. Consumen datos de la API.
 
 `RepositoryImpl` pertenecen a la capa de **Repositorio**, internamente consumen de la capa de Persistencia y Red.
 
-Las clases dentro `Models` podrían pertenecer a la capa de **Negocio**. Aunque no tienen mucha lógica de negocio, así que podría decirse que en realidad pertenecen a la capa de Red y/o de Persistencia.
+Las clases dentro del paquete `models` podrían pertenecer a la capa de **Negocio**. Aunque no tienen mucha lógica de negocio, así que podría decirse que en realidad pertenecen a la capa de Red y/o de Persistencia. Las clases de este paquete tienen los datos que se muestran en la app.
 
-`Activities` y `Adapters` pertenecen a la capa de **Vista**. Estas clases tienen solo lógica de setear texto, animaciones, imagenes y componentes de vista en general. Reciben la interacción del usuario.
+`XXXXXActivity` pertenecen a la capa de **Vista**. Estas clases tienen solo lógica de setear texto, animaciones, imagenes y componentes de vista en general. Reciben la interacción del usuario.
+
+`XXXXXAdapter` pertenecen a la capa de **Vista**. Se utilizan para mostrar items en un listado.
 
 Se usó la arquitectura MVVM con `ViewModels` y `LiveData` de [Android Architecture Components (MVVM)](https://developer.android.com/topic/libraries/architecture), estos son el nexo entre Vista y Repositorio. Cuando el usuario interactúa con la vista, esta llama a método del `ViewModel`, el cual consumen del repositorio y setea los valores de los `LiveData`, estos últimos son observados por la Vista que actualiza de forma acorde.
 
-Para inyectar dependencias se utilizó **Koin**, entonces en `AppModule` se configuran las dependencias.
+Para inyectar dependencias se utilizó [Koin](https://insert-koin.io/), entonces en el paquete `di` se pueden encontrar módulos que configuran las dependencias.
 
-`MoviesApplication` representa a la app y es lo que primero se ejecuta. Inicializa Koin con `AppModule`.
+`MoviesApplication` representa a la app y es lo que primero se ejecuta. Inicializa Koin con los módulos.
 
 ## Principio de Responsabilidad Única
 Cada clase debe tener una solo objetivo o problema a resolver. 
@@ -24,7 +26,7 @@ Por ejemplo, el `RepositoryImpl` tiene el objetivo de traer los datos, intername
 
 La implementación de `MoviesApi` tiene el objetivo de traer los datos de la API.
 
-La implementación de `MoviesDao` tiene el objetivo de traer los datos de la base de datos.
+La implementación de `MoviesDao` tiene el objetivo de guardar/traer los datos de la base de datos.
 
 Si todo esto estuviese implementado dentro de la misma clase, no se estaría cumpliendo el principio de responsabilidad única.
 
@@ -41,4 +43,12 @@ Si todo esto estuviese implementado dentro de la misma clase, no se estaría cum
 * Debe tener tests unitarios que den confianza para que cualquier desarrollador pueda modificar clases sin temor a romper funcionalidad existente crítica.
 * Inyectar dependencias: favoreciendo la responsabilidad única, alternativas de implementación y la facilidad de test.
 
-Robert C. Martin (Uncle Bob) escribió el libro Clean Code sobre este tema.
+Robert C. Martin (Uncle Bob) escribió el libro [Clean Code](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship-ebook/dp/B001GSTOAM) sobre este tema.
+
+## TODOs en el proyecto
+* Agregar más tests unitarios. Solo se crearon los principales, para demostrar el uso de JUnit y Mockito. Los tests que faltan de ViewModels serían muy similares a los existentes.
+
+* Obtener configuración primero antes de ejecutar el resto de los servicios. Por ejemplo, se podría implementar usando RxJava y el operador zip, juntando el resultado del [servicio de configuración](https://developers.themoviedb.org/3/configuration/get-api-configuration) y el resultado del otro servicio, de esta forma se podría agregar el base path a las imagenes. Ahora están hardcodeadas en la clase `Show`.
+
+* Manejar los casos de error cuando no carga la siguiente página.
+
