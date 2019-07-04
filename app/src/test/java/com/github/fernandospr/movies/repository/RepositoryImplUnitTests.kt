@@ -74,7 +74,7 @@ class RepositoryImplUnitTests {
 
         repo.loadPopularMovies(1, repoCallback)
 
-        verify(service, never()).getPopularMovies(anyInt())
+        verify(service).getPopularMovies(anyInt())
     }
 
     @Test
