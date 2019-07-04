@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/fernandospr/android-movies.svg?branch=master)](https://travis-ci.com/fernandospr/android-movies)
+
 ## Capas de Aplicación
 `MoviesDatabase` y `MoviesDao` pertenecen a la capa de **Persistencia**. Estos se utilizan para el funcionamiento de la app offline. Tienen métodos para guardar/obtener datos de una base de datos.
 
