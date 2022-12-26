@@ -138,7 +138,7 @@ class RepositoryImpl(
                 // no-op
             }
 
-            override fun onError(e: Throwable?) {
+            override fun onError(e: Throwable) {
                 callback.onError()
             }
 

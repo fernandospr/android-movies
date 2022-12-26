@@ -9,7 +9,8 @@ class NetworkUtilsImpl(private val context: Context) : NetworkUtils {
 
     @Suppress("DEPRECATION")
     override fun isConnectedToInternet(): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         if (Build.VERSION.SDK_INT < 23) {
             val activeNetwork = connectivityManager.activeNetworkInfo
@@ -23,8 +24,9 @@ class NetworkUtilsImpl(private val context: Context) : NetworkUtils {
 
             if (activeNetwork != null) {
                 val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
-                return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-                        || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+                return capabilities != null &&
+                        (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                                || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))
             }
         }
 

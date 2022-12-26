@@ -15,14 +15,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.fernandospr.movies.R
 import com.github.fernandospr.movies.common.EndlessRecyclerViewScrollListener
 import com.github.fernandospr.movies.common.ItemAdapter
+import com.github.fernandospr.movies.databinding.ActivitySearchBinding
 import com.github.fernandospr.movies.detail.DetailActivity
 import com.github.fernandospr.movies.repository.models.Container
 import com.github.fernandospr.movies.repository.models.Show
-import kotlinx.android.synthetic.main.activity_search.*
-import kotlinx.android.synthetic.main.category_item.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivitySearchBinding
 
     companion object {
         fun newIntent(context: Context) = Intent(context, SearchActivity::class.java)
@@ -33,9 +34,10 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         setupSearchView()
@@ -50,7 +52,7 @@ class SearchActivity : AppCompatActivity() {
                 ActivityCompat.startActivity(this@SearchActivity, intent, options.toBundle())
             }
         })
-        resultsContainer.adapter = adapter
+        binding.resultsContainer.adapter = adapter
 
         viewModel.getLoading().observe(this, Observer { isLoading ->
             isLoading?.let { showLoadingView(it) }
@@ -61,11 +63,11 @@ class SearchActivity : AppCompatActivity() {
         viewModel.getResults().observe(this, Observer { entities ->
             showResult(entities)
         })
-        errorContainer.retryButton.setOnClickListener {
+        binding.errorContainer.retryButton.setOnClickListener {
             viewModel.getResults()
         }
         val scrollListener = object : EndlessRecyclerViewScrollListener(
-                resultsContainer.layoutManager as LinearLayoutManager
+            binding.resultsContainer.layoutManager as LinearLayoutManager
         ) {
             override fun onLoadMore(page: Int,
                                     totalItemsCount: Int,
@@ -73,7 +75,7 @@ class SearchActivity : AppCompatActivity() {
                 viewModel.getNextPageItems()
             }
         }
-        resultsContainer.addOnScrollListener(scrollListener)
+        binding.resultsContainer.addOnScrollListener(scrollListener)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -81,13 +83,13 @@ class SearchActivity : AppCompatActivity() {
         return true
     }
 
-    private fun setupSearchView() {
-        searchView.queryHint = getString(R.string.action_search)
-        searchView.isFocusable = true
-        searchView.setIconifiedByDefault(false)
-        searchView.requestFocusFromTouch()
-        searchView.requestFocus()
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+    private fun setupSearchView() = with(binding.searchView) {
+        queryHint = getString(R.string.action_search)
+        isFocusable = true
+        setIconifiedByDefault(false)
+        requestFocusFromTouch()
+        requestFocus()
+        setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextChange(newText: String?) = false
 
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -95,7 +97,7 @@ class SearchActivity : AppCompatActivity() {
                     adapter.clearEntities()
                     viewModel.search(query)
                 }
-                searchView.clearFocus()
+                clearFocus()
                 return true
             }
         })
@@ -104,16 +106,16 @@ class SearchActivity : AppCompatActivity() {
     private fun showResult(container: Container<Show>?) {
         when {
             container == null -> {
-                resultsContainer.visibility = View.INVISIBLE
-                noresultsContainer.visibility = View.INVISIBLE
+                binding.resultsContainer.visibility = View.INVISIBLE
+                binding.noresultsContainer.root.visibility = View.INVISIBLE
             }
             container.results.isEmpty() -> {
-                resultsContainer.visibility = View.INVISIBLE
-                noresultsContainer.visibility = View.VISIBLE
+                binding.resultsContainer.visibility = View.INVISIBLE
+                binding.noresultsContainer.root.visibility = View.VISIBLE
             }
             else -> {
-                resultsContainer.visibility = View.VISIBLE
-                noresultsContainer.visibility = View.INVISIBLE
+                binding.resultsContainer.visibility = View.VISIBLE
+                binding.noresultsContainer.root.visibility = View.INVISIBLE
                 if (container.page == 1) {
                     adapter.clearEntities()
                 }
@@ -124,17 +126,17 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showErrorView(show: Boolean) {
         if (show) {
-            errorContainer.visibility = View.VISIBLE
+            binding.errorContainer.root.visibility = View.VISIBLE
         } else {
-            errorContainer.visibility = View.INVISIBLE
+            binding.errorContainer.root.visibility = View.INVISIBLE
         }
     }
 
     private fun showLoadingView(show: Boolean) {
         if (show) {
-            loadingContainer.visibility = View.VISIBLE
+            binding.loadingContainer.root.visibility = View.VISIBLE
         } else {
-            loadingContainer.visibility = View.INVISIBLE
+            binding.loadingContainer.root.visibility = View.INVISIBLE
         }
     }
 }

@@ -12,7 +12,7 @@ class MoviesApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        startKoin{
+        startKoin {
             androidLogger()
             androidContext(this@MoviesApplication)
             modules(appModule, networkModule, dbModule)

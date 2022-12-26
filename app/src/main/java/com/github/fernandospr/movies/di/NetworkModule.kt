@@ -22,7 +22,9 @@ private const val CONNECT_TIMEOUT = 10L
 val networkModule = module {
     single<NetworkUtils> { NetworkUtilsImpl(get()) }
 
-    single<MoviesApi> { get<Retrofit>().create(MoviesApi::class.java) }
+    single<MoviesApi> {
+        get<Retrofit>().create(MoviesApi::class.java)
+    }
 
     single<Retrofit> {
         Retrofit.Builder()
@@ -32,21 +34,11 @@ val networkModule = module {
                 .build()
     }
 
-    single<OkHttpClient> {
-        OkHttpClient.Builder()
-                .addInterceptor(get(named("loggingInterceptor")))
-                .addInterceptor(get(named("apiKeyInterceptor")))
-                .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
-                .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
-                .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
-                .build()
-    }
-
-    single(named("loggingInterceptor")) {
+    single<Interceptor>(named("loggingInterceptor")) {
         HttpLoggingInterceptor().apply { level = BuildConfig.HTTP_LOGGING }
     }
 
-    single(named("apiKeyInterceptor")) {
+    single<Interceptor>(named("apiKeyInterceptor")) {
         Interceptor { chain ->
             val original = chain.request()
             val originalHttpUrl = original.url()
@@ -58,6 +50,16 @@ val networkModule = module {
             val request = original.newBuilder().url(url).build()
             chain.proceed(request)
         }
+    }
+
+    single<OkHttpClient> {
+        OkHttpClient.Builder()
+                .addInterceptor(get(named("apiKeyInterceptor")))
+                .addInterceptor(get(named("loggingInterceptor")))
+                .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+                .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                .build()
     }
 
     single<GsonConverterFactory> {

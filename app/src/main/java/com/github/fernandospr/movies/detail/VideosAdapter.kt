@@ -1,13 +1,12 @@
 package com.github.fernandospr.movies.detail
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.fernandospr.movies.R
-import com.github.fernandospr.movies.common.inflate
+import com.github.fernandospr.movies.databinding.VideoItemBinding
 import com.github.fernandospr.movies.repository.models.VideoAsset
-import kotlinx.android.synthetic.main.video_item.view.*
 
 class VideosAdapter : RecyclerView.Adapter<VideosAdapter.ViewHolder>() {
 
@@ -29,12 +28,19 @@ class VideosAdapter : RecyclerView.Adapter<VideosAdapter.ViewHolder>() {
         holder.bind(entities[position])
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            ViewHolder(parent.inflate(R.layout.video_item))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = VideoItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return ViewHolder(binding)
+    }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val title = itemView.title
-        val image = itemView.previewImageView
+
+    inner class ViewHolder(binding: VideoItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        val title = binding.title
+        val image = binding.previewImageView
         fun bind(item: VideoAsset) {
             title.text = item.name
             val imagePath = item.youtubeThumbnailPath
