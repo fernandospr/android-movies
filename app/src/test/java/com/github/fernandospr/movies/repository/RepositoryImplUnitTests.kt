@@ -1,5 +1,6 @@
 package com.github.fernandospr.movies.repository
 
+import com.github.fernandospr.movies.RxSchedulerRule
 import com.github.fernandospr.movies.repository.database.MoviesDao
 import com.github.fernandospr.movies.repository.models.Container
 import com.github.fernandospr.movies.repository.models.Show
@@ -7,6 +8,7 @@ import com.github.fernandospr.movies.repository.network.MoviesApi
 import com.github.fernandospr.movies.repository.network.NetworkUtils
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.*
 import retrofit2.Call
@@ -15,6 +17,9 @@ import retrofit2.Response
 import java.util.concurrent.Executor
 
 class RepositoryImplUnitTests {
+
+    @get:Rule
+    val rxRule = RxSchedulerRule()
 
     private lateinit var itemsContainer: Container<Show>
     private lateinit var repo: Repository
