@@ -2,16 +2,14 @@ package com.github.fernandospr.movies.search
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.github.fernandospr.movies.repository.models.Show
-import com.github.fernandospr.movies.repository.models.Container
 import com.github.fernandospr.movies.repository.Repository
 import com.github.fernandospr.movies.repository.RepositoryCallback
-import com.nhaarman.mockitokotlin2.*
+import com.github.fernandospr.movies.repository.models.Container
+import com.github.fernandospr.movies.repository.models.Show
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.ArgumentMatchers.anyString
+import org.mockito.kotlin.*
 
 class SearchViewModelUnitTests {
     @get:Rule
@@ -121,13 +119,13 @@ class SearchViewModelUnitTests {
         doAnswer {
             val callback: RepositoryCallback<Container<Show>> = it.getArgument(2)
             callback.onSuccess(itemsContainer)
-        }.whenever(repo).search(anyString(), anyInt(), any())
+        }.whenever(repo).search(any(), any(), any())
     }
 
     private fun setupRepositoryWithError() {
         doAnswer {
             val callback: RepositoryCallback<Container<Show>> = it.getArgument(2)
             callback.onError()
-        }.whenever(repo).search(anyString(), anyInt(), any())
+        }.whenever(repo).search(any(), any(), any())
     }
 }

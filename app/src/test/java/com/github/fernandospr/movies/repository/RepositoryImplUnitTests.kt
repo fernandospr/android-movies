@@ -5,12 +5,10 @@ import com.github.fernandospr.movies.repository.models.Container
 import com.github.fernandospr.movies.repository.models.Show
 import com.github.fernandospr.movies.repository.network.MoviesApi
 import com.github.fernandospr.movies.repository.network.NetworkUtils
-import com.nhaarman.mockitokotlin2.*
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.ArgumentMatchers.anyString
+import org.mockito.kotlin.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,11 +41,11 @@ class RepositoryImplUnitTests {
         service = mock()
 
         serviceCall = mock()
-        whenever(service.getPopularMovies(anyInt())).thenReturn(serviceCall)
+        whenever(service.getPopularMovies(any())).thenReturn(serviceCall)
 
         dao = mock()
-        whenever(dao.getItemsByMediaAndCategory(anyString(), anyString())).thenReturn(mock())
-        whenever(dao.getItemsLike(anyString())).thenReturn(mock())
+        whenever(dao.getItemsByMediaAndCategory(any(), any())).thenReturn(mock())
+        whenever(dao.getItemsLike(any())).thenReturn(mock())
 
         networkUtils = mock()
 
@@ -65,7 +63,7 @@ class RepositoryImplUnitTests {
 
         repo.loadPopularMovies(1, repoCallback)
 
-        verify(service).getPopularMovies(anyInt())
+        verify(service).getPopularMovies(any())
     }
 
     @Test
@@ -74,7 +72,7 @@ class RepositoryImplUnitTests {
 
         repo.loadPopularMovies(1, repoCallback)
 
-        verify(service, never()).getPopularMovies(anyInt())
+        verify(service, never()).getPopularMovies(any())
     }
 
     @Test
@@ -83,7 +81,7 @@ class RepositoryImplUnitTests {
 
         repo.loadPopularMovies(1, repoCallback)
 
-        verify(dao).getItemsByMediaAndCategory(anyString(), anyString())
+        verify(dao).getItemsByMediaAndCategory(any(), any())
     }
 
     @Test
@@ -92,7 +90,7 @@ class RepositoryImplUnitTests {
 
         repo.loadPopularMovies(1, repoCallback)
 
-        verify(dao, never()).getItemsByMediaAndCategory(anyString(), anyString())
+        verify(dao, never()).getItemsByMediaAndCategory(any(), any())
     }
 
     @Test
