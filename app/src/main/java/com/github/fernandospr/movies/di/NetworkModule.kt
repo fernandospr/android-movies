@@ -41,7 +41,7 @@ val networkModule = module {
     single<Interceptor>(named("apiKeyInterceptor")) {
         Interceptor { chain ->
             val original = chain.request()
-            val originalHttpUrl = original.url()
+            val originalHttpUrl = original.url
 
             val url = originalHttpUrl.newBuilder()
                 .addQueryParameter("api_key", BuildConfig.API_KEY)
@@ -53,9 +53,11 @@ val networkModule = module {
     }
 
     single<OkHttpClient> {
+        val apiKeyInterceptor: Interceptor = get(named("apiKeyInterceptor"))
+        val loggingInterceptor: Interceptor = get(named("loggingInterceptor"))
         OkHttpClient.Builder()
-                .addInterceptor(get(named("apiKeyInterceptor")))
-                .addInterceptor(get(named("loggingInterceptor")))
+                .addInterceptor(apiKeyInterceptor)
+                .addInterceptor(loggingInterceptor)
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
