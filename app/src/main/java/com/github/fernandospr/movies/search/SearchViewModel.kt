@@ -4,14 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.fernandospr.movies.repository.Repository
-import com.github.fernandospr.movies.repository.RepositoryCallback
 import com.github.fernandospr.movies.repository.models.Container
 import com.github.fernandospr.movies.repository.models.Show
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 class SearchViewModel(private val repo: Repository) : ViewModel() {
+    private val disposable = CompositeDisposable()
     private val loading: MutableLiveData<Boolean> = MutableLiveData()
     private val error: MutableLiveData<Boolean> = MutableLiveData()
-    private val results: MutableLiveData<Container<Show>> = MutableLiveData()
+    private val results: MutableLiveData<Container<Show>?> = MutableLiveData()
     private var lastQuery: String = ""
 
     init {
@@ -22,7 +25,7 @@ class SearchViewModel(private val repo: Repository) : ViewModel() {
 
     fun getLoading(): LiveData<Boolean> = this.loading
     fun getError(): LiveData<Boolean> = this.error
-    fun getResults(): LiveData<Container<Show>> = this.results
+    fun getResults(): LiveData<Container<Show>?> = this.results
 
     fun search(query: String) {
         loading.value = true
@@ -30,31 +33,6 @@ class SearchViewModel(private val repo: Repository) : ViewModel() {
         results.value = null
 
         doSearch(query, 1)
-    }
-
-    private fun doSearch(query: String, page: Int) {
-        repo.search(query, page, object : RepositoryCallback<Container<Show>> {
-            override fun onSuccess(t: Container<Show>) {
-                loading.value = false
-                if (lastQuery == query) {
-                    results.value?.let {
-                        t.results = it.results + t.results
-                    }
-                }
-                results.value = t
-                lastQuery = query
-            }
-
-            override fun onError() {
-                if (page > 1) {
-                    // TODO
-                } else {
-                    loading.value = false
-                    error.value = true
-                }
-            }
-
-        })
     }
 
     fun getNextPageItems() {
@@ -65,7 +43,33 @@ class SearchViewModel(private val repo: Repository) : ViewModel() {
         }
     }
 
+    private fun doSearch(query: String, page: Int) {
+        disposable.add(
+            repo.search(query, page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { new ->
+                        loading.value = false
+                        results.value = if (lastQuery == query && new.page > 1) {
+                            new.copy(
+                                results = (results.value?.results ?: emptyList()) + new.results
+                            )
+                        } else {
+                            new
+                        }
+                        lastQuery = query
+                    },
+                    {
+                        loading.value = false
+                        error.value = true
+                    }
+                )
+        )
+    }
+
     override fun onCleared() {
-        repo.stopSearch()
+        disposable.clear()
+        super.onCleared()
     }
 }

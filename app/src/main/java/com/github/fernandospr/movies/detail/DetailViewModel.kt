@@ -4,15 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.fernandospr.movies.repository.Repository
-import com.github.fernandospr.movies.repository.RepositoryCallback
 import com.github.fernandospr.movies.repository.models.Container
 import com.github.fernandospr.movies.repository.models.Show
 import com.github.fernandospr.movies.repository.models.VideoAsset
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 class DetailViewModel(private val repo: Repository) : ViewModel() {
+    private val disposable = CompositeDisposable()
     private val loading: MutableLiveData<Boolean> = MutableLiveData()
     private val error: MutableLiveData<Boolean> = MutableLiveData()
-    private val videos: MutableLiveData<Container<VideoAsset>> = MutableLiveData()
+    private val videos: MutableLiveData<Container<VideoAsset>?> = MutableLiveData()
 
     init {
         loading.value = false
@@ -23,7 +26,7 @@ class DetailViewModel(private val repo: Repository) : ViewModel() {
     fun getVideosLoading(): LiveData<Boolean> = this.loading
     fun getVideosError(): LiveData<Boolean> = this.error
 
-    fun getVideos(item: Show): LiveData<Container<VideoAsset>> {
+    fun getVideos(item: Show): LiveData<Container<VideoAsset>?> {
         if (videos.value == null && loading.value == false) {
             loadVideos(item)
         }
@@ -34,20 +37,26 @@ class DetailViewModel(private val repo: Repository) : ViewModel() {
         loading.value = true
         error.value = false
         videos.value = null
-        repo.loadVideos(item, 1, object : RepositoryCallback<Container<VideoAsset>> {
-            override fun onSuccess(t: Container<VideoAsset>) {
-                loading.value = false
-                videos.value = t
-            }
 
-            override fun onError() {
-                loading.value = false
-                error.value = true
-            }
-        })
+        disposable.add(
+            repo.loadVideos(item)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        loading.value = false
+                        videos.value = it
+                    },
+                    {
+                        loading.value = false
+                        error.value = true
+                    }
+                )
+        )
     }
 
     override fun onCleared() {
-        repo.stopVideos()
+        disposable.clear()
+        super.onCleared()
     }
 }

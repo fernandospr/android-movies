@@ -10,7 +10,6 @@ import com.github.fernandospr.movies.repository.network.NetworkUtils
 import com.github.fernandospr.movies.search.SearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import java.util.concurrent.Executors
 
 val appModule = module {
 
@@ -18,8 +17,7 @@ val appModule = module {
         RepositoryImpl(
                 get<MoviesApi>(),
                 get<MoviesDatabase>().getMoviesDao(),
-                get<NetworkUtils>(),
-                Executors.newSingleThreadExecutor())
+                get<NetworkUtils>())
     }
 
     viewModel { PopularMoviesViewModel(get()) }

@@ -1,8 +1,8 @@
 package com.github.fernandospr.movies.search
 
 import android.view.ViewGroup
-import com.github.fernandospr.movies.common.ItemAdapter
 import com.github.fernandospr.movies.R
+import com.github.fernandospr.movies.common.ItemAdapter
 import com.github.fernandospr.movies.common.inflate
 
 class SearchAdapter : ItemAdapter() {
