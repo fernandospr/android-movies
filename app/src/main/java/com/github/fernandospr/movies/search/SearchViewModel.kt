@@ -3,13 +3,13 @@ package com.github.fernandospr.movies.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.fernandospr.movies.common.BaseViewModel
-import com.github.fernandospr.movies.repository.Repository
-import com.github.fernandospr.movies.repository.models.Container
-import com.github.fernandospr.movies.repository.models.Show
+import com.github.fernandospr.movies.common.repository.models.Container
+import com.github.fernandospr.movies.common.repository.models.Show
+import com.github.fernandospr.movies.search.repository.SearchRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class SearchViewModel(private val repo: Repository) : BaseViewModel() {
+class SearchViewModel(private val repo: SearchRepository) : BaseViewModel() {
     private val loading: MutableLiveData<Boolean> = MutableLiveData()
     private val error: MutableLiveData<Boolean> = MutableLiveData()
     private val results: MutableLiveData<Container<Show>?> = MutableLiveData()

@@ -1,4 +1,4 @@
-package com.github.fernandospr.movies.repository.models
+package com.github.fernandospr.movies.common.repository.models
 
 import android.os.Parcelable
 import androidx.room.Entity

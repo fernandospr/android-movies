@@ -1,4 +1,4 @@
-package com.github.fernandospr.movies.repository.models
+package com.github.fernandospr.movies.common.repository.models
 
 data class VideoAsset(
     val site: String?,

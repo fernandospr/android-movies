@@ -16,12 +16,12 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.github.fernandospr.movies.R
+import com.github.fernandospr.movies.common.repository.models.Container
+import com.github.fernandospr.movies.common.repository.models.Show
+import com.github.fernandospr.movies.common.repository.models.VideoAsset
 import com.github.fernandospr.movies.common.setVisible
 import com.github.fernandospr.movies.common.setVisibleOrGone
 import com.github.fernandospr.movies.databinding.ActivityDetailBinding
-import com.github.fernandospr.movies.repository.models.Container
-import com.github.fernandospr.movies.repository.models.Show
-import com.github.fernandospr.movies.repository.models.VideoAsset
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailActivity : AppCompatActivity(), VideosAdapter.Listener {

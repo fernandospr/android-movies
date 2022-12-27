@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.fernandospr.movies.R
+import com.github.fernandospr.movies.common.repository.models.VideoAsset
 import com.github.fernandospr.movies.databinding.VideoItemBinding
-import com.github.fernandospr.movies.repository.models.VideoAsset
 
 class VideosAdapter : RecyclerView.Adapter<VideosAdapter.ViewHolder>() {
 

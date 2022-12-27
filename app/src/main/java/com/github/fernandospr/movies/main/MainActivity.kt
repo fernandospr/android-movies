@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.fernandospr.movies.R
 import com.github.fernandospr.movies.common.EndlessRecyclerViewScrollListener
 import com.github.fernandospr.movies.common.ItemAdapter
+import com.github.fernandospr.movies.common.repository.models.Container
+import com.github.fernandospr.movies.common.repository.models.Show
 import com.github.fernandospr.movies.common.setVisible
 import com.github.fernandospr.movies.databinding.ActivityMainBinding
 import com.github.fernandospr.movies.databinding.CategoryItemBinding
 import com.github.fernandospr.movies.detail.DetailActivity
-import com.github.fernandospr.movies.repository.models.Container
-import com.github.fernandospr.movies.repository.models.Show
 import com.github.fernandospr.movies.search.SearchActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

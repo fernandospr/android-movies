@@ -3,14 +3,14 @@ package com.github.fernandospr.movies.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.fernandospr.movies.common.BaseViewModel
-import com.github.fernandospr.movies.repository.Repository
-import com.github.fernandospr.movies.repository.models.Container
-import com.github.fernandospr.movies.repository.models.Show
-import com.github.fernandospr.movies.repository.models.VideoAsset
+import com.github.fernandospr.movies.common.repository.models.Container
+import com.github.fernandospr.movies.common.repository.models.Show
+import com.github.fernandospr.movies.common.repository.models.VideoAsset
+import com.github.fernandospr.movies.detail.repository.DetailRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class DetailViewModel(private val repo: Repository) : BaseViewModel() {
+class DetailViewModel(private val repo: DetailRepository) : BaseViewModel() {
     private val loading: MutableLiveData<Boolean> = MutableLiveData()
     private val error: MutableLiveData<Boolean> = MutableLiveData()
     private val videos: MutableLiveData<Container<VideoAsset>?> = MutableLiveData()

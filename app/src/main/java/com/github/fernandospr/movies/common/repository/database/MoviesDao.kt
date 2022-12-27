@@ -1,10 +1,10 @@
-package com.github.fernandospr.movies.repository.database
+package com.github.fernandospr.movies.common.repository.database
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.github.fernandospr.movies.repository.models.Show
+import com.github.fernandospr.movies.common.repository.models.Show
 import io.reactivex.Single
 
 @Dao

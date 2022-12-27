@@ -1,25 +1,25 @@
-package com.github.fernandospr.movies.repository
+package com.github.fernandospr.movies.main.repository
 
 import com.github.fernandospr.movies.RxSchedulerRule
-import com.github.fernandospr.movies.repository.database.MoviesDao
-import com.github.fernandospr.movies.repository.models.Container
-import com.github.fernandospr.movies.repository.models.Show
-import com.github.fernandospr.movies.repository.network.MoviesApi
-import com.github.fernandospr.movies.repository.network.NetworkUtils
+import com.github.fernandospr.movies.common.repository.database.MoviesDao
+import com.github.fernandospr.movies.common.repository.models.Container
+import com.github.fernandospr.movies.common.repository.models.Show
+import com.github.fernandospr.movies.common.repository.network.NetworkUtils
+import com.github.fernandospr.movies.main.repository.network.MainApi
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.*
 
-class RepositoryImplUnitTests {
+class MainRepositoryTests {
 
     @get:Rule
     val rxRule = RxSchedulerRule()
 
     private lateinit var itemsContainer: Container<Show>
-    private lateinit var repo: Repository
-    private lateinit var service: MoviesApi
+    private lateinit var repo: MainRepository
+    private lateinit var service: MainApi
     private lateinit var dao: MoviesDao
     private lateinit var networkUtils: NetworkUtils
 
@@ -42,11 +42,10 @@ class RepositoryImplUnitTests {
 
         dao = mock()
         whenever(dao.getItemsByMediaAndCategory(any(), any())).thenReturn(mock())
-        whenever(dao.getItemsLike(any())).thenReturn(mock())
 
         networkUtils = mock()
 
-        repo = RepositoryImpl(service, dao, networkUtils)
+        repo = MainRepositoryImpl(service, dao, networkUtils)
     }
 
     @Test
@@ -83,15 +82,6 @@ class RepositoryImplUnitTests {
         repo.loadPopularMovies(1).subscribe()
 
         verify(dao, never()).getItemsByMediaAndCategory(any(), any())
-    }
-
-    @Test
-    fun search_shouldCallDao_whenIsNotConnectedToInternet() {
-        whenever(networkUtils.isConnectedToInternet()).thenReturn(false)
-
-        repo.search("jurassic", 1).subscribe()
-
-        verify(dao).getItemsLike(eq("jurassic"))
     }
 
     @Test

@@ -3,16 +3,16 @@ package com.github.fernandospr.movies.search
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.github.fernandospr.movies.RxSchedulerRule
-import com.github.fernandospr.movies.repository.Repository
-import com.github.fernandospr.movies.repository.models.Container
-import com.github.fernandospr.movies.repository.models.Show
+import com.github.fernandospr.movies.common.repository.models.Container
+import com.github.fernandospr.movies.common.repository.models.Show
+import com.github.fernandospr.movies.search.repository.SearchRepository
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.*
 
-class SearchViewModelUnitTests {
+class SearchViewModelTests {
 
     @get:Rule
     val rxRule = RxSchedulerRule()
@@ -21,7 +21,7 @@ class SearchViewModelUnitTests {
     val taskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var itemsContainer: Container<Show>
-    private lateinit var repo: Repository
+    private lateinit var repo: SearchRepository
     private lateinit var viewModel: SearchViewModel
     private lateinit var loadingObserver: Observer<Boolean>
     private lateinit var errorObserver: Observer<Boolean>

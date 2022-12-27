@@ -3,9 +3,9 @@ package com.github.fernandospr.movies.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.fernandospr.movies.common.BaseViewModel
-import com.github.fernandospr.movies.repository.Repository
-import com.github.fernandospr.movies.repository.models.Container
-import com.github.fernandospr.movies.repository.models.Show
+import com.github.fernandospr.movies.common.repository.models.Container
+import com.github.fernandospr.movies.common.repository.models.Show
+import com.github.fernandospr.movies.main.repository.MainRepository
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -75,22 +75,22 @@ abstract class MainViewModel : BaseViewModel() {
     abstract fun doLoadItemsFromRepository(page: Int): Single<Container<Show>>
 }
 
-class PopularMoviesViewModel(private val repo: Repository) : MainViewModel() {
+class PopularMoviesViewModel(private val repo: MainRepository) : MainViewModel() {
     override fun doLoadItemsFromRepository(page: Int) = repo.loadPopularMovies(page)
 }
 
-class PopularTvShowsViewModel(private val repo: Repository) : MainViewModel() {
+class PopularTvShowsViewModel(private val repo: MainRepository) : MainViewModel() {
     override fun doLoadItemsFromRepository(page: Int) = repo.loadPopularTvShows(page)
 }
 
-class TopRatedMoviesViewModel(private val repo: Repository) : MainViewModel() {
+class TopRatedMoviesViewModel(private val repo: MainRepository) : MainViewModel() {
     override fun doLoadItemsFromRepository(page: Int) = repo.loadTopRatedMovies(page)
 }
 
-class TopRatedTvShowsViewModel(private val repo: Repository) : MainViewModel() {
+class TopRatedTvShowsViewModel(private val repo: MainRepository) : MainViewModel() {
     override fun doLoadItemsFromRepository(page: Int) = repo.loadTopRatedTvShows(page)
 }
 
-class UpcomingMoviesViewModel(private val repo: Repository) : MainViewModel() {
+class UpcomingMoviesViewModel(private val repo: MainRepository) : MainViewModel() {
     override fun doLoadItemsFromRepository(page: Int) = repo.loadUpcomingMovies(page)
 }

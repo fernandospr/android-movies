@@ -1,4 +1,4 @@
-package com.github.fernandospr.movies.repository.models
+package com.github.fernandospr.movies.common.repository.models
 
 data class Container<T>(
     val page: Int,
