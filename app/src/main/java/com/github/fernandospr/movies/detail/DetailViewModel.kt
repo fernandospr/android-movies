@@ -2,17 +2,15 @@ package com.github.fernandospr.movies.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.github.fernandospr.movies.common.BaseViewModel
 import com.github.fernandospr.movies.repository.Repository
 import com.github.fernandospr.movies.repository.models.Container
 import com.github.fernandospr.movies.repository.models.Show
 import com.github.fernandospr.movies.repository.models.VideoAsset
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class DetailViewModel(private val repo: Repository) : ViewModel() {
-    private val disposable = CompositeDisposable()
+class DetailViewModel(private val repo: Repository) : BaseViewModel() {
     private val loading: MutableLiveData<Boolean> = MutableLiveData()
     private val error: MutableLiveData<Boolean> = MutableLiveData()
     private val videos: MutableLiveData<Container<VideoAsset>?> = MutableLiveData()
@@ -53,10 +51,5 @@ class DetailViewModel(private val repo: Repository) : ViewModel() {
                     }
                 )
         )
-    }
-
-    override fun onCleared() {
-        disposable.clear()
-        super.onCleared()
     }
 }

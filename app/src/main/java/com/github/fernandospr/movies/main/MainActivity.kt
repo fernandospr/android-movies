@@ -8,12 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.fernandospr.movies.R
 import com.github.fernandospr.movies.common.EndlessRecyclerViewScrollListener
 import com.github.fernandospr.movies.common.ItemAdapter
+import com.github.fernandospr.movies.common.setVisible
 import com.github.fernandospr.movies.databinding.ActivityMainBinding
 import com.github.fernandospr.movies.databinding.CategoryItemBinding
 import com.github.fernandospr.movies.detail.DetailActivity
@@ -22,7 +22,7 @@ import com.github.fernandospr.movies.repository.models.Show
 import com.github.fernandospr.movies.search.SearchActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ItemAdapter.Listener {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -37,80 +37,81 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupCategory(
-            binding.popularMoviesContainer,
-            getString(R.string.category_popular) + " " + getString(R.string.category_movies),
-            popularMoviesViewModel
-        )
+        with(binding) {
+            setupCategory(
+                popularMoviesContainer,
+                getString(R.string.category_popular) + " " + getString(R.string.category_movies),
+                popularMoviesViewModel
+            )
 
-        setupCategory(
-            binding.popularTvShowsContainer,
-            getString(R.string.category_popular) + " " + getString(R.string.category_tvshows),
-            popularTvShowsViewModel
-        )
+            setupCategory(
+                popularTvShowsContainer,
+                getString(R.string.category_popular) + " " + getString(R.string.category_tvshows),
+                popularTvShowsViewModel
+            )
 
-        setupCategory(
-            binding.topRatedMoviesContainer,
-            getString(R.string.category_toprated) + " " + getString(R.string.category_movies),
-            topRatedMoviesViewModel
-        )
+            setupCategory(
+                topRatedMoviesContainer,
+                getString(R.string.category_toprated) + " " + getString(R.string.category_movies),
+                topRatedMoviesViewModel
+            )
 
-        setupCategory(
-            binding.topRatedTvShowsContainer,
-            getString(R.string.category_toprated) + " " + getString(R.string.category_tvshows),
-            topRatedTvShowsViewModel
-        )
+            setupCategory(
+                topRatedTvShowsContainer,
+                getString(R.string.category_toprated) + " " + getString(R.string.category_tvshows),
+                topRatedTvShowsViewModel
+            )
 
-        setupCategory(
-            binding.upcomingMoviesContainer,
-            getString(R.string.category_upcoming) + " " + getString(R.string.category_movies),
-            upcomingMoviesViewModel
-        )
+            setupCategory(
+                upcomingMoviesContainer,
+                getString(R.string.category_upcoming) + " " + getString(R.string.category_movies),
+                upcomingMoviesViewModel
+            )
 
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            popularMoviesViewModel.getItems(true)
-            popularTvShowsViewModel.getItems(true)
-            topRatedMoviesViewModel.getItems(true)
-            topRatedTvShowsViewModel.getItems(true)
-            upcomingMoviesViewModel.getItems(true)
-            binding.swipeRefreshLayout.isRefreshing = false
+            swipeRefreshLayout.setOnRefreshListener {
+                popularMoviesViewModel.getItems(forceRefresh = true)
+                popularTvShowsViewModel.getItems(forceRefresh = true)
+                topRatedMoviesViewModel.getItems(forceRefresh = true)
+                topRatedTvShowsViewModel.getItems(forceRefresh = true)
+                upcomingMoviesViewModel.getItems(forceRefresh = true)
+                swipeRefreshLayout.isRefreshing = false
+            }
+            scrollView.scrollTo(0, 0)
         }
     }
 
     private fun setupCategory(
-        container: CategoryItemBinding,
+        categoryItemBinding: CategoryItemBinding,
         title: String,
         viewModel: MainViewModel
     ) {
-        container.category.text = title
+        categoryItemBinding.category.text = title
 
-        val adapter = CategoryAdapter()
-        adapter.setListener(object : ItemAdapter.Listener {
-            override fun onItemClick(view: View, item: Show) {
-                val intent = DetailActivity.newIntent(this@MainActivity, item)
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    this@MainActivity,
-                    view,
-                    ViewCompat.getTransitionName(view)!!
-                )
-                ActivityCompat.startActivity(this@MainActivity, intent, options.toBundle())
-            }
-        })
-        container.resultsContainer.adapter = adapter
-        viewModel.getLoading().observe(this, Observer { isLoading ->
-            isLoading?.let { showLoadingView(container, it) }
-        })
-        viewModel.getError().observe(this, Observer { error ->
-            error?.let { showErrorView(container, it) }
-        })
-        viewModel.getItems().observe(this, Observer { entities ->
-            showResult(container, adapter, entities)
-        })
-        container.retryButton.setOnClickListener {
+        val categoryAdapter = CategoryAdapter().apply {
+            setListener(this@MainActivity)
+        }
+        setupResultsContainer(categoryItemBinding, categoryAdapter, viewModel)
+        setupErrorContainer(categoryItemBinding, viewModel)
+        bindViewModel(viewModel, categoryItemBinding, categoryAdapter)
+    }
+
+    private fun setupErrorContainer(
+        categoryItemBinding: CategoryItemBinding,
+        viewModel: MainViewModel
+    ) {
+        categoryItemBinding.retryButton.setOnClickListener {
             viewModel.getItems()
         }
+    }
+
+    private fun setupResultsContainer(
+        categoryItemBinding: CategoryItemBinding,
+        categoryAdapter: CategoryAdapter,
+        viewModel: MainViewModel
+    ) = with(categoryItemBinding.resultsContainer) {
+        adapter = categoryAdapter
         val scrollListener = object : EndlessRecyclerViewScrollListener(
-            container.resultsContainer.layoutManager as LinearLayoutManager
+            layoutManager as LinearLayoutManager
         ) {
             override fun onLoadMore(
                 page: Int,
@@ -120,7 +121,23 @@ class MainActivity : AppCompatActivity() {
                 viewModel.getNextPageItems()
             }
         }
-        container.resultsContainer.addOnScrollListener(scrollListener)
+        addOnScrollListener(scrollListener)
+    }
+
+    private fun bindViewModel(
+        viewModel: MainViewModel,
+        categoryItemBinding: CategoryItemBinding,
+        categoryAdapter: CategoryAdapter
+    ) {
+        viewModel.getLoading().observe(this) {
+            categoryItemBinding.loadingContainer.setVisible(it)
+        }
+        viewModel.getError().observe(this) {
+            categoryItemBinding.errorContainer.setVisible(it)
+        }
+        viewModel.getItems().observe(this) {
+            showItems(categoryItemBinding, categoryAdapter, it)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -137,44 +154,40 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showResult(
-        container: CategoryItemBinding,
-        adapter: CategoryAdapter,
-        itemsContainer: Container<Show>?
-    ) {
+    private fun showItems(
+        categoryItemBinding: CategoryItemBinding,
+        categoryAdapter: CategoryAdapter,
+        items: Container<Show>?
+    ) = with(categoryItemBinding) {
         when {
-            itemsContainer == null -> {
-                container.resultsContainer.visibility = View.INVISIBLE
-                container.noresultsContainer.visibility = View.INVISIBLE
+            items == null -> {
+                resultsContainer.setVisible(false)
+                noresultsContainer.setVisible(false)
             }
-            itemsContainer.results.isEmpty() -> {
-                container.resultsContainer.visibility = View.INVISIBLE
-                container.noresultsContainer.visibility = View.VISIBLE
+            items.results.isEmpty() -> {
+                resultsContainer.setVisible(false)
+                noresultsContainer.setVisible(true)
             }
             else -> {
-                container.resultsContainer.visibility = View.VISIBLE
-                container.noresultsContainer.visibility = View.INVISIBLE
-                if (itemsContainer.page == 1) {
-                    adapter.clearEntities()
+                resultsContainer.setVisible(true)
+                noresultsContainer.setVisible(false)
+                if (items.page == 1) {
+                    categoryAdapter.clearEntities()
                 }
-                adapter.setEntities(itemsContainer.results)
+                categoryAdapter.setEntities(items.results)
             }
         }
     }
 
-    private fun showErrorView(container: CategoryItemBinding, show: Boolean) {
-        if (show) {
-            container.errorContainer.visibility = View.VISIBLE
-        } else {
-            container.errorContainer.visibility = View.INVISIBLE
-        }
+    // region ItemAdapter.Listener methods
+    override fun onItemClick(view: View, item: Show) {
+        val intent = DetailActivity.newIntent(this, item)
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            this,
+            view,
+            ViewCompat.getTransitionName(view)!!
+        )
+        ActivityCompat.startActivity(this, intent, options.toBundle())
     }
-
-    private fun showLoadingView(container: CategoryItemBinding, show: Boolean) {
-        if (show) {
-            container.loadingContainer.visibility = View.VISIBLE
-        } else {
-            container.loadingContainer.visibility = View.INVISIBLE
-        }
-    }
+    // endregion
 }

@@ -2,17 +2,15 @@ package com.github.fernandospr.movies.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.github.fernandospr.movies.common.BaseViewModel
 import com.github.fernandospr.movies.repository.Repository
 import com.github.fernandospr.movies.repository.models.Container
 import com.github.fernandospr.movies.repository.models.Show
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-abstract class MainViewModel : ViewModel() {
-    private val disposable = CompositeDisposable()
+abstract class MainViewModel : BaseViewModel() {
     private val loading: MutableLiveData<Boolean> = MutableLiveData()
     private val error: MutableLiveData<Boolean> = MutableLiveData()
     private val results: MutableLiveData<Container<Show>?> = MutableLiveData()
@@ -74,12 +72,7 @@ abstract class MainViewModel : ViewModel() {
         )
     }
 
-    abstract fun doLoadItemsFromRepository(page: Int = 1): Single<Container<Show>>
-
-    override fun onCleared() {
-        disposable.clear()
-        super.onCleared()
-    }
+    abstract fun doLoadItemsFromRepository(page: Int): Single<Container<Show>>
 }
 
 class PopularMoviesViewModel(private val repo: Repository) : MainViewModel() {

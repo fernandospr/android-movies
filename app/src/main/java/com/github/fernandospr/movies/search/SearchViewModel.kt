@@ -2,16 +2,14 @@ package com.github.fernandospr.movies.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.github.fernandospr.movies.common.BaseViewModel
 import com.github.fernandospr.movies.repository.Repository
 import com.github.fernandospr.movies.repository.models.Container
 import com.github.fernandospr.movies.repository.models.Show
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class SearchViewModel(private val repo: Repository) : ViewModel() {
-    private val disposable = CompositeDisposable()
+class SearchViewModel(private val repo: Repository) : BaseViewModel() {
     private val loading: MutableLiveData<Boolean> = MutableLiveData()
     private val error: MutableLiveData<Boolean> = MutableLiveData()
     private val results: MutableLiveData<Container<Show>?> = MutableLiveData()
@@ -66,10 +64,5 @@ class SearchViewModel(private val repo: Repository) : ViewModel() {
                     }
                 )
         )
-    }
-
-    override fun onCleared() {
-        disposable.clear()
-        super.onCleared()
     }
 }
