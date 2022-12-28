@@ -21,6 +21,7 @@ data class Show(
     val posterPath: String?,
     val backdropPath: String?,
     val overview: String?,
+    val voteAverage: String?,
 
     @SerializedName("release_date", alternate = ["first_air_date"])
     val releaseDate: String?

@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorItemTextColor"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 tools:text="@tools:sample/full_names" />
@@ -79,9 +79,21 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="2dp"
                 android:text="Hello World!"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorItemTextColor"
                 android:textSize="16sp"
                 tools:text="@tools:sample/date/mmddyy" />
+
+            <TextView
+                android:id="@+id/voteText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:textColor="@color/colorItemTextColor"
+                android:textSize="12sp"
+                app:drawableStartCompat="@drawable/ic_baseline_star_24"
+                tools:text="4.8/10" />
 
             <TextView
                 android:id="@+id/overviewTitle"
@@ -99,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
                 android:lineSpacingExtra="8sp"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorItemTextColor"
                 android:textSize="14sp"
                 tools:text="Breaking Bad is an American crime drama television series created and produced by Vince Gilligan. Set and produced in Albuquerque, New Mexico, Breaking Bad is the story of Walter White." />
 

@@ -10,6 +10,6 @@ val dbModule = module {
                 get(),
                 MoviesDatabase::class.java,
                 "movies-master-db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 }

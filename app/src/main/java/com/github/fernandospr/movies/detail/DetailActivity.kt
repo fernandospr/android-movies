@@ -49,9 +49,11 @@ class DetailActivity : AppCompatActivity(), VideosAdapter.Listener {
     private fun showDetail(item: Show) = with(binding) {
         overviewTitle.setVisibleOrGone(!item.overview.isNullOrBlank())
         overviewText.setVisibleOrGone(!item.overview.isNullOrBlank())
+        voteText.setVisibleOrGone(!item.voteAverage.isNullOrBlank())
         overviewText.text = item.overview
         titleText.text = item.title
         yearText.text = item.releaseDate
+        voteText.text = item.voteAverage?.let { getString(R.string.detail_vote, it) }
 
         setupImages(item)
         setupVideos(item)

@@ -16,6 +16,6 @@ interface MoviesDao {
     @Query("SELECT * FROM shows WHERE UPPER(title) LIKE '%' || UPPER(:arg) || '%'")
     fun getItemsLike(arg: String): Single<List<Show>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(items: List<Show>)
 }
