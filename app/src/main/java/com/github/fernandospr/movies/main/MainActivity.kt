@@ -76,7 +76,6 @@ class MainActivity : AppCompatActivity(), ItemAdapter.Listener {
                 upcomingMoviesViewModel.getItems(forceRefresh = true)
                 swipeRefreshLayout.isRefreshing = false
             }
-            scrollView.scrollTo(0, 0)
         }
     }
 
