@@ -37,6 +37,7 @@ class SearchViewModelTests {
             null,
             null,
             "Overview text",
+            "8.0",
             "2019-01-01"
         )
         itemsContainer = Container(1, 2, listOf(item))
