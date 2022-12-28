@@ -40,7 +40,7 @@ class SearchViewModelTests {
             "8.0",
             "2019-01-01"
         )
-        itemsContainer = Container(1, 2, listOf(item))
+        itemsContainer = Container(page = 1, totalPages = 2, listOf(item))
         repo = mock()
         viewModel = SearchViewModel(repo)
 
@@ -54,7 +54,7 @@ class SearchViewModelTests {
     }
 
     @Test
-    fun search_shouldEmitLoading() {
+    fun `Searching should emit loading`() {
         whenever(repo.search(any(), any())).thenReturn(Single.just(itemsContainer))
 
         viewModel.search("jurassic")
@@ -63,7 +63,7 @@ class SearchViewModelTests {
     }
 
     @Test
-    fun search_shouldEmitError_whenRepositoryReturnsError() {
+    fun `Searching should emit error when repository returns error`() {
         whenever(repo.search(any(), any())).thenReturn(Single.error(Throwable()))
 
         viewModel.search("jurassic")
@@ -72,7 +72,7 @@ class SearchViewModelTests {
     }
 
     @Test
-    fun search_shouldEmitItems_whenRepositoryReturnsSuccess() {
+    fun `Searching should emit items when repository returns successfully`() {
         whenever(repo.search(any(), any())).thenReturn(Single.just(itemsContainer))
 
         viewModel.search("jurassic")
@@ -81,7 +81,7 @@ class SearchViewModelTests {
     }
 
     @Test
-    fun search_shouldNotEmitItems_whenRepositoryReturnsError() {
+    fun `Searching should not emit items when repository returns error`() {
         whenever(repo.search(any(), any())).thenReturn(Single.error(Throwable()))
 
         viewModel.search("jurassic")
@@ -90,7 +90,7 @@ class SearchViewModelTests {
     }
 
     @Test
-    fun search_shouldNotEmitError_whenRepositoryReturnsSuccess() {
+    fun `Searching should not emit error when repository returns successfully`() {
         whenever(repo.search(any(), any())).thenReturn(Single.just(itemsContainer))
 
         viewModel.search("jurassic")
@@ -99,7 +99,7 @@ class SearchViewModelTests {
     }
 
     @Test
-    fun search_shouldEmitLoading_thenLoadFromRepository_thenEmitItems() {
+    fun `Searching should emit loading then load from repository and emit items when repository returns successfully`() {
         whenever(repo.search(any(), any())).thenReturn(Single.just(itemsContainer))
 
         viewModel.search("jurassic")
@@ -112,7 +112,7 @@ class SearchViewModelTests {
     }
 
     @Test
-    fun getNextPageItems_shouldLoadNextPageFromRepository() {
+    fun `Getting next page items should load next page from repository`() {
         whenever(repo.search(any(), any())).thenReturn(Single.just(itemsContainer))
         viewModel.search("jurassic")
 

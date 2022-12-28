@@ -19,8 +19,8 @@ class MainRepositoryTests {
 
     private lateinit var itemsContainer: Container<Show>
     private lateinit var repo: MainRepository
-    private lateinit var service: MainApi
-    private lateinit var dao: MoviesDao
+    private lateinit var apiService: MainApi
+    private lateinit var dbDao: MoviesDao
     private lateinit var networkUtils: NetworkUtils
 
     @Before
@@ -38,70 +38,77 @@ class MainRepositoryTests {
         )
         itemsContainer = Container(1, 2, listOf(item))
 
-        service = mock()
-        whenever(service.getPopularMovies(any())).thenReturn(mock())
+        apiService = mock()
+        whenever(apiService.getPopularMovies(any())).thenReturn(mock())
 
-        dao = mock()
-        whenever(dao.getItemsByMediaAndCategory(any(), any())).thenReturn(mock())
+        dbDao = mock()
+        whenever(dbDao.getItemsByMediaAndCategory(any(), any())).thenReturn(mock())
 
         networkUtils = mock()
 
-        repo = MainRepositoryImpl(service, dao, networkUtils)
+        repo = MainRepositoryImpl(apiService, dbDao, networkUtils)
     }
 
     @Test
-    fun loadPopularMovies_shouldCallService_whenIsConnectedToInternet() {
+    fun `Loading popular movies should call service when is connected to Internet`() {
         whenever(networkUtils.isConnectedToInternet()).thenReturn(true)
 
         repo.loadPopularMovies(1).subscribe()
 
-        verify(service).getPopularMovies(any())
+        verify(apiService).getPopularMovies(any())
     }
 
     @Test
-    fun loadPopularMovies_shouldNotCallService_whenIsNotConnectedToInternet() {
+    fun `Loading popular movies should not call service when is not connected to Internet`() {
         whenever(networkUtils.isConnectedToInternet()).thenReturn(false)
 
         repo.loadPopularMovies(1).subscribe()
 
-        verify(service, never()).getPopularMovies(any())
+        verify(apiService, never()).getPopularMovies(any())
     }
 
     @Test
-    fun loadPopularMovies_shouldCallDao_whenIsNotConnectedToInternet() {
+    fun `Loading popular movies should call dao when is not connected to Internet`() {
         whenever(networkUtils.isConnectedToInternet()).thenReturn(false)
 
         repo.loadPopularMovies(1).subscribe()
 
-        verify(dao).getItemsByMediaAndCategory(any(), any())
+        verify(dbDao).getItemsByMediaAndCategory(any(), any())
     }
 
     @Test
-    fun loadPopularMovies_shouldNotCallDao_whenIsConnectedToInternet() {
+    fun `Loading popular movies should not call dao when is connected to Internet`() {
         whenever(networkUtils.isConnectedToInternet()).thenReturn(true)
 
         repo.loadPopularMovies(1).subscribe()
 
-        verify(dao, never()).getItemsByMediaAndCategory(any(), any())
+        verify(dbDao, never()).getItemsByMediaAndCategory(any(), any())
     }
 
     @Test
-    fun loadPopularMovies_shouldUpdateMediaCategoryAndSaveInDB() {
-        whenever(service.getPopularMovies(any())).thenReturn(Single.just(itemsContainer))
+    fun `Loading popular movies should update media and category types and save to database when is connected to internet`() {
+        whenever(apiService.getPopularMovies(any())).thenReturn(Single.just(itemsContainer))
         whenever(networkUtils.isConnectedToInternet()).thenReturn(true)
 
         repo.loadPopularMovies(1).subscribe()
 
-        verify(dao).insertAll(itemsContainer.results.map { it.copy(mediaType = Show.MOVIE_TYPE, categoryType = Show.POPULAR_TYPE) })
+        verify(dbDao).insertAll(itemsContainer.results.map {
+            it.copy(
+                mediaType = Show.MOVIE_TYPE,
+                categoryType = Show.POPULAR_TYPE
+            )
+        })
     }
 
     @Test
-    fun loadPopularMovies_shouldNotUpdateMediaAndCategory_whenIsConnectedToInternetAndServiceHasError() {
-        whenever(service.getPopularMovies(any())).thenReturn(Single.error(Throwable()))
+    fun `Loading popular movies should not save to database when is connected to internet but service returns error`() {
+        val error = Throwable()
+        whenever(apiService.getPopularMovies(any())).thenReturn(Single.error(error))
         whenever(networkUtils.isConnectedToInternet()).thenReturn(true)
 
-        repo.loadPopularMovies(1).subscribe()
+        val testObserver = repo.loadPopularMovies(1).test()
 
-        verify(dao, never()).insertAll(itemsContainer.results.map { it.copy(mediaType = Show.MOVIE_TYPE, categoryType = Show.POPULAR_TYPE) })
+        testObserver.assertError(error)
+        verify(dbDao, never()).insertAll(any())
     }
 }
