@@ -2,8 +2,6 @@ package com.github.fernandospr.movies.search.repository
 
 import com.github.fernandospr.movies.RxSchedulerRule
 import com.github.fernandospr.movies.common.repository.database.MoviesDao
-import com.github.fernandospr.movies.common.repository.models.Container
-import com.github.fernandospr.movies.common.repository.models.Show
 import com.github.fernandospr.movies.common.repository.network.NetworkUtils
 import com.github.fernandospr.movies.search.repository.network.SearchApi
 import org.junit.Before
