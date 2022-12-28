@@ -23,11 +23,13 @@ android {
     buildTypes {
         debug {
             buildConfigField "okhttp3.logging.HttpLoggingInterceptor.Level", "HTTP_LOGGING", 'okhttp3.logging.HttpLoggingInterceptor.Level.BODY'
+            buildConfigField "org.koin.core.logger.Level", "KOIN_LOGGING", 'org.koin.core.logger.Level.INFO'
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "okhttp3.logging.HttpLoggingInterceptor.Level", "HTTP_LOGGING", 'okhttp3.logging.HttpLoggingInterceptor.Level.NONE'
+            buildConfigField "org.koin.core.logger.Level", "KOIN_LOGGING", 'org.koin.core.logger.Level.NONE'
         }
     }
     compileOptions {
