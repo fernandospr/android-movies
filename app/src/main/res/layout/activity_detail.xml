@@ -24,7 +24,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="225dp"
+        android:layout_height="234dp"
         android:background="@android:color/transparent"
         android:fitsSystemWindows="true">
 
@@ -138,6 +138,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
+        android:layout_marginVertical="4dp"
         android:layout_width="@dimen/imageWidth"
         android:layout_height="@dimen/imageHeight"
         app:cardBackgroundColor="@android:color/transparent"
@@ -153,7 +154,7 @@
             android:layout_height="@dimen/imageHeight"
             android:scaleType="centerCrop"
             android:transitionName="@string/image_transition_name"
-            tools:background="#f00" />
+            tools:srcCompat="@tools:sample/avatars" />
     </androidx.cardview.widget.CardView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

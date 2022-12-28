@@ -2,6 +2,6 @@
 <resources>
 	<dimen name="imageWidth">150dp</dimen>
 	<dimen name="imageHeight">225dp</dimen>
-	<dimen name="detailPivotY">16dp</dimen>
+	<dimen name="detailPivotY">8dp</dimen>
 	<dimen name="titleSize">14dp</dimen>
 </resources>
