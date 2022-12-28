@@ -108,13 +108,11 @@
 
             <TextView
                 android:id="@+id/overviewTitle"
+                style="@style/Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="42dp"
-                android:text="@string/overview"
-                android:textColor="@color/colorItemTextColor"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:text="@string/overview" />
 
             <TextView
                 android:id="@+id/overviewText"
