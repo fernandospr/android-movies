@@ -1,5 +1,5 @@
 package com.github.fernandospr.movies.common.repository.network
 
-interface NetworkUtils {
-    fun isConnectedToInternet(): Boolean
+interface Network {
+    fun isOnline(): Boolean
 }

@@ -1,8 +1,8 @@
 package com.github.fernandospr.movies.common.di
 
 import com.github.fernandospr.movies.BuildConfig
-import com.github.fernandospr.movies.common.repository.network.NetworkUtils
-import com.github.fernandospr.movies.common.repository.network.NetworkUtilsImpl
+import com.github.fernandospr.movies.common.repository.network.Network
+import com.github.fernandospr.movies.common.repository.network.NetworkImpl
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
@@ -20,7 +20,7 @@ private const val READ_TIMEOUT = 30L
 private const val CONNECT_TIMEOUT = 10L
 
 val networkModule = module {
-    single<NetworkUtils> { NetworkUtilsImpl(get()) }
+    single<Network> { NetworkImpl(get()) }
 
     single<Retrofit> {
         Retrofit.Builder()

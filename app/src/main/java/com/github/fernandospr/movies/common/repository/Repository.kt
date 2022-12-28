@@ -1,15 +1,15 @@
 package com.github.fernandospr.movies.common.repository
 
-import com.github.fernandospr.movies.common.repository.network.NetworkUtils
+import com.github.fernandospr.movies.common.repository.network.Network
 import io.reactivex.Single
 
-abstract class Repository(private val networkUtils: NetworkUtils) {
+abstract class Repository(private val network: Network) {
     fun <T> fetch(
-        withInternet: () -> Single<T>,
-        withoutInternet: () -> Single<T>
-    ) = if (networkUtils.isConnectedToInternet()) {
-        withInternet()
+        online: () -> Single<T>,
+        offline: () -> Single<T>
+    ) = if (network.isOnline()) {
+        online()
     } else {
-        withoutInternet()
+        offline()
     }
 }

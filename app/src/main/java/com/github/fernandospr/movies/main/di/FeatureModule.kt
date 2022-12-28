@@ -1,7 +1,7 @@
 package com.github.fernandospr.movies.main.di
 
 import com.github.fernandospr.movies.common.repository.database.MoviesDatabase
-import com.github.fernandospr.movies.common.repository.network.NetworkUtils
+import com.github.fernandospr.movies.common.repository.network.Network
 import com.github.fernandospr.movies.main.*
 import com.github.fernandospr.movies.main.repository.MainRepository
 import com.github.fernandospr.movies.main.repository.MainRepositoryImpl
@@ -14,7 +14,7 @@ val mainModule = module {
         MainRepositoryImpl(
             get<MainApi>(),
             get<MoviesDatabase>().getMoviesDao(),
-            get<NetworkUtils>()
+            get<Network>()
         )
     }
 

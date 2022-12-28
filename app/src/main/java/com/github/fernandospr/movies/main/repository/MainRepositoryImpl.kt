@@ -9,24 +9,24 @@ import com.github.fernandospr.movies.common.repository.models.Show.Companion.POP
 import com.github.fernandospr.movies.common.repository.models.Show.Companion.TOPRATED_TYPE
 import com.github.fernandospr.movies.common.repository.models.Show.Companion.TVSHOW_TYPE
 import com.github.fernandospr.movies.common.repository.models.Show.Companion.UPCOMING_TYPE
-import com.github.fernandospr.movies.common.repository.network.NetworkUtils
+import com.github.fernandospr.movies.common.repository.network.Network
 import com.github.fernandospr.movies.main.repository.network.MainApi
 
 class MainRepositoryImpl(
     private val service: MainApi,
     private val dao: MoviesDao,
-    networkUtils: NetworkUtils
-) : Repository(networkUtils), MainRepository {
+    network: Network
+) : Repository(network), MainRepository {
 
     override fun loadPopularMovies(
         page: Int
     ) = fetch(
-        withInternet = {
+        online = {
             service.getPopularMovies(page)
                 .doOnSuccess { updateDB(it, MOVIE_TYPE, POPULAR_TYPE) }
         },
 
-        withoutInternet = {
+        offline = {
             dao.getItemsByMediaAndCategory(MOVIE_TYPE, POPULAR_TYPE)
                 .map { Container(1, 1, it) }
         }
@@ -35,12 +35,12 @@ class MainRepositoryImpl(
     override fun loadPopularTvShows(
         page: Int
     ) = fetch(
-        withInternet = {
+        online = {
             service.getPopularTvShows(page)
                 .doOnSuccess { updateDB(it, TVSHOW_TYPE, POPULAR_TYPE) }
         },
 
-        withoutInternet = {
+        offline = {
             dao.getItemsByMediaAndCategory(TVSHOW_TYPE, POPULAR_TYPE)
                 .map { Container(1, 1, it) }
         }
@@ -49,12 +49,12 @@ class MainRepositoryImpl(
     override fun loadTopRatedMovies(
         page: Int
     ) = fetch(
-        withInternet = {
+        online = {
             service.getTopRatedMovies(page)
                 .doOnSuccess { updateDB(it, MOVIE_TYPE, TOPRATED_TYPE) }
         },
 
-        withoutInternet = {
+        offline = {
             dao.getItemsByMediaAndCategory(MOVIE_TYPE, TOPRATED_TYPE)
                 .map { Container(1, 1, it) }
         }
@@ -63,12 +63,12 @@ class MainRepositoryImpl(
     override fun loadTopRatedTvShows(
         page: Int,
     ) = fetch(
-        withInternet = {
+        online = {
             service.getTopRatedTvShows(page)
                 .doOnSuccess { updateDB(it, TVSHOW_TYPE, TOPRATED_TYPE) }
         },
 
-        withoutInternet = {
+        offline = {
             dao.getItemsByMediaAndCategory(TVSHOW_TYPE, TOPRATED_TYPE)
                 .map { Container(1, 1, it) }
         }
@@ -77,12 +77,12 @@ class MainRepositoryImpl(
     override fun loadUpcomingMovies(
         page: Int
     ) = fetch(
-        withInternet = {
+        online = {
             service.getUpcomingMovies(page)
                 .doOnSuccess { updateDB(it, MOVIE_TYPE, UPCOMING_TYPE) }
         },
 
-        withoutInternet = {
+        offline = {
             dao.getItemsByMediaAndCategory(MOVIE_TYPE, UPCOMING_TYPE)
                 .map { Container(1, 1, it) }
         }

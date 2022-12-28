@@ -3,7 +3,7 @@
 ## Capas de Aplicación
 `MoviesDatabase` y `MoviesDao` pertenecen a la capa de **Persistencia**. Estos se utilizan para el funcionamiento de la app offline. Tienen métodos para guardar/obtener datos de una base de datos.
 
-`MainApi`, `DetailApi`, `SearchApi` y `NetworkUtils` pertenecen a la capa de **Red**. Estos se utilizan para el funcionamiento de la app online. Consumen datos de la API.
+`MainApi`, `DetailApi`, `SearchApi` y `Network` pertenecen a la capa de **Red**. Estos se utilizan para el funcionamiento de la app online. Consumen datos de la API.
 
 `MainRepository`, `DetailRepository` y `SearchRepository` pertenecen a la capa de **Repositorio**, internamente consume de la capa de Persistencia y Red.
 
@@ -24,7 +24,7 @@ Cada clase debe tener una solo objetivo o problema a resolver.
 
 Por ejemplo, el `MainRepositoryImpl` tiene el objetivo de traer los datos, internamente obteniéndolos de una API o de una base de datos según si hay o no conexión a Internet. `MainRepositoryImpl` delega responsabilidades a:
 
-* `NetworkUtilsImpl` para el chequeo de la conexión.
+* `NetworkImpl` para el chequeo de la conexión.
 * La implementación de `MainApi` tiene el objetivo de traer los datos de la API.
 * La implementación de `MoviesDao` tiene el objetivo de guardar/traer los datos de la base de datos.
 
