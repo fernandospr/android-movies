@@ -58,8 +58,6 @@ class DetailActivity : AppCompatActivity(), VideosAdapter.Listener {
     }
 
     private fun setupVideos(item: Show) {
-        binding.videosContainer.title.text = getString(R.string.detail_videos)
-
         val videosAdapter = VideosAdapter().apply {
             setListener(this@DetailActivity)
         }

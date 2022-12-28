@@ -5,8 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
-    android:fitsSystemWindows="true">
+    android:background="@color/colorPrimary"
+    android:fitsSystemWindows="true"
+    tools:context=".detail.DetailActivity">
 
     <ImageView
         android:id="@+id/backdropImageView"
@@ -56,20 +57,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:orientation="vertical"
-            android:paddingLeft="37dp"
-            android:paddingRight="37dp">
+            android:paddingHorizontal="16dp">
 
             <TextView
                 android:id="@+id/titleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
                 android:textColor="@android:color/white"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                tools:text="Breaking Bad" />
+                tools:text="@tools:sample/full_names" />
 
             <TextView
                 android:id="@+id/yearText"
@@ -80,13 +81,13 @@
                 android:text="Hello World!"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
-                tools:text="2011" />
+                tools:text="@tools:sample/date/mmddyy" />
 
             <TextView
                 android:id="@+id/overviewTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="43dp"
+                android:layout_marginTop="42dp"
                 android:text="@string/overview"
                 android:textColor="@color/colorItemTextColor"
                 android:textSize="14sp"
@@ -100,7 +101,7 @@
                 android:lineSpacingExtra="8sp"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
-                tools:text="Breaking Bad is an American crime drama television series created and produced by Vince Gilligan. Set and produced in Albuquerque, New Mexico, Breaking Bad is the story of Walter White, a struggling high school chemistry teacher who is diagnosed with inoperable lung cancer at the beginning of the series. He turns to a life of crime, producing and selling methamphetamine, in order to secure his family&apos;s financial future before he dies, teaming with his former student, Jesse Pinkman. Heavily serialized, the series is known for positioning its characters in seemingly inextricable corners and has been labeled a contemporary western by its creator." />
+                tools:text="Breaking Bad is an American crime drama television series created and produced by Vince Gilligan. Set and produced in Albuquerque, New Mexico, Breaking Bad is the story of Walter White." />
 
             <include
                 android:id="@+id/videosContainer"
