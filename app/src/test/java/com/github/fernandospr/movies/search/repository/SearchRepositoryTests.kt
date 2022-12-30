@@ -1,6 +1,5 @@
 package com.github.fernandospr.movies.search.repository
 
-import com.github.fernandospr.movies.RxSchedulerRule
 import com.github.fernandospr.movies.common.repository.database.MoviesDao
 import com.github.fernandospr.movies.common.repository.models.Container
 import com.github.fernandospr.movies.common.repository.models.Show
@@ -8,14 +7,10 @@ import com.github.fernandospr.movies.common.repository.network.Network
 import com.github.fernandospr.movies.search.repository.network.SearchApi
 import io.reactivex.Single
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.*
 
 class SearchRepositoryTests {
-
-    @get:Rule
-    val rxRule = RxSchedulerRule()
 
     private lateinit var itemsContainer: Container<Show>
     private lateinit var repo: SearchRepository

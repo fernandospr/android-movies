@@ -20,8 +20,8 @@ class DetailRepositoryImpl(
                 service.getMovieVideos(item.id)
             } else {
                 service.getTvShowVideos(item.id)
-            }.doOnSuccess { videosContainer ->
-                videosContainer.results.filter { VideoAsset.Site.YOUTUBE.name.equals(it.site, true) }
+            }.map { videosContainer ->
+                videosContainer.copy(results = videosContainer.results.filter { VideoAsset.Site.YOUTUBE.name.equals(it.site, true) })
             }
         },
         offline = {
