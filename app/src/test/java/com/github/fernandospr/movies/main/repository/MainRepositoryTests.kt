@@ -94,8 +94,8 @@ class MainRepositoryTests {
 
         verify(dbDao).insertAll(itemsContainer.results.map {
             it.copy(
-                mediaType = Show.MOVIE_TYPE,
-                categoryType = Show.POPULAR_TYPE
+                mediaType = Show.Media.MOVIE,
+                categoryType = Show.Category.POPULAR
             )
         })
     }

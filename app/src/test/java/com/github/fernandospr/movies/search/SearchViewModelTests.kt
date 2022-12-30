@@ -30,8 +30,8 @@ class SearchViewModelTests {
     @Before
     fun setup() {
         val item = Show(
-            "movie",
-            "popular",
+            Show.Media.MOVIE,
+            Show.Category.POPULAR,
             "1",
             "Test1",
             null,

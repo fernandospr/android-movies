@@ -2,8 +2,7 @@ package com.github.fernandospr.movies.detail.repository
 
 import com.github.fernandospr.movies.common.repository.Repository
 import com.github.fernandospr.movies.common.repository.models.Show
-import com.github.fernandospr.movies.common.repository.models.Show.Companion.MOVIE_TYPE
-import com.github.fernandospr.movies.common.repository.models.Show.Companion.YOUTUBE_TYPE
+import com.github.fernandospr.movies.common.repository.models.VideoAsset
 import com.github.fernandospr.movies.common.repository.network.Network
 import com.github.fernandospr.movies.detail.repository.network.DetailApi
 import io.reactivex.Single
@@ -17,12 +16,12 @@ class DetailRepositoryImpl(
         item: Show
     ) = fetch(
         online = {
-            if (MOVIE_TYPE.equals(item.mediaType, true)) {
+            if (Show.Media.MOVIE == item.mediaType) {
                 service.getMovieVideos(item.id)
             } else {
                 service.getTvShowVideos(item.id)
             }.doOnSuccess { videosContainer ->
-                videosContainer.results.filter { YOUTUBE_TYPE.equals(it.site, true) }
+                videosContainer.results.filter { VideoAsset.Site.YOUTUBE.name.equals(it.site, true) }
             }
         },
         offline = {

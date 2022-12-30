@@ -11,7 +11,7 @@ import io.reactivex.Single
 interface MoviesDao {
 
     @Query("SELECT * FROM shows WHERE mediaType = :media AND categoryType = :category")
-    fun getItemsByMediaAndCategory(media: String, category: String): Single<List<Show>>
+    fun getItemsByMediaAndCategory(media: Show.Media, category: Show.Category): Single<List<Show>>
 
     @Query("SELECT * FROM shows WHERE UPPER(title) LIKE '%' || UPPER(:arg) || '%'")
     fun getItemsLike(arg: String): Single<List<Show>>

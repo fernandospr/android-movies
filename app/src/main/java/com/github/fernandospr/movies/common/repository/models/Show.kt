@@ -9,8 +9,8 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "shows")
 @Parcelize
 data class Show(
-	var mediaType: String?,
-    var categoryType: String?,
+	var mediaType: Media?,
+    var categoryType: Category?,
 
     @PrimaryKey
     val id: String,
@@ -42,12 +42,11 @@ data class Show(
             return "https://image.tmdb.org/t/p/w780$backdropPath"
         }
 
-    companion object {
-        const val MOVIE_TYPE = "movie"
-        const val TVSHOW_TYPE = "tv"
-        const val POPULAR_TYPE = "popular"
-        const val TOPRATED_TYPE = "toprated"
-        const val UPCOMING_TYPE = "upcoming"
-        const val YOUTUBE_TYPE = "YouTube"
+    enum class Media {
+        MOVIE, TV
+    }
+
+    enum class Category {
+        POPULAR, TOPRATED, UPCOMING
     }
 }
