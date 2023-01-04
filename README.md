@@ -1,6 +1,32 @@
 [![Build Status](https://travis-ci.com/fernandospr/android-movies.svg?branch=master)](https://travis-ci.com/fernandospr/android-movies)
 
-## Capas de Aplicación
+# Android Movies
+Android Movies es una app Android desarrollada en Kotlin que utiliza la API de [The Movie Database](https://developers.themoviedb.org/3) para mostrar películas y series.
+
+## Cómo correr la app
+1. Clonar el repositorio.
+2. Abrir en Android Studio.
+3. (Opcional) Abrir `build.gradle` (app) y cambiar la API key que se puede obtener siguiendo los pasos de la [documentación de la API](https://developers.themoviedb.org/3/getting-started/introduction).
+4. Correr la app en un dispositivo o emulador.
+
+## Descripción
+Utiliza las siguientes bibliotecas: 
+
+* [Retrofit2](https://github.com/square/retrofit): Comunicación con la API.
+* [Koin](https://github.com/InsertKoinIO/koin): Inyección de dependencias.
+* [Glide](https://github.com/bumptech/glide): Carga de imágenes.
+* [Room](https://developer.android.com/jetpack/androidx/releases/room): Guardado de datos de la API para que la app pueda funcionar offline.
+* [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) + [LiveData](https://developer.android.com/topic/libraries/architecture/livedata): Los ViewModels obtienen el estado (películas/series) de los repositorios y los emiten a la UI utilizando LiveData.
+* [RxJava](https://github.com/ReactiveX/RxJava): Utilizado en los repositorios para obtener datos de la API o base de datos en un hilo secundario y emitir los resultados en el hilo principal.
+* [View Binding](https://developer.android.com/topic/libraries/view-binding): Para interactuar con las vistas más fácilmente.
+* [JUnit](https://junit.org/junit4/) y [Mockito Kotlin](https://github.com/mockito/mockito-kotlin): Para crear tests unitarios.
+
+El proyecto está organizado en paquetes por feature:
+* `main`: Pantalla principal con listados de películas y series categorizados en Popular, Top Rated y Upcoming.
+* `detail`: Pantalla de detalle de película/serie.
+* `search`: Pantalla para buscar películas/series.
+
+### Capas de Aplicación
 `MoviesDatabase` y `MoviesDao` pertenecen a la capa de **Persistencia**. Estos se utilizan para el funcionamiento de la app offline. Tienen métodos para guardar/obtener datos de una base de datos.
 
 `MainApi`, `DetailApi`, `SearchApi` y `Network` pertenecen a la capa de **Red**. Estos se utilizan para el funcionamiento de la app online. Consumen datos de la API.
@@ -9,7 +35,7 @@
 
 Las clases dentro del paquete `models` podrían pertenecer a la capa de **Negocio**. Tienen los datos que se muestran en la app. Dado que no tienen mucha lógica de negocio podría decirse que en realidad pertenecen a la capa de Red y/o de Persistencia.
 
-Las clases `XXXXXActivity` pertenecen a la capa de **Vista**. Estas clases tienen solo lógica de setear texto, animaciones, imagenes y componentes de vista en general. Reciben la interacción del usuario.
+Las clases `XXXXXActivity` pertenecen a la capa de **Vista**. Estas clases tienen solo lógica de setear texto, animaciones, imágenes y componentes de vista en general. Reciben la interacción del usuario.
 
 Las clases `XXXXXAdapter` pertenecen a la capa de **Vista**. Se utilizan para mostrar items en un listado.
 
@@ -19,7 +45,7 @@ Para inyectar dependencias se utilizó [Koin](https://insert-koin.io/), entonces
 
 `MoviesApplication` representa a la app y es lo que primero se ejecuta. Inicializa Koin con los módulos.
 
-## Principio de Responsabilidad Única
+### Principio de Responsabilidad Única
 Cada clase debe tener una solo objetivo o problema a resolver. 
 
 Por ejemplo, el `MainRepositoryImpl` tiene el objetivo de traer los datos, internamente obteniéndolos de una API o de una base de datos según si hay o no conexión a Internet. `MainRepositoryImpl` delega responsabilidades a:
@@ -28,9 +54,11 @@ Por ejemplo, el `MainRepositoryImpl` tiene el objetivo de traer los datos, inter
 * La implementación de `MainApi` tiene el objetivo de traer los datos de la API.
 * La implementación de `MoviesDao` tiene el objetivo de guardar/traer los datos de la base de datos.
 
-Si todo esto estuviese implementado dentro de la misma clase, no se estaría cumpliendo el principio de responsabilidad única.
+Si todo esto estuviese implementado dentro de la misma clase, no se estaría cumpliendo este principio.
 
-## Código Limpio
+### Código Limpio
+El proyecto fue desarrollado teniendo en cuenta estas características:
+
 * Fácil lectura para otros desarrolladores.
 * Fácil de extender o modificar.
 * Clases pequeñas, con pocos métodos, pocas líneas. Publicar solo los métodos necesarios. El resto debería ser privado.
@@ -48,7 +76,7 @@ Si todo esto estuviese implementado dentro de la misma clase, no se estaría cum
 ## TODOs
 * Agregar más tests unitarios. Solo se crearon los principales, para demostrar el uso de JUnit y Mockito. Los tests que faltan de ViewModels y Repositorios serían muy similares a los existentes.
 
-* Obtener configuración primero antes de ejecutar el resto de los servicios. Esto serviría para agregar el base path a las imagenes. Ahora están hardcodeadas en la clase `Show`. Por ejemplo, se podría implementar usando RxJava y el operador [zip](http://reactivex.io/documentation/operators/zip.html), combinando el resultado de los observables de:
+* Obtener configuración primero antes de ejecutar el resto de los servicios. Esto serviría para agregar el base path a las imágenes. Ahora están hardcodeadas en la clase `Show`. Por ejemplo, se podría implementar usando RxJava y el operador [zip](http://reactivex.io/documentation/operators/zip.html), combinando el resultado de los observables de:
 	* [Servicio de configuración](https://developers.themoviedb.org/3/configuration/get-api-configuration)
 	* Servicio que devuelve películas/series.
        
