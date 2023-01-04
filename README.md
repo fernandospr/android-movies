@@ -3,6 +3,10 @@
 # Android Movies
 Android Movies es una app Android desarrollada en Kotlin que utiliza la API de [The Movie Database](https://developers.themoviedb.org/3) para mostrar películas y series.
 
+Main-Detail | Detail-Video | Search
+:-: | :-: | :-:
+<video src='https://user-images.githubusercontent.com/4404680/210565617-18a46b34-ba01-45b1-99e0-5cdba39cf14f.mp4' /> | <video src='https://user-images.githubusercontent.com/4404680/210566843-a6fc7617-ec5e-4002-abad-3f850f7fe623.mp4' /> | <video src='https://user-images.githubusercontent.com/4404680/210567484-cd59ca5f-3fa6-41c6-9e84-dc49d6e06f20.mp4' />
+
 ## Cómo correr la app
 1. Clonar el repositorio.
 2. Abrir en Android Studio.
