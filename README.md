@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.com/fernandospr/android-movies.svg?branch=master)](https://travis-ci.com/fernandospr/android-movies)
-
 # Android Movies
 Android Movies es una app Android desarrollada en Kotlin que utiliza la API de [The Movie Database](https://developers.themoviedb.org/3) para mostrar películas y series.
 
