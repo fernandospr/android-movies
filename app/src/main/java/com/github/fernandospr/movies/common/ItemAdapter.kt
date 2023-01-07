@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.fernandospr.movies.R
-import com.github.fernandospr.movies.repository.models.Show
+import com.github.fernandospr.movies.common.repository.models.Show
 
 abstract class ItemAdapter : AnimatedRecyclerViewAdapter<RecyclerView.ViewHolder>() {
 

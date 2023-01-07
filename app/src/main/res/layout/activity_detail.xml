@@ -5,8 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
-    android:fitsSystemWindows="true">
+    android:background="@color/colorPrimary"
+    android:focusableInTouchMode="true"
+    tools:context=".detail.DetailActivity">
 
     <ImageView
         android:id="@+id/backdropImageView"
@@ -23,7 +24,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="225dp"
+        android:layout_height="234dp"
         android:background="@android:color/transparent"
         android:fitsSystemWindows="true">
 
@@ -32,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/colorPrimary"
+            app:contentScrim="@color/colorPrimaryTraslucent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:title=" "
             app:toolbarId="@+id/toolbar">
@@ -56,41 +57,62 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:orientation="vertical"
-            android:paddingLeft="37dp"
-            android:paddingRight="37dp">
+            android:paddingHorizontal="16dp">
 
             <TextView
                 android:id="@+id/titleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:textColor="@android:color/white"
+                android:gravity="center_horizontal"
+                android:textColor="@color/colorItemTextColor"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                tools:text="Breaking Bad" />
+                tools:text="@tools:sample/full_names" />
 
-            <TextView
-                android:id="@+id/yearText"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="2dp"
-                android:text="Hello World!"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                tools:text="2011" />
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/yearText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:drawablePadding="4dp"
+                    android:gravity="center"
+                    android:text="Hello World!"
+                    android:textColor="@color/colorItemTextColor"
+                    android:textSize="12sp"
+                    app:drawableStartCompat="@drawable/ic_baseline_calendar_month_24"
+                    tools:text="@tools:sample/date/mmddyy" />
+
+                <TextView
+                    android:id="@+id/voteText"
+                    android:layout_marginStart="32dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:drawablePadding="4dp"
+                    android:gravity="center"
+                    android:textColor="@color/colorItemTextColor"
+                    android:textSize="12sp"
+                    app:drawableStartCompat="@drawable/ic_baseline_star_24"
+                    tools:text="4.8/10" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/overviewTitle"
+                style="@style/Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="43dp"
-                android:text="@string/overview"
-                android:textColor="@color/colorItemTextColor"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="42dp"
+                android:text="@string/overview" />
 
             <TextView
                 android:id="@+id/overviewText"
@@ -98,9 +120,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
                 android:lineSpacingExtra="8sp"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorItemTextColor"
                 android:textSize="14sp"
-                tools:text="Breaking Bad is an American crime drama television series created and produced by Vince Gilligan. Set and produced in Albuquerque, New Mexico, Breaking Bad is the story of Walter White, a struggling high school chemistry teacher who is diagnosed with inoperable lung cancer at the beginning of the series. He turns to a life of crime, producing and selling methamphetamine, in order to secure his family&apos;s financial future before he dies, teaming with his former student, Jesse Pinkman. Heavily serialized, the series is known for positioning its characters in seemingly inextricable corners and has been labeled a contemporary western by its creator." />
+                tools:text="Breaking Bad is an American crime drama television series created and produced by Vince Gilligan. Set and produced in Albuquerque, New Mexico, Breaking Bad is the story of Walter White." />
 
             <include
                 android:id="@+id/videosContainer"
@@ -116,6 +138,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
+        android:layout_marginVertical="4dp"
         android:layout_width="@dimen/imageWidth"
         android:layout_height="@dimen/imageHeight"
         app:cardBackgroundColor="@android:color/transparent"
@@ -131,7 +154,7 @@
             android:layout_height="@dimen/imageHeight"
             android:scaleType="centerCrop"
             android:transitionName="@string/image_transition_name"
-            tools:background="#f00" />
+            tools:srcCompat="@tools:sample/avatars" />
     </androidx.cardview.widget.CardView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

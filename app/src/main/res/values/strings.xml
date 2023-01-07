@@ -7,6 +7,7 @@
 	<string name="category_movies">MOVIES</string>
 	<string name="category_tvshows">SERIES</string>
 	<string name="detail_videos">VIDEOS</string>
+	<string name="detail_vote">%1$s/10</string>
 
 	<string name="loading">Loading&#8230;</string>
 	<string name="error">An error occurred</string>

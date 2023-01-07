@@ -2,46 +2,42 @@ package com.github.fernandospr.movies.detail
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.Observer
+import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.github.fernandospr.movies.R
-import com.github.fernandospr.movies.repository.models.Container
-import com.github.fernandospr.movies.repository.models.Show
-import com.github.fernandospr.movies.repository.models.VideoAsset
-import com.github.florent37.glidepalette.BitmapPalette
-import com.github.florent37.glidepalette.GlidePalette
-import kotlinx.android.synthetic.main.activity_detail.*
-import kotlinx.android.synthetic.main.videos_container.view.*
+import com.github.fernandospr.movies.common.repository.models.Container
+import com.github.fernandospr.movies.common.repository.models.Show
+import com.github.fernandospr.movies.common.repository.models.VideoAsset
+import com.github.fernandospr.movies.common.setVisible
+import com.github.fernandospr.movies.common.setVisibleOrGone
+import com.github.fernandospr.movies.databinding.ActivityDetailBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+class DetailActivity : AppCompatActivity(), VideosAdapter.Listener {
 
-class DetailActivity : AppCompatActivity() {
-
-    companion object {
-        private const val EXTRA_ITEM = "EXTRA_ITEM"
-
-        fun newIntent(context: Context, item: Show) =
-                Intent(context, DetailActivity::class.java).apply {
-                    putExtra(EXTRA_ITEM, item)
-                }
-    }
-
+    private lateinit var binding: ActivityDetailBinding
     private val detailViewModel: DetailViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val item = intent.getParcelableExtra(EXTRA_ITEM) as Show
+        val item: Show = intent.getParcelableExtra(EXTRA_ITEM)!!
         showDetail(item)
     }
 
@@ -50,96 +46,127 @@ class DetailActivity : AppCompatActivity() {
         return true
     }
 
-    private fun showDetail(item: Show) {
-        if (item.overview.isNullOrBlank()) {
-            overviewTitle.visibility = View.GONE
-            overviewText.visibility = View.GONE
-        } else {
-            overviewTitle.visibility = View.VISIBLE
-            overviewText.visibility = View.VISIBLE
-        }
+    private fun showDetail(item: Show) = with(binding) {
+        overviewTitle.setVisibleOrGone(!item.overview.isNullOrBlank())
+        overviewText.setVisibleOrGone(!item.overview.isNullOrBlank())
+        voteText.setVisibleOrGone(!item.voteAverage.isNullOrBlank())
         overviewText.text = item.overview
         titleText.text = item.title
         yearText.text = item.releaseDate
+        voteText.text = item.voteAverage?.let { getString(R.string.detail_vote, it) }
 
         setupImages(item)
         setupVideos(item)
     }
 
     private fun setupVideos(item: Show) {
-        videosContainer.title.text = getString(R.string.detail_videos)
-        val adapter = VideosAdapter()
-        adapter.setListener(object : VideosAdapter.Listener {
-            override fun onItemClick(item: VideoAsset) {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.youtubeVideoPath))
-                startActivity(intent)
-            }
-        })
-        videosContainer.resultsContainer.adapter = adapter
-        detailViewModel.getVideosLoading().observe(this, Observer { isLoading ->
-            isLoading?.let { showLoadingVideosView(it) }
-        })
-        detailViewModel.getVideosError().observe(this, Observer { error ->
-            error?.let { showErrorVideosView(it) }
-        })
-        detailViewModel.getVideos(item).observe(this, Observer { entities ->
-            showVideos(adapter, entities)
-        })
-        videosContainer.errorContainer.retryButton.setOnClickListener {
+        val videosAdapter = VideosAdapter().apply {
+            setListener(this@DetailActivity)
+        }
+        binding.videosContainer.resultsContainer.adapter = videosAdapter
+        setupErrorContainer(item)
+        bindViewModel(item, videosAdapter)
+    }
+
+    private fun bindViewModel(
+        item: Show,
+        videosAdapter: VideosAdapter
+    ) {
+        detailViewModel.getVideosLoading().observe(this) {
+            binding.videosContainer.loadingContainer.setVisible(it)
+        }
+        detailViewModel.getVideosError().observe(this) {
+            binding.videosContainer.errorContainer.setVisible(it)
+        }
+        detailViewModel.getVideos(item).observe(this) {
+            showVideos(videosAdapter, it)
+        }
+    }
+
+    private fun setupErrorContainer(item: Show) {
+        binding.videosContainer.retryButton.setOnClickListener {
             detailViewModel.getVideos(item)
         }
     }
 
     private fun setupImages(item: Show) {
         Glide.with(this).load(item.posterFullPath)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .error(R.drawable.ic_local_movies_24dp)
-                .into(previewImageView)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .error(R.drawable.ic_local_movies_24dp)
+            .into(binding.previewImageView)
 
         if (!item.backdropFullPath.isNullOrBlank()) {
-            Glide.with(this).load(item.backdropFullPath)
-                    .listener(
-                            GlidePalette.with(item.backdropFullPath)
-                                    .use(BitmapPalette.Profile.MUTED)
-                                    .intoBackground(backdropOverlay)
-                                    .crossfade(true)
-                    )
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(backdropImageView)
+            Glide.with(this).asBitmap().load(item.backdropFullPath)
+                .listener(
+                    object : RequestListener<Bitmap> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Bitmap>?,
+                            isFirstResource: Boolean
+                        ) = false
+
+                        override fun onResourceReady(
+                            resource: Bitmap?,
+                            model: Any?,
+                            target: Target<Bitmap>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            if (resource != null) {
+                                val palette = Palette.from(resource).generate()
+                                binding.backdropOverlay.setBackgroundColor(
+                                    palette.getMutedColor(
+                                        getColor(
+                                            R.color.colorItemBackground
+                                        )
+                                    )
+                                )
+                            }
+                            return false
+                        }
+
+                    }
+                )
+                .transition(BitmapTransitionOptions.withCrossFade())
+                .into(binding.backdropImageView)
         }
     }
 
-    private fun showVideos(adapter: VideosAdapter, container: Container<VideoAsset>?) {
+    private fun showVideos(
+        videosAdapter: VideosAdapter,
+        videos: Container<VideoAsset>?
+    ) = with(binding.videosContainer) {
         when {
-            container == null -> {
-                videosContainer.resultsContainer.visibility = View.INVISIBLE
-                videosContainer.noresultsContainer.visibility = View.INVISIBLE
+            videos == null -> {
+                resultsContainer.setVisible(false)
+                noresultsContainer.setVisible(false)
             }
-            container.results.isEmpty() -> {
-                videosContainer.resultsContainer.visibility = View.INVISIBLE
-                videosContainer.noresultsContainer.visibility = View.VISIBLE
+            videos.results.isEmpty() -> {
+                resultsContainer.setVisible(false)
+                noresultsContainer.setVisible(true)
             }
             else -> {
-                videosContainer.resultsContainer.visibility = View.VISIBLE
-                videosContainer.noresultsContainer.visibility = View.INVISIBLE
-                adapter.setEntities(container.results)
+                resultsContainer.setVisible(true)
+                noresultsContainer.setVisible(false)
+                videosAdapter.setEntities(videos.results)
             }
         }
     }
 
-    private fun showErrorVideosView(show: Boolean) {
-        if (show) {
-            videosContainer.errorContainer.visibility = View.VISIBLE
-        } else {
-            videosContainer.errorContainer.visibility = View.INVISIBLE
-        }
+    // region VideosAdapter.Listener methods
+    override fun onItemClick(item: VideoAsset) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.youtubeVideoPath))
+        startActivity(intent)
     }
+    // endregion
 
-    private fun showLoadingVideosView(show: Boolean) {
-        if (show) {
-            videosContainer.loadingContainer.visibility = View.VISIBLE
-        } else {
-            videosContainer.loadingContainer.visibility = View.INVISIBLE
-        }
+    companion object {
+        private const val EXTRA_ITEM = "EXTRA_ITEM"
+
+        fun newIntent(context: Context, item: Show) =
+            Intent(context, DetailActivity::class.java).apply {
+                putExtra(EXTRA_ITEM, item)
+            }
     }
 }

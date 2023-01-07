@@ -2,16 +2,18 @@ package com.github.fernandospr.movies.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.github.fernandospr.movies.repository.Repository
-import com.github.fernandospr.movies.repository.RepositoryCallback
-import com.github.fernandospr.movies.repository.models.Container
-import com.github.fernandospr.movies.repository.models.Show
+import com.github.fernandospr.movies.common.BaseViewModel
+import com.github.fernandospr.movies.common.repository.models.Container
+import com.github.fernandospr.movies.common.repository.models.Show
+import com.github.fernandospr.movies.main.repository.MainRepository
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
-abstract class MainViewModel : ViewModel() {
-    protected val loading: MutableLiveData<Boolean> = MutableLiveData()
-    protected val error: MutableLiveData<Boolean> = MutableLiveData()
-    protected val results: MutableLiveData<Container<Show>> = MutableLiveData()
+abstract class MainViewModel : BaseViewModel() {
+    private val loading: MutableLiveData<Boolean> = MutableLiveData()
+    private val error: MutableLiveData<Boolean> = MutableLiveData()
+    private val results: MutableLiveData<Container<Show>?> = MutableLiveData()
 
     init {
         loading.value = false
@@ -23,7 +25,7 @@ abstract class MainViewModel : ViewModel() {
 
     fun getError(): LiveData<Boolean> = this.error
 
-    fun getItems(forceRefresh : Boolean = false): LiveData<Container<Show>> {
+    fun getItems(forceRefresh: Boolean = false): LiveData<Container<Show>?> {
         if (forceRefresh || (results.value == null && loading.value == false)) {
             loadItems()
         }
@@ -34,87 +36,61 @@ abstract class MainViewModel : ViewModel() {
         loading.value = true
         error.value = false
         results.value = null
-        doLoadItems()
-    }
 
-    abstract fun doLoadItems(page: Int = 1)
+        doLoadItems(page = 1)
+    }
 
     fun getNextPageItems() {
-        results.value?.let {
-            if (it.page < it.totalPages) {
-                doLoadItems(it.page + 1)
+        results.value?.let { currentShows ->
+            if (currentShows.page < currentShows.totalPages) {
+                doLoadItems(currentShows.page + 1)
             }
         }
     }
 
-    protected fun buildRepositoryCallback(page: Int): RepositoryCallback<Container<Show>> {
-        return object : RepositoryCallback<Container<Show>> {
-            override fun onSuccess(t: Container<Show>) {
-                loading.value = false
-                results.value?.let {
-                    t.results = it.results + t.results
-                }
-                results.value = t
-            }
-
-            override fun onError() {
-                if (page > 1) {
-                    // TODO
-                } else {
-                    loading.value = false
-                    error.value = true
-                }
-            }
-        }
+    private fun doLoadItems(page: Int) {
+        disposable.add(
+            doLoadItemsFromRepository(page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { new ->
+                        loading.value = false
+                        results.value = if (new.page > 1) {
+                            new.copy(
+                                results = (results.value?.results ?: emptyList()) + new.results
+                            )
+                        } else {
+                            new
+                        }
+                    },
+                    {
+                        loading.value = false
+                        error.value = true
+                    }
+                )
+        )
     }
+
+    abstract fun doLoadItemsFromRepository(page: Int): Single<Container<Show>>
 }
 
-class PopularMoviesViewModel(private val repo: Repository) : MainViewModel() {
-    override fun doLoadItems(page: Int) {
-        repo.loadPopularMovies(page, buildRepositoryCallback(page))
-    }
-
-    override fun onCleared() {
-        repo.stopPopularMovies()
-    }
+class PopularMoviesViewModel(private val repo: MainRepository) : MainViewModel() {
+    override fun doLoadItemsFromRepository(page: Int) = repo.loadPopularMovies(page)
 }
 
-class PopularTvShowsViewModel(private val repo: Repository) : MainViewModel() {
-    override fun doLoadItems(page: Int) {
-        repo.loadPopularTvShows(page, buildRepositoryCallback(page))
-    }
-
-    override fun onCleared() {
-        repo.stopPopularTvShows()
-    }
+class PopularTvShowsViewModel(private val repo: MainRepository) : MainViewModel() {
+    override fun doLoadItemsFromRepository(page: Int) = repo.loadPopularTvShows(page)
 }
 
-class TopRatedMoviesViewModel(private val repo: Repository) : MainViewModel() {
-    override fun doLoadItems(page: Int) {
-        repo.loadTopRatedMovies(page, buildRepositoryCallback(page))
-    }
-
-    override fun onCleared() {
-        repo.stopTopRatedMovies()
-    }
+class TopRatedMoviesViewModel(private val repo: MainRepository) : MainViewModel() {
+    override fun doLoadItemsFromRepository(page: Int) = repo.loadTopRatedMovies(page)
 }
 
-class TopRatedTvShowsViewModel(private val repo: Repository) : MainViewModel() {
-    override fun doLoadItems(page: Int) {
-        repo.loadTopRatedTvShows(page, buildRepositoryCallback(page))
-    }
-
-    override fun onCleared() {
-        repo.stopTopRatedTvShows()
-    }
+class TopRatedTvShowsViewModel(private val repo: MainRepository) : MainViewModel() {
+    override fun doLoadItemsFromRepository(page: Int) = repo.loadTopRatedTvShows(page)
 }
 
-class UpcomingMoviesViewModel(private val repo: Repository) : MainViewModel() {
-    override fun doLoadItems(page: Int) {
-        repo.loadUpcomingMovies(page, buildRepositoryCallback(page))
-    }
-
-    override fun onCleared() {
-        repo.stopUpcomingMovies()
-    }
+class UpcomingMoviesViewModel(private val repo: MainRepository) : MainViewModel() {
+    override fun doLoadItemsFromRepository(page: Int) = repo.loadUpcomingMovies(page)
 }

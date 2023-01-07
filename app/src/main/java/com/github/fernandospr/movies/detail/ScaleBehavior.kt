@@ -29,7 +29,7 @@ class ScaleBehavior<V : View>(context: Context, attrs: AttributeSet)
         child.scaleX = scale
         child.scaleY = scale
 
-        child.pivotY = appBarLayout.context.resources.getDimensionPixelSize(R.dimen.detail_pivot_y).toFloat()
+        child.pivotY = appBarLayout.context.resources.getDimensionPixelSize(R.dimen.detailPivotY).toFloat()
 
         return true
     }
