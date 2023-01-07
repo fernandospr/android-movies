@@ -118,6 +118,6 @@ class SearchViewModelTests {
 
         viewModel.getNextPageItems()
 
-        verify(repo, never()).search(eq("jurassic"), eq(2))
+        verify(repo).search(eq("jurassic"), eq(2))
     }
 }
