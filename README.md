@@ -1,3 +1,5 @@
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/fernandospr/android-movies/tree/circleci-project-setup.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/fernandospr/android-movies/tree/circleci-project-setup)
+
 # Android Movies
 Android Movies es una app Android desarrollada en Kotlin que utiliza la API de [The Movie Database](https://developers.themoviedb.org/3) para mostrar películas y series.
 
