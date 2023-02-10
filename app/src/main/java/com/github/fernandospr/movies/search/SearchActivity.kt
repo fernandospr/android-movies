@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.fernandospr.movies.R
@@ -131,7 +130,7 @@ class SearchActivity : AppCompatActivity(), ItemAdapter.Listener {
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
             this,
             view,
-            ViewCompat.getTransitionName(view)!!
+            view.transitionName
         )
         ActivityCompat.startActivity(this, intent, options.toBundle())
     }
